@@ -16,7 +16,6 @@
       --text:#e8eef7;
       --muted:#9fb0c7;
       --line:#223043;
-      --accent:#66a7ff;
       --chip:#1b2736;
     }
     *{box-sizing:border-box}
@@ -159,6 +158,7 @@
               <p class="sym">DEVVE</p>
               <p class="bal" id="devveBal">0</p>
               <div class="val" id="devveVal">$0.00. €0.00</div>
+              <div class="val" id="devveStakedLine">Staked, 0</div>
             </div>
             <div class="token">
               <p class="sym">FIAS</p>
@@ -282,7 +282,7 @@
   <script>
     const DEVVE_CONTRACT = "0x8248270620aa532e4d64316017be5e873e37cc09";
     const FIAS_CONTRACT  = "0x8e4f1ce473b292d56934c36976356e3e22c35585";
-    const LS_KEY = "rb_devve_fias_wallet_v2";
+    const LS_KEY = "rb_devve_fias_wallet_v3";
 
     const $ = (id) => document.getElementById(id);
 
@@ -380,6 +380,20 @@
         right.style.display = "flex";
         right.style.gap = "8px";
 
+        const stakeBtn = document.createElement("button");
+        stakeBtn.textContent = "Staked";
+        stakeBtn.onclick = () => {
+          const cur = Number(w.stakedDevve || 0);
+          const v = prompt("Staked DEVVE voor " + (w.name || "wallet") + ", alleen getal", String(cur));
+          if(v === null) return;
+          const n = Number(String(v).replace(",", "."));
+          if(!isFinite(n) || n < 0){ toast("Geen geldig getal"); return; }
+          w.stakedDevve = n;
+          saveState();
+          renderAll();
+          toast("Staked gezet, " + n);
+        };
+
         const useBtn = document.createElement("button");
         useBtn.textContent = "Gebruik";
         useBtn.onclick = async () => {
@@ -401,6 +415,7 @@
           toast("Verwijderd");
         };
 
+        right.appendChild(stakeBtn);
         right.appendChild(useBtn);
         right.appendChild(delBtn);
 
@@ -434,10 +449,15 @@
       const devveBal = Number(state.lastBalances.devveBal || 0);
       const fiasBal  = Number(state.lastBalances.fiasBal || 0);
 
-      $("devveBal").textContent = fmtNumber(devveBal, 8);
+      const devveStaked = Number(w?.stakedDevve || 0);
+      const devveTotal = devveBal + devveStaked;
+
+      $("devveBal").textContent = fmtNumber(devveTotal, 8);
       $("fiasBal").textContent  = fmtNumber(fiasBal, 8);
 
-      const devveUsd = devveBal * (prices.devveUsd || 0);
+      $("devveStakedLine").textContent = "Staked, " + fmtNumber(devveStaked, 8);
+
+      const devveUsd = devveTotal * (prices.devveUsd || 0);
       const fiasUsd  = fiasBal  * (prices.fiasUsd  || 0);
       const totalUsd = devveUsd + fiasUsd;
 
@@ -564,8 +584,7 @@
       renderWallets();
       renderSettings();
       renderDashboard();
-      const w = activeWallet();
-      renderStatus(w ? "Klaar om te verversen" : "Kies eerst een wallet");
+      renderStatus(activeWallet() ? "Klaar om te verversen" : "Kies eerst een wallet");
     }
 
     document.querySelectorAll(".tab").forEach(el => {
@@ -589,7 +608,7 @@
       if(!v.ok){ toast(v.reason); return; }
 
       const id = "w_" + Math.random().toString(16).slice(2) + Date.now().toString(16);
-      state.wallets.unshift({ id, name, addr });
+      state.wallets.unshift({ id, name, addr, stakedDevve: 0 });
       if(!state.activeWalletId) state.activeWalletId = id;
 
       $("wName").value = "";
