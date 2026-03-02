@@ -325,57 +325,20 @@
     const DEVVE_CONTRACT = "0x8248270620aa532e4d64316017be5e873e37cc09";
     const FIAS_CONTRACT  = "0x8e4f1ce473b292d56934c36976356e3e22c35585";
 
-    const LS_KEY_V5 = "rb_devve_fias_wallet_v5";
-    const LS_KEY_V3 = "rb_devve_fias_wallet_v3";
+    const LS_KEY = "rb_devve_fias_wallet_v6";
+    const OLD_KEYS = [
+      "rb_devve_fias_wallet_v5",
+      "rb_devve_fias_wallet_v4",
+      "rb_devve_fias_wallet_v3",
+      "rb_devve_fias_wallet_v2",
+      "rb_devve_fias_wallet_v1"
+    ];
 
     const $ = (id) => document.getElementById(id);
 
     const state = loadStateWithMigration();
     let autoTimer = null;
     let graphsLoaded = false;
-
-    function loadStateWithMigration(){
-      const v5raw = localStorage.getItem(LS_KEY_V5);
-      if(v5raw){
-        try{ return normalizeState(JSON.parse(v5raw)); }catch(e){}
-      }
-
-      const v3raw = localStorage.getItem(LS_KEY_V3);
-      if(v3raw){
-        try{
-          const v3 = JSON.parse(v3raw);
-          const migrated = {
-            wallets: Array.isArray(v3.wallets) ? v3.wallets.map(w => ({
-              id: w.id,
-              name: w.name || "Wallet",
-              addr: w.addr,
-              stakedDevve: Number(w.stakedDevve || 0)
-            })) : [],
-            activeWalletId: v3.activeWalletId || "",
-            settings: v3.settings || { autoOn:true, autoMin:5, priceDecimals:4, manualDevve:"", manualFias:"" },
-            cache: v3.cache || { lastUpdateISO:"", prices:{ devveUsd:0, fiasUsd:0, eurusd:1 }, chg24:{ devve:0, fias:0 } },
-            lastBalances: v3.lastBalances || { devveBal:0, fiasBal:0 },
-            perWallet: v3.perWallet || {},
-            graphs: { devve: [], fias: [], ts: 0 }
-          };
-          const n = normalizeState(migrated);
-          localStorage.setItem(LS_KEY_V5, JSON.stringify(n));
-          return n;
-        }catch(e){}
-      }
-
-      const fresh = normalizeState({
-        wallets: [],
-        activeWalletId: "",
-        settings: { autoOn:true, autoMin:5, priceDecimals:4, manualDevve:"", manualFias:"" },
-        cache: { lastUpdateISO:"", prices:{ devveUsd:0, fiasUsd:0, eurusd:1 }, chg24:{ devve:0, fias:0 } },
-        lastBalances: { devveBal:0, fiasBal:0 },
-        perWallet: {},
-        graphs: { devve: [], fias: [], ts: 0 }
-      });
-      localStorage.setItem(LS_KEY_V5, JSON.stringify(fresh));
-      return fresh;
-    }
 
     function normalizeState(s){
       if(!s || typeof s !== "object") s = {};
@@ -387,16 +350,70 @@
       if(!s.lastBalances) s.lastBalances = { devveBal:0, fiasBal:0 };
       if(!s.perWallet || typeof s.perWallet !== "object") s.perWallet = {};
       if(!s.graphs) s.graphs = { devve: [], fias: [], ts: 0 };
+
       s.wallets = s.wallets.map(w => ({
         id: w.id || ("w_" + Math.random().toString(16).slice(2) + Date.now().toString(16)),
         name: w.name || "Wallet",
         addr: String(w.addr || "").trim(),
         stakedDevve: Number(w.stakedDevve || 0)
       }));
+
       return s;
     }
 
-    function saveState(){ localStorage.setItem(LS_KEY_V5, JSON.stringify(state)); }
+    function loadStateWithMigration(){
+      const cur = localStorage.getItem(LS_KEY);
+      if(cur){
+        try{ return normalizeState(JSON.parse(cur)); }catch(e){}
+      }
+
+      let pickedKey = "";
+      let picked = null;
+
+      for(const k of OLD_KEYS){
+        const raw = localStorage.getItem(k);
+        if(!raw) continue;
+        try{
+          const obj = JSON.parse(raw);
+          const wallets = Array.isArray(obj?.wallets) ? obj.wallets : [];
+          if(wallets.length > 0){
+            pickedKey = k;
+            picked = obj;
+            break;
+          }
+        }catch(e){}
+      }
+
+      if(picked){
+        const migrated = normalizeState({
+          wallets: picked.wallets,
+          activeWalletId: picked.activeWalletId || "",
+          settings: picked.settings || { autoOn:true, autoMin:5, priceDecimals:4, manualDevve:"", manualFias:"" },
+          cache: picked.cache || { lastUpdateISO:"", prices:{ devveUsd:0, fiasUsd:0, eurusd:1 }, chg24:{ devve:0, fias:0 } },
+          lastBalances: picked.lastBalances || { devveBal:0, fiasBal:0 },
+          perWallet: picked.perWallet || {},
+          graphs: picked.graphs || { devve: [], fias: [], ts: 0 }
+        });
+        localStorage.setItem(LS_KEY, JSON.stringify(migrated));
+        setTimeout(() => toast("Wallets overgezet uit " + pickedKey + ", " + migrated.wallets.length), 350);
+        return migrated;
+      }
+
+      const fresh = normalizeState({
+        wallets: [],
+        activeWalletId: "",
+        settings: { autoOn:true, autoMin:5, priceDecimals:4, manualDevve:"", manualFias:"" },
+        cache: { lastUpdateISO:"", prices:{ devveUsd:0, fiasUsd:0, eurusd:1 }, chg24:{ devve:0, fias:0 } },
+        lastBalances: { devveBal:0, fiasBal:0 },
+        perWallet: {},
+        graphs: { devve: [], fias: [], ts: 0 }
+      });
+      localStorage.setItem(LS_KEY, JSON.stringify(fresh));
+      setTimeout(() => toast("Geen oude wallets gevonden"), 350);
+      return fresh;
+    }
+
+    function saveState(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
 
     function toast(msg){
       const t = $("toast");
@@ -601,12 +618,7 @@
       $("lastUpdate").textContent = lu ? lu.toLocaleString("nl-NL") : "-";
 
       renderAllWalletTotals();
-
-      if(graphsLoaded){
-        $("graphStatus").textContent = "ok";
-      }else{
-        $("graphStatus").textContent = "laden";
-      }
+      $("graphStatus").textContent = graphsLoaded ? "ok" : "laden";
     }
 
     async function fetchPricesAndChanges(){
@@ -679,6 +691,7 @@
         renderDashboard();
         await fetchPricesAndChanges().catch(()=>{});
         await refreshAllWalletBalances();
+        await loadGraphs().catch(()=>{});
         return;
       }
 
@@ -744,7 +757,7 @@
     }
 
     function resetAll(){
-      localStorage.removeItem(LS_KEY_V5);
+      localStorage.removeItem(LS_KEY);
       location.reload();
     }
 
