@@ -5,24 +5,54 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="DevvE FIAS" />
   <meta name="theme-color" content="#fbf6ee" />
   <title>DevvE + FIAS Wallet</title>
+
+  <link rel="icon" type="image/svg+xml" href='data:image/svg+xml;utf8,
+  <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+    <defs>
+      <linearGradient id="g" x1="0" x2="1">
+        <stop offset="0" stop-color="%23caa574"/>
+        <stop offset="1" stop-color="%23b78b5b"/>
+      </linearGradient>
+    </defs>
+    <rect x="6" y="6" width="116" height="116" rx="26" fill="%23fbf6ee" stroke="%23eadbc7" stroke-width="4"/>
+    <rect x="18" y="18" width="92" height="92" rx="22" fill="url(%23g)" opacity="0.20"/>
+    <text x="64" y="58" font-family="Helvetica,Arial" font-size="22" text-anchor="middle" fill="%232a241e">DEVVE</text>
+    <text x="64" y="86" font-family="Helvetica,Arial" font-size="22" text-anchor="middle" fill="%232a241e">FIAS</text>
+  </svg>' />
+
+  <link rel="apple-touch-icon" href='data:image/svg+xml;utf8,
+  <svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180">
+    <defs>
+      <linearGradient id="g" x1="0" x2="1">
+        <stop offset="0" stop-color="%23caa574"/>
+        <stop offset="1" stop-color="%23b78b5b"/>
+      </linearGradient>
+    </defs>
+    <rect x="10" y="10" width="160" height="160" rx="36" fill="%23fbf6ee" stroke="%23eadbc7" stroke-width="6"/>
+    <rect x="26" y="26" width="128" height="128" rx="30" fill="url(%23g)" opacity="0.22"/>
+    <text x="90" y="84" font-family="Helvetica,Arial" font-size="30" text-anchor="middle" fill="%232a241e">DEVVE</text>
+    <text x="90" y="122" font-family="Helvetica,Arial" font-size="30" text-anchor="middle" fill="%232a241e">FIAS</text>
+  </svg>' />
+
   <style>
     :root{
       --bg1:#fbf6ee;
-      --bg2:#efe2cf;
+      --bg2:#f3eadb;
       --card:#fffaf2;
-      --card2:#f8eddc;
-      --text:#241f19;
-      --muted:#6b5f54;
-      --line:#e2d1bb;
-      --chip:#f3e6d2;
+      --card2:#fff4e3;
+      --text:#2a241e;
+      --muted:#6f6257;
+      --line:#eadbc7;
+      --chip:#f7ecd9;
       --accent:#caa574;
       --accent2:#b78b5b;
       --good:#1b8a5a;
       --bad:#c7474d;
-      --shadow:0 10px 30px rgba(36,31,25,0.10);
-      --shadow2:0 6px 16px rgba(36,31,25,0.08);
+      --shadow:0 10px 30px rgba(42,36,30,0.10);
+      --shadow2:0 6px 16px rgba(42,36,30,0.08);
       --radius:18px;
     }
     *{ box-sizing:border-box; }
@@ -32,12 +62,10 @@
       background:radial-gradient(1100px 700px at 18% 8%, #ffffff 0%, var(--bg1) 42%, var(--bg2) 100%);
       color:var(--text);
     }
-    .wrap{ max-width:980px; margin:0 auto; padding:16px 14px 92px; }
+    .wrap{ max-width:980px; margin:0 auto; padding:16px 14px 94px; }
     .top{
       display:flex; gap:12px; align-items:center; justify-content:space-between;
-      padding:10px 0 14px;
-      border-bottom:1px solid rgba(226,209,187,0.95);
-      margin-bottom:14px;
+      padding:10px 0 14px; border-bottom:1px solid rgba(234,219,199,0.95); margin-bottom:14px;
     }
     .title{ display:flex; flex-direction:column; gap:2px; }
     .title h1{ font-size:18px; margin:0; }
@@ -64,10 +92,10 @@
     button:disabled{ opacity:0.65; cursor:default; }
 
     .grid{ display:grid; grid-template-columns:1fr; gap:12px; }
-    @media (min-width:860px){ .grid{ grid-template-columns:1.25fr .75fr; } }
+    @media (min-width:860px){ .grid{ grid-template-columns:1.2fr .8fr; } }
 
     .card{
-      background:linear-gradient(180deg,var(--card), #fffdf8);
+      background:linear-gradient(180deg,var(--card),#fffdf8);
       border:1px solid var(--line);
       border-radius:var(--radius);
       padding:14px;
@@ -75,22 +103,23 @@
     }
     .row{ display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
     .pill{
-      background:linear-gradient(180deg,var(--chip), #fff7ea);
+      background:linear-gradient(180deg,var(--chip),#fff7ea);
       border:1px solid var(--line);
       color:var(--muted);
       padding:6px 10px;
       border-radius:999px;
       font-size:12px;
     }
-    .sep{ height:1px; background:rgba(226,209,187,0.95); margin:12px 0; }
-    .big{ font-size:26px; letter-spacing:-0.3px; margin:8px 0 2px; }
+    .big{ font-size:28px; letter-spacing:-0.3px; margin:10px 0 2px; }
     .small{ font-size:12px; color:var(--muted); }
+    .sep{ height:1px; background:rgba(234,219,199,0.95); margin:12px 0; }
 
     .tokens{ display:grid; grid-template-columns:1fr; gap:10px; margin-top:10px; }
     @media (min-width:520px){ .tokens{ grid-template-columns:1fr 1fr; } }
+
     .token{
-      background:linear-gradient(180deg, rgba(202,165,116,0.14), rgba(247,236,217,0.72));
-      border:1px solid rgba(226,209,187,0.98);
+      background:linear-gradient(180deg, rgba(202,165,116,0.10), rgba(247,236,217,0.68));
+      border:1px solid rgba(234,219,199,0.98);
       border-radius:16px;
       padding:12px;
     }
@@ -103,6 +132,7 @@
 
     .kpiRow{ display:grid; grid-template-columns:1fr; gap:8px; margin-top:10px; }
     @media (min-width:520px){ .kpiRow{ grid-template-columns:1fr 1fr; } }
+
     .kpi{
       border:1px solid var(--line);
       border-radius:16px;
@@ -128,23 +158,12 @@
     .formRow{ display:grid; grid-template-columns:1fr; gap:10px; }
     @media (min-width:520px){ .formRow{ grid-template-columns:1fr 1fr; } }
 
-    canvas{
-      width:100%;
-      height:120px;
-      display:block;
-      border:1px solid var(--line);
-      border-radius:14px;
-      background:linear-gradient(180deg, rgba(202,165,116,0.12), rgba(247,236,217,0.58));
-      box-shadow:var(--shadow2);
-    }
-
     .nav{
       position:fixed; left:0; right:0; bottom:0;
       background:rgba(251,246,238,0.92);
       backdrop-filter:blur(14px);
-      border-top:1px solid rgba(226,209,187,0.95);
-      display:flex; gap:8px; justify-content:center;
-      padding:10px 10px;
+      border-top:1px solid rgba(234,219,199,0.95);
+      display:flex; gap:8px; justify-content:center; padding:10px 10px;
     }
     .tab{
       flex:1; max-width:220px;
@@ -162,28 +181,66 @@
     .tab.active{
       color:#241e18;
       border-color:rgba(183,139,91,0.75);
-      background:linear-gradient(180deg, rgba(202,165,116,0.26), rgba(247,236,217,0.62));
+      background:linear-gradient(180deg, rgba(202,165,116,0.22), rgba(247,236,217,0.55));
     }
     .hide{ display:none; }
 
     .toast{
       position:fixed; left:50%; bottom:78px; transform:translateX(-50%);
-      background:rgba(36,31,25,0.92);
+      background:rgba(42,36,30,0.92);
       border:1px solid rgba(255,255,255,0.22);
       color:#ffffff;
       padding:10px 12px;
       border-radius:14px;
       font-size:13px;
       max-width:92vw;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      opacity:0;
-      pointer-events:none;
-      transition:opacity .18s ease;
-      box-shadow:0 18px 40px rgba(36,31,25,0.22);
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      opacity:0; pointer-events:none; transition:opacity .18s ease;
+      box-shadow:0 18px 40px rgba(42,36,30,0.22);
     }
     .toast.show{ opacity:1; }
+
+    .widget{
+      border:1px solid rgba(183,139,91,0.30);
+      border-radius:18px;
+      padding:12px;
+      background:linear-gradient(180deg, rgba(202,165,116,0.10), rgba(255,250,242,0.95));
+      box-shadow:var(--shadow2);
+    }
+    .widgetGrid{
+      display:grid; grid-template-columns:1fr; gap:10px;
+    }
+    @media (min-width:520px){ .widgetGrid{ grid-template-columns:1fr 1fr; } }
+
+    canvas{
+      width:100%;
+      height:140px;
+      display:block;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:linear-gradient(180deg, rgba(202,165,116,0.10), rgba(247,236,217,0.55));
+      box-shadow:var(--shadow2);
+    }
+
+    .rangeBtns{ display:flex; gap:8px; flex-wrap:wrap; }
+    .rbtn{
+      padding:8px 10px;
+      border-radius:999px;
+      font-size:12px;
+      border:1px solid var(--line);
+      background:rgba(255,250,242,0.95);
+      color:var(--muted);
+      cursor:pointer;
+      user-select:none;
+    }
+    .rbtn.active{
+      color:#241e18;
+      border-color:rgba(183,139,91,0.75);
+      background:linear-gradient(180deg, rgba(202,165,116,0.18), rgba(247,236,217,0.60));
+    }
+
+    .simGrid{ display:grid; grid-template-columns:1fr; gap:10px; }
+    @media (min-width:520px){ .simGrid{ grid-template-columns:1fr 1fr; } }
   </style>
 </head>
 <body>
@@ -207,10 +264,24 @@
             <div class="pill" id="storagePill">Opslag</div>
           </div>
 
-          <div id="widgetHost"></div>
-
-          <div class="big" id="totalUsd">$0.00</div>
-          <div class="small" id="totalEur">€0.00</div>
+          <div class="widget" style="margin-top:10px">
+            <div class="row">
+              <div class="pill">Widget startscherm</div>
+              <div class="pill" id="widgetTime">-</div>
+            </div>
+            <div class="widgetGrid" style="margin-top:10px">
+              <div>
+                <div class="small">Totaal waarde</div>
+                <div class="big" id="totalUsd">$0.00</div>
+                <div class="small" id="totalEur">€0.00</div>
+              </div>
+              <div>
+                <div class="small">Winst of verlies</div>
+                <div class="big" id="plUsd">$0.00</div>
+                <div class="small" id="plPct">0.00%</div>
+              </div>
+            </div>
+          </div>
 
           <div class="kpiRow">
             <div class="kpi">
@@ -219,9 +290,9 @@
               <div class="small" id="investEur">€0.00</div>
             </div>
             <div class="kpi">
-              <div class="h">Winst of verlies</div>
-              <div class="v" id="plUsd">$0.00</div>
-              <div class="small" id="plPct">0.00%</div>
+              <div class="h">Koersen nu</div>
+              <div class="v"><span id="devvePrice">$0.0000</span> DEVVE</div>
+              <div class="small"><span id="fiasPrice">$0.0000</span> FIAS</div>
             </div>
           </div>
 
@@ -234,7 +305,9 @@
               <div class="val">Aankoop, <span id="devveBuy">$0.0000</span></div>
               <div class="val">P L, <span id="devvePL">$0.00</span></div>
               <div class="val">24h, <span id="devveChg" class="chg">0.00%</span></div>
-              <div class="val">Periode, <span id="devveChgP" class="chg">0.00%</span></div>
+              <div class="val">7 dagen, <span id="devveChg7" class="chg">0.00%</span></div>
+              <div class="val">24h hoog, <span id="devveHi24">$0.0000</span>. 24h laag, <span id="devveLo24">$0.0000</span>.</div>
+              <div class="val">7d hoog, <span id="devveHi7">$0.0000</span>. 7d laag, <span id="devveLo7">$0.0000</span>.</div>
               <div class="val">Doel, <span id="devveTarget">$0.00</span>. Nog, <span id="devveToTarget" class="chg">0.00%</span></div>
               <div class="val">Alarm boven, <span id="devveAboveShow">$0.00</span>. Alarm onder, <span id="devveBelowShow">$0.00</span></div>
             </div>
@@ -247,7 +320,9 @@
               <div class="val">Aankoop, <span id="fiasBuy">$0.0000</span></div>
               <div class="val">P L, <span id="fiasPL">$0.00</span></div>
               <div class="val">24h, <span id="fiasChg" class="chg">0.00%</span></div>
-              <div class="val">Periode, <span id="fiasChgP" class="chg">0.00%</span></div>
+              <div class="val">7 dagen, <span id="fiasChg7" class="chg">0.00%</span></div>
+              <div class="val">24h hoog, <span id="fiasHi24">$0.0000</span>. 24h laag, <span id="fiasLo24">$0.0000</span>.</div>
+              <div class="val">7d hoog, <span id="fiasHi7">$0.0000</span>. 7d laag, <span id="fiasLo7">$0.0000</span>.</div>
               <div class="val">Doel, <span id="fiasTarget">$0.00</span>. Nog, <span id="fiasToTarget" class="chg">0.00%</span></div>
               <div class="val">Alarm boven, <span id="fiasAboveShow">$0.00</span>. Alarm onder, <span id="fiasBelowShow">$0.00</span></div>
             </div>
@@ -256,11 +331,6 @@
           <div class="sep"></div>
 
           <div class="row">
-            <div class="small">Prijs DEVVE, <span id="devvePrice">$0.0000</span></div>
-            <div class="small">Prijs FIAS, <span id="fiasPrice">$0.0000</span></div>
-          </div>
-
-          <div class="row" style="margin-top:6px">
             <div class="small">EURUSD, <span id="eurusd">1.0000</span></div>
             <div class="small">Laatste update, <span id="lastUpdate">-</span></div>
           </div>
@@ -268,22 +338,57 @@
           <div class="sep"></div>
 
           <div class="row">
-            <div class="pill" id="graphPill">Grafiek, 7 dagen, USD</div>
+            <div class="pill">Grafiek, keuze</div>
             <div class="pill" id="graphStatus">-</div>
           </div>
 
           <div style="height:10px"></div>
-          <div id="rangeHost"></div>
+          <div class="row">
+            <div class="small">Periode</div>
+            <div class="rangeBtns" id="rangeBtns"></div>
+          </div>
 
-          <div style="height:12px"></div>
+          <div style="height:10px"></div>
           <div class="small">DevvE</div>
           <div style="height:6px"></div>
-          <canvas id="chartDevve" width="900" height="240"></canvas>
+          <canvas id="chartDevve" width="900" height="260"></canvas>
 
-          <div style="height:12px"></div>
+          <div style="height:10px"></div>
           <div class="small">FIAS</div>
           <div style="height:6px"></div>
-          <canvas id="chartFias" width="900" height="240"></canvas>
+          <canvas id="chartFias" width="900" height="260"></canvas>
+
+          <div class="sep"></div>
+
+          <div class="row">
+            <div class="pill">Koersdoel simulator</div>
+            <div class="pill" id="simStatus">-</div>
+          </div>
+
+          <div style="height:10px"></div>
+          <div class="simGrid">
+            <div class="kpi">
+              <div class="h">DEVVE doelprijs, USD</div>
+              <input id="simDevTarget" type="number" step="0.00000001" />
+              <div style="height:8px"></div>
+              <div class="small">Waarde bij doel, <span id="simDevValue">$0.00</span></div>
+              <div class="small">Verschil met nu, <span id="simDevDiff" class="chg">0.00%</span></div>
+            </div>
+            <div class="kpi">
+              <div class="h">FIAS doelprijs, USD</div>
+              <input id="simFiaTarget" type="number" step="0.00000001" />
+              <div style="height:8px"></div>
+              <div class="small">Waarde bij doel, <span id="simFiaValue">$0.00</span></div>
+              <div class="small">Verschil met nu, <span id="simFiaDiff" class="chg">0.00%</span></div>
+            </div>
+          </div>
+
+          <div style="height:10px"></div>
+          <div class="kpi">
+            <div class="h">Totaal bij doelen</div>
+            <div class="v" id="simTotal">$0.00</div>
+            <div class="small" id="simTotalEur">€0.00</div>
+          </div>
 
           <div class="sep"></div>
           <div class="small">made by Rob Borghouts 2026</div>
@@ -307,14 +412,18 @@
           <input id="importFile" type="file" accept="application/json" style="display:none" />
           <div style="height:8px"></div>
 
-          <button id="clearCacheBtn" style="width:100%">Reset koers en grafiek cache</button>
+          <button id="clearCacheBtn" style="width:100%">Reset koers cache</button>
           <div style="height:8px"></div>
 
           <button id="resetBtn" style="width:100%">Reset app data</button>
+
           <div class="sep"></div>
 
           <div class="small" id="netInfo">Bron prijzen, -. Bron grafiek, -.</div>
           <div class="small" id="alertInfo">Alarm, -.</div>
+
+          <div class="sep"></div>
+          <div class="small">Tip, zet in Safari op beginscherm. Dan werkt dit als app.</div>
         </div>
       </div>
     </div>
@@ -322,7 +431,7 @@
     <div id="viewSettings" class="view hide">
       <div class="card">
         <div style="font-size:14px">Instellingen</div>
-        <div class="small">Aantallen, staking, doelen, alarmen, grafiek.</div>
+        <div class="small">Aantallen, staking, doelen, alarmen, grafiek periode.</div>
 
         <div class="sep"></div>
 
@@ -343,19 +452,26 @@
           <div>
             <label>Grafiek periode</label>
             <select id="chartDays">
-              <option value="1">24 uur</option>
-              <option value="7">7 dagen</option>
+              <option value="1">1 dag</option>
+              <option value="7" selected>7 dagen</option>
+              <option value="14">14 dagen</option>
               <option value="30">30 dagen</option>
             </select>
           </div>
           <div>
-            <label>Herlaad grafieken</label>
-            <button id="reloadChartsBtn" class="primary" style="width:100%">Herlaad</button>
+            <label>Markers op grafiek</label>
+            <select id="markerMode">
+              <option value="all" selected>Alles</option>
+              <option value="buyTarget">Aankoop en doel</option>
+              <option value="alerts">Alleen alarmen</option>
+              <option value="off">Uit</option>
+            </select>
           </div>
         </div>
 
         <div class="sep"></div>
-       <div class="formRow">
+
+        <div class="formRow">
           <div>
             <label>DEVVE wallet aantal</label>
             <input id="devveQty" type="number" step="0.00000001" />
@@ -451,7 +567,7 @@
   <script>
     const DEVVE_CONTRACT = "0x8248270620aa532e4d64316017be5e873e37cc09";
     const FIAS_CONTRACT  = "0x8e4f1ce473b292d56934c36976356e3e22c35585";
-    const LS_KEY = "rb_devve_fias_single_v4";
+    const LS_KEY = "rb_devve_fias_index_v5_markers_sim_hilo";
 
     const $ = (id) => document.getElementById(id);
 
@@ -469,11 +585,16 @@
       setTimeout(() => t.classList.remove("show"), 1800);
     }
 
+    function clampNum(v, min, max, dflt){
+      const n = Number(v);
+      if(!isFinite(n)) return dflt;
+      return Math.max(min, Math.min(max, n));
+    }
+
     function withTimeout(promise, ms, label){
       return new Promise((resolve, reject) => {
         const t = setTimeout(() => reject(new Error(label || "timeout")), ms);
-        promise.then(v => { clearTimeout(t); resolve(v); })
-               .catch(e => { clearTimeout(t); reject(e); });
+        promise.then(v => { clearTimeout(t); resolve(v); }).catch(e => { clearTimeout(t); reject(e); });
       });
     }
 
@@ -484,36 +605,44 @@
       if(!s.cache.prices) s.cache.prices = { devveUsd:0, fiasUsd:0, eurusd:1 };
       if(!s.cache.chg24) s.cache.chg24 = { devve:0, fias:0 };
       if(!s.cache.lastUpdateISO) s.cache.lastUpdateISO = "";
-      if(!s.graphs) s.graphs = { devve:{}, fias:{}, ts:0 };
-      if(!s.alerts) s.alerts = { devve:{ above:0, below:0 }, fias:{ above:0, below:0 } };
-      if(!s.alertState) s.alertState = {
-        devve:{ above:false, below:false },
-        fias:{ above:false, below:false }
+      if(!s.graphs) s.graphs = { devve:{ days:7, series:[], ts:[] }, fias:{ days:7, series:[], ts:[] }, ts:0 };
+      if(!s.hilo) s.hilo = {
+        devve:{ hi24:0, lo24:0, hi7:0, lo7:0 },
+        fias:{  hi24:0, lo24:0, hi7:0, lo7:0 }
       };
+      if(!s.alerts) s.alerts = { devve:{ above:0, below:0 }, fias:{ above:0, below:0 } };
+      if(!s.alertState) s.alertState = { devve:{ above:false, below:false }, fias:{ above:false, below:false } };
 
       if(typeof s.settings.autoOn !== "boolean") s.settings.autoOn = true;
       if(!isFinite(Number(s.settings.autoMin))) s.settings.autoMin = 5;
       if(!isFinite(Number(s.settings.priceDecimals))) s.settings.priceDecimals = 4;
       if(!isFinite(Number(s.settings.chartDays))) s.settings.chartDays = 7;
+      if(!s.settings.markerMode) s.settings.markerMode = "all";
 
       if(!s.settings.positions) s.settings.positions = {
         devve:{ qty:35000, avg:0.30, stake:0, target:0.30 },
         fias:{  qty:50384, avg:0.01129, stake:0, target:0.01129 }
       };
+
       if(!s.settings.positions.devve) s.settings.positions.devve = { qty:35000, avg:0.30, stake:0, target:0.30 };
       if(!s.settings.positions.fias)  s.settings.positions.fias  = { qty:50384, avg:0.01129, stake:0, target:0.01129 };
 
-      s.settings.autoMin = clampNum(s.settings.autoMin, 1, 120, 5);
-      s.settings.priceDecimals = clampNum(s.settings.priceDecimals, 2, 8, 4);
-      s.settings.chartDays = clampNum(s.settings.chartDays, 1, 30, 7);
+      if(!isFinite(Number(s.settings.positions.devve.qty))) s.settings.positions.devve.qty = 35000;
+      if(!isFinite(Number(s.settings.positions.devve.stake))) s.settings.positions.devve.stake = 0;
+      if(!isFinite(Number(s.settings.positions.devve.avg))) s.settings.positions.devve.avg = 0.30;
+      if(!isFinite(Number(s.settings.positions.devve.target))) s.settings.positions.devve.target = 0.30;
+
+      if(!isFinite(Number(s.settings.positions.fias.qty))) s.settings.positions.fias.qty = 50384;
+      if(!isFinite(Number(s.settings.positions.fias.stake))) s.settings.positions.fias.stake = 0;
+      if(!isFinite(Number(s.settings.positions.fias.avg))) s.settings.positions.fias.avg = 0.01129;
+      if(!isFinite(Number(s.settings.positions.fias.target))) s.settings.positions.fias.target = 0.01129;
+
+      if(!isFinite(Number(s.alerts.devve.above))) s.alerts.devve.above = 0;
+      if(!isFinite(Number(s.alerts.devve.below))) s.alerts.devve.below = 0;
+      if(!isFinite(Number(s.alerts.fias.above))) s.alerts.fias.above = 0;
+      if(!isFinite(Number(s.alerts.fias.below))) s.alerts.fias.below = 0;
 
       return s;
-    }
-
-    function clampNum(v, min, max, fallback){
-      const n = Number(v);
-      if(!isFinite(n)) return fallback;
-      return Math.max(min, Math.min(max, n));
     }
 
     function safeSave(obj){
@@ -546,7 +675,514 @@
     function updateStoragePill(){
       let ok = true;
       try{
-        const k="__t";
+        const k = "__t";
+        localStorage.setItem(k, "1");
+        localStorage.removeItem(k);
+      }catch(e){
+        ok = false;
+      }
+      $("storagePill").textContent = ok ? "Opslag, ok" : "Opslag, uit";
+    }
+
+    function setView(which){
+      $("viewDashboard").classList.toggle("hide", which !== "dashboard");
+      $("viewSettings").classList.toggle("hide", which !== "settings");
+      $("tabDash").classList.toggle("active", which === "dashboard");
+      $("tabSet").classList.toggle("active", which === "settings");
+    }
+
+    function fmtNumber(n, digits=2){
+      if(!isFinite(n)) n = 0;
+      return n.toLocaleString("nl-NL", { maximumFractionDigits:digits, minimumFractionDigits:0 });
+    }
+    function fmtMoneyUSD(n){
+      if(!isFinite(n)) n = 0;
+      return n.toLocaleString("en-US", { style:"currency", currency:"USD", maximumFractionDigits:2 });
+    }
+    function fmtMoneyEUR(n){
+      if(!isFinite(n)) n = 0;
+      return n.toLocaleString("nl-NL", { style:"currency", currency:"EUR", maximumFractionDigits:2 });
+    }
+    function setChange(elId, val){
+      const el = $(elId);
+      const n = Number(val || 0);
+      el.textContent = (isFinite(n) ? n.toFixed(2) : "0.00") + "%";
+      el.classList.remove("up","dn");
+      if(n > 0) el.classList.add("up");
+      if(n < 0) el.classList.add("dn");
+    }
+
+    function calcPct(from, to){
+      const a = Number(from || 0);
+      const b = Number(to || 0);
+      if(!isFinite(a) || a <= 0 || !isFinite(b)) return 0;
+      return ((b - a) / a) * 100;
+    }
+
+    function updateAlertInfo(){
+      const dA = Number(state.alerts.devve.above || 0);
+      const dB = Number(state.alerts.devve.below || 0);
+      const fA = Number(state.alerts.fias.above || 0);
+      const fB = Number(state.alerts.fias.below || 0);
+      const txt = "Alarm, devve boven " + (dA>0 ? ("$"+dA) : "uit") + ", onder " + (dB>0 ? ("$"+dB) : "uit")
+        + ". fias boven " + (fA>0 ? ("$"+fA) : "uit") + ", onder " + (fB>0 ? ("$"+fB) : "uit") + ".";
+      $("alertInfo").textContent = txt;
+    }
+
+    function updateNetInfo(){
+      $("netInfo").textContent = "Bron prijzen, " + lastPriceSource + ". Bron grafiek, " + lastChartSource + ".";
+      updateAlertInfo();
+    }
+
+    async function fetchJsonTimeout(url, ms){
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), ms);
+      try{
+        const r = await fetch(url, { cache:"no-store", signal: ctrl.signal });
+        if(!r.ok) return { ok:false, json:null, via:"http " + r.status };
+        const j = await r.json();
+        return { ok:true, json:j, via:"direct" };
+      }catch(e){
+        return { ok:false, json:null, via:(e && e.name==="AbortError") ? "timeout" : "err" };
+      }finally{
+        clearTimeout(t);
+      }
+    }
+
+    async function fetchJsonSmart(url){
+      const stamp = Date.now().toString();
+      const u1 = url + (url.includes("?") ? "&" : "?") + "t=" + stamp;
+
+      const tries = [
+        { name:"direct", u:u1 },
+        { name:"allorigins", u:"https://api.allorigins.win/raw?url=" + encodeURIComponent(u1) },
+        { name:"corsproxy", u:"https://corsproxy.io/?" + encodeURIComponent(u1) }
+      ];
+
+      let last = "fout";
+      for(const t of tries){
+        const res = await fetchJsonTimeout(t.u, 9000);
+        if(res.ok) return { ok:true, json:res.json, via:t.name };
+        last = t.name + " " + res.via;
+      }
+      return { ok:false, json:null, via:last };
+    }
+   .actionsGrid{display:grid;grid-template-columns:1fr;gap:10px}
+    @media (min-width:860px){.actionsGrid{grid-template-columns:1fr}}
+    .actBtn{width:100%}
+    .badgeRow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .badge{border:1px solid var(--line);background:linear-gradient(180deg,#fffaf2,#fff3de);padding:6px 10px;border-radius:999px;font-size:12px;color:var(--muted)}
+    .simGrid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px}
+    @media (min-width:520px){.simGrid{grid-template-columns:1fr 1fr}}
+    .mini{font-size:11px;color:var(--muted);line-height:1.25}
+    .hr{height:1px;background:rgba(227,208,179,0.95);margin:12px 0}
+    .markRow{display:flex;gap:8px;flex-wrap:wrap}
+    .markBtn{padding:9px 10px;border-radius:14px}
+    .markBtn.primary{background:linear-gradient(180deg, rgba(191,155,108,0.96), rgba(171,130,86,0.96));border-color:rgba(171,130,86,0.75);color:#241e18;box-shadow:0 10px 24px rgba(171,130,86,0.22)}
+    .list{display:grid;gap:8px;margin-top:10px}
+    .row2{display:flex;gap:10px;justify-content:space-between;align-items:baseline}
+    .key{font-size:12px;color:var(--muted)}
+    .val{font-size:14px;color:var(--text)}
+    .val.up{color:var(--good);font-weight:700}
+    .val.dn{color:var(--bad);font-weight:700}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="title">
+        <h1>DevvE + FIAS Wallet</h1>
+        <div class="sub" id="statusLine">Klaar</div>
+      </div>
+      <div class="btns">
+        <button id="refreshBtn" class="primary">Ververs</button>
+        <button id="autoBtn">Auto, aan</button>
+      </div>
+    </div>
+
+    <div id="viewDashboard" class="view">
+      <div class="grid">
+        <div class="card">
+          <div class="row">
+            <div class="pill">Portfolio, handmatig, staking inbegrepen</div>
+            <div class="pill" id="storagePill">Opslag</div>
+          </div>
+
+          <div class="big" id="totalUsd">$0.00</div>
+          <div class="small" id="totalEur">€0.00</div>
+
+          <div class="kpiRow">
+            <div class="kpi">
+              <div class="h">Inleg</div>
+              <div class="v" id="investUsd">$0.00</div>
+              <div class="small" id="investEur">€0.00</div>
+            </div>
+            <div class="kpi">
+              <div class="h">Winst of verlies</div>
+              <div class="v" id="plUsd">$0.00</div>
+              <div class="small" id="plPct">0.00%</div>
+            </div>
+          </div>
+
+          <div class="tokens">
+            <div class="token">
+              <p class="sym">DEVVE</p>
+              <p class="bal" id="devveBalTotal">0</p>
+              <div class="val" id="devveSplit">Wallet, 0. Staking, 0.</div>
+              <div class="val" id="devveVal">$0.00. €0.00</div>
+              <div class="val">Aankoop, <span id="devveBuy">$0.0000</span></div>
+              <div class="val">P L, <span id="devvePL">$0.00</span></div>
+              <div class="val">24h, <span id="devveChg" class="chg">0.00%</span></div>
+              <div class="val">7 dagen, <span id="devveChg7" class="chg">0.00%</span></div>
+              <div class="val">24h high, <span id="devveHigh24">$0.0000</span>. low, <span id="devveLow24">$0.0000</span></div>
+              <div class="val">7d high, <span id="devveHigh7">$0.0000</span>. low, <span id="devveLow7">$0.0000</span></div>
+              <div class="val">Doel, <span id="devveTarget">$0.00</span>. Nog, <span id="devveToTarget" class="chg">0.00%</span></div>
+              <div class="val">Alarm boven, <span id="devveAboveShow">$0.00</span>. Alarm onder, <span id="devveBelowShow">$0.00</span></div>
+            </div>
+
+            <div class="token">
+              <p class="sym">FIAS</p>
+              <p class="bal" id="fiasBalTotal">0</p>
+              <div class="val" id="fiasSplit">Wallet, 0. Staking, 0.</div>
+              <div class="val" id="fiasVal">$0.00. €0.00</div>
+              <div class="val">Aankoop, <span id="fiasBuy">$0.0000</span></div>
+              <div class="val">P L, <span id="fiasPL">$0.00</span></div>
+              <div class="val">24h, <span id="fiasChg" class="chg">0.00%</span></div>
+              <div class="val">7 dagen, <span id="fiasChg7" class="chg">0.00%</span></div>
+              <div class="val">24h high, <span id="fiasHigh24">$0.0000</span>. low, <span id="fiasLow24">$0.0000</span></div>
+              <div class="val">7d high, <span id="fiasHigh7">$0.0000</span>. low, <span id="fiasLow7">$0.0000</span></div>
+              <div class="val">Doel, <span id="fiasTarget">$0.00</span>. Nog, <span id="fiasToTarget" class="chg">0.00%</span></div>
+              <div class="val">Alarm boven, <span id="fiasAboveShow">$0.00</span>. Alarm onder, <span id="fiasBelowShow">$0.00</span></div>
+            </div>
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="row">
+            <div class="small">Prijs DEVVE, <span id="devvePrice">$0.0000</span></div>
+            <div class="small">Prijs FIAS, <span id="fiasPrice">$0.0000</span></div>
+          </div>
+
+          <div class="row" style="margin-top:6px">
+            <div class="small">EURUSD, <span id="eurusd">1.0000</span></div>
+            <div class="small">Laatste update, <span id="lastUpdate">-</span></div>
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="row">
+            <div class="pill">Grafiek, 7 dagen, USD</div>
+            <div class="pill" id="graphStatus">-</div>
+          </div>
+
+          <div style="height:10px"></div>
+          <div class="small">DevvE</div>
+          <div style="height:6px"></div>
+          <canvas id="chartDevve" width="900" height="260"></canvas>
+
+          <div class="badgeRow">
+            <div class="badge">Tik op de grafiek voor marker</div>
+            <div class="badge">Markers blijven bewaard</div>
+          </div>
+
+          <div style="height:10px"></div>
+          <div class="small">FIAS</div>
+          <div style="height:6px"></div>
+          <canvas id="chartFias" width="900" height="260"></canvas>
+
+          <div class="hr"></div>
+
+          <div class="row">
+            <div class="pill">Koersdoel simulator</div>
+            <div class="pill" id="simStatus">-</div>
+          </div>
+
+          <div class="simGrid">
+            <div>
+              <label>DEVVE sim prijs, USD</label>
+              <input id="simDevvePrice" type="number" step="0.00000001" />
+              <div class="mini" id="simDevveOut">-</div>
+            </div>
+            <div>
+              <label>FIAS sim prijs, USD</label>
+              <input id="simFiasPrice" type="number" step="0.00000001" />
+              <div class="mini" id="simFiasOut">-</div>
+            </div>
+          </div>
+
+          <div class="hr"></div>
+          <div class="small">made by Rob Borghouts 2026</div>
+        </div>
+
+        <div class="card">
+          <div style="font-size:14px">Snelle acties</div>
+          <div class="small">Instellingen, meldingen, export, import, reset</div>
+          <div class="hr"></div>
+
+          <div class="actionsGrid">
+            <button id="goSettings" class="actBtn">Instellingen</button>
+            <button id="notifBtn" class="primary actBtn">Meldingen toestaan</button>
+
+            <div class="hr"></div>
+
+            <button id="exportBtn" class="actBtn">Exporteer data</button>
+            <button id="importBtn" class="primary actBtn">Importeer data</button>
+            <input id="importFile" type="file" accept="application/json" style="display:none" />
+
+            <div class="hr"></div>
+
+            <button id="clearCacheBtn" class="actBtn">Reset koers cache</button>
+            <button id="resetBtn" class="actBtn">Reset app data</button>
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="small" id="netInfo">Bron prijzen, -. Bron grafiek, -.</div>
+          <div class="small" id="alertInfo">Alarm, -.</div>
+
+          <div class="hr"></div>
+
+          <div class="pill">Marker tools</div>
+          <div style="height:8px"></div>
+          <div class="markRow">
+            <button id="markDevve" class="markBtn primary">Marker DEVVE</button>
+            <button id="markFias" class="markBtn primary">Marker FIAS</button>
+            <button id="clearMarks" class="markBtn">Wis markers</button>
+          </div>
+
+          <div class="list" id="markList"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="viewSettings" class="view hide">
+      <div class="card">
+        <div style="font-size:14px">Instellingen</div>
+        <div class="small">Aantallen, staking, doelen, alarmen.</div>
+
+        <div class="hr"></div>
+
+        <div class="formRow">
+          <div>
+            <label>Auto verversen, minuten</label>
+            <input id="autoMin" type="number" min="1" max="120" step="1" />
+          </div>
+          <div>
+            <label>Koers decimalen</label>
+            <input id="priceDecimals" type="number" min="2" max="8" step="1" />
+          </div>
+        </div>
+
+        <div class="hr"></div>
+
+        <div class="formRow">
+          <div>
+            <label>DEVVE wallet aantal</label>
+            <input id="devveQty" type="number" step="0.00000001" />
+          </div>
+          <div>
+            <label>DEVVE staking aantal</label>
+            <input id="devveStakeQty" type="number" step="0.00000001" />
+          </div>
+        </div>
+
+        <div style="height:10px"></div>
+
+        <div class="formRow">
+          <div>
+            <label>DEVVE aankoopprijs, USD</label>
+            <input id="devveAvg" type="number" step="0.00000001" />
+          </div>
+          <div>
+            <label>DEVVE doelprijs, USD</label>
+            <input id="devveTargetIn" type="number" step="0.00000001" />
+          </div>
+        </div>
+       <div style="height:10px"></div>
+
+        <div class="formRow">
+          <div>
+            <label>DEVVE alarm boven, USD, 0 is uit</label>
+            <input id="devveAboveIn" type="number" step="0.00000001" />
+          </div>
+          <div>
+            <label>DEVVE alarm onder, USD, 0 is uit</label>
+            <input id="devveBelowIn" type="number" step="0.00000001" />
+          </div>
+        </div>
+
+        <div class="hr"></div>
+
+        <div class="formRow">
+          <div>
+            <label>FIAS wallet aantal</label>
+            <input id="fiasQty" type="number" step="0.00000001" />
+          </div>
+          <div>
+            <label>FIAS staking aantal</label>
+            <input id="fiasStakeQty" type="number" step="0.00000001" />
+          </div>
+        </div>
+
+        <div style="height:10px"></div>
+
+        <div class="formRow">
+          <div>
+            <label>FIAS aankoopprijs, USD</label>
+            <input id="fiasAvg" type="number" step="0.00000001" />
+          </div>
+          <div>
+            <label>FIAS doelprijs, USD</label>
+            <input id="fiasTargetIn" type="number" step="0.00000001" />
+          </div>
+        </div>
+
+        <div style="height:10px"></div>
+
+        <div class="formRow">
+          <div>
+            <label>FIAS alarm boven, USD, 0 is uit</label>
+            <input id="fiasAboveIn" type="number" step="0.00000001" />
+          </div>
+          <div>
+            <label>FIAS alarm onder, USD, 0 is uit</label>
+            <input id="fiasBelowIn" type="number" step="0.00000001" />
+          </div>
+        </div>
+
+        <div class="hr"></div>
+
+        <button id="saveSettingsBtn" class="primary" style="width:100%">Opslaan</button>
+
+        <div class="hr"></div>
+        <div class="small" id="originLine">-</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <div class="tab active" id="tabDash">Dashboard</div>
+    <div class="tab" id="tabSet">Instellingen</div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const DEVVE_CONTRACT = "0x8248270620aa532e4d64316017be5e873e37cc09";
+    const FIAS_CONTRACT  = "0x8e4f1ce473b292d56934c36976356e3e22c35585";
+    const LS_KEY = "rb_devve_fias_allin_v4_markers_sim_highlow";
+
+    const $ = (id) => document.getElementById(id);
+
+    const state = loadState();
+    let autoTimer = null;
+    let isRefreshing = false;
+
+    let lastPriceSource = "-";
+    let lastChartSource = "-";
+
+    function toast(msg){
+      const t = $("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 1800);
+    }
+
+    function withTimeout(promise, ms, label){
+      return new Promise((resolve, reject) => {
+        const t = setTimeout(() => reject(new Error(label || "timeout")), ms);
+        promise.then(v => { clearTimeout(t); resolve(v); })
+               .catch(e => { clearTimeout(t); reject(e); });
+      });
+    }
+
+    function normalizeState(s){
+      if(!s || typeof s !== "object") s = {};
+      if(!s.settings) s.settings = {};
+      if(!s.cache) s.cache = {};
+      if(!s.cache.prices) s.cache.prices = { devveUsd:0, fiasUsd:0, eurusd:1 };
+      if(!s.cache.chg24) s.cache.chg24 = { devve:0, fias:0 };
+      if(!s.cache.lastUpdateISO) s.cache.lastUpdateISO = "";
+      if(!s.graphs) s.graphs = { devve:[], fias:[], ts:0 };
+      if(!s.alerts) s.alerts = { devve:{ above:0, below:0 }, fias:{ above:0, below:0 } };
+      if(!s.alertState) s.alertState = { devve:{ above:false, below:false }, fias:{ above:false, below:false } };
+
+      if(!s.markers) s.markers = { devve:[], fias:[] };
+
+      if(!s.sim) s.sim = { devvePrice:0, fiasPrice:0 };
+
+      if(typeof s.settings.autoOn !== "boolean") s.settings.autoOn = true;
+      if(!isFinite(Number(s.settings.autoMin))) s.settings.autoMin = 5;
+      if(!isFinite(Number(s.settings.priceDecimals))) s.settings.priceDecimals = 4;
+
+      if(!s.settings.positions) s.settings.positions = {
+        devve:{ qty:35000, avg:0.30, stake:0, target:0.30 },
+        fias:{  qty:50384, avg:0.01129, stake:0, target:0.01129 }
+      };
+      if(!s.settings.positions.devve) s.settings.positions.devve = { qty:35000, avg:0.30, stake:0, target:0.30 };
+      if(!s.settings.positions.fias)  s.settings.positions.fias  = { qty:50384, avg:0.01129, stake:0, target:0.01129 };
+
+      if(!isFinite(Number(s.settings.positions.devve.stake))) s.settings.positions.devve.stake = 0;
+      if(!isFinite(Number(s.settings.positions.fias.stake)))  s.settings.positions.fias.stake = 0;
+
+      if(!isFinite(Number(s.settings.positions.devve.target))) s.settings.positions.devve.target = 0;
+      if(!isFinite(Number(s.settings.positions.fias.target)))  s.settings.positions.fias.target = 0;
+
+      if(!isFinite(Number(s.alerts.devve.above))) s.alerts.devve.above = 0;
+      if(!isFinite(Number(s.alerts.devve.below))) s.alerts.devve.below = 0;
+      if(!isFinite(Number(s.alerts.fias.above))) s.alerts.fias.above = 0;
+      if(!isFinite(Number(s.alerts.fias.below))) s.alerts.fias.below = 0;
+
+      return s;
+    }
+
+    function safeSave(obj){
+      try{
+        localStorage.setItem(LS_KEY, JSON.stringify(obj));
+        return true;
+      }catch(e){
+        return false;
+      }
+    }
+
+    function loadState(){
+      try{
+        const raw = localStorage.getItem(LS_KEY);
+        if(raw){
+          try{ return normalizeState(JSON.parse(raw)); }catch(e){}
+        }
+      }catch(e){}
+      const fresh = normalizeState({
+        settings:{
+          autoOn:true,
+          autoMin:5,
+          priceDecimals:4,
+          positions:{
+            devve:{ qty:35000, avg:0.30, stake:0, target:0.30 },
+            fias:{  qty:50384, avg:0.01129, stake:0, target:0.01129 }
+          }
+        },
+        alerts:{ devve:{ above:0, below:0 }, fias:{ above:0, below:0 } },
+        alertState:{ devve:{ above:false, below:false }, fias:{ above:false, below:false } },
+        cache:{ lastUpdateISO:"", prices:{ devveUsd:0, fiasUsd:0, eurusd:1 }, chg24:{ devve:0, fias:0 } },
+        graphs:{ devve:[], fias:[], ts:0 },
+        markers:{ devve:[], fias:[] },
+        sim:{ devvePrice:0, fiasPrice:0 }
+      });
+      safeSave(fresh);
+      return fresh;
+    }
+
+    function saveState(){
+      const ok = safeSave(state);
+      if(!ok) toast("Opslag werkt niet");
+      updateStoragePill();
+    }
+
+    function updateStoragePill(){
+      let ok = true;
+      try{
+        const k = "__t";
         localStorage.setItem(k,"1");
         localStorage.removeItem(k);
       }catch(e){ ok = false; }
@@ -564,7 +1200,7 @@
 
     function fmtNumber(n, digits=2){
       if(!isFinite(n)) n = 0;
-      return n.toLocaleString("nl-NL", { maximumFractionDigits:digits, minimumFractionDigits:0 });
+      return n.toLocaleString("nl-NL",{ maximumFractionDigits:digits, minimumFractionDigits:0 });
     }
     function fmtMoneyUSD(n){
       if(!isFinite(n)) n = 0;
@@ -584,16 +1220,31 @@
       if(n < 0) el.classList.add("dn");
     }
 
-    function calcChangePct(first, last){
-      const a = Number(first), b = Number(last);
-      if(!isFinite(a) || !isFinite(b) || a <= 0) return 0;
-      return ((b - a) / a) * 100;
+    function calc7dChange(series){
+      if(!Array.isArray(series) || series.length < 2) return 0;
+      const first = Number(series[0]);
+      const last  = Number(series[series.length - 1]);
+      if(!isFinite(first) || !isFinite(last) || first <= 0) return 0;
+      return ((last - first) / first) * 100;
     }
-   function calcToTargetPct(current, target){
+
+    function calcToTargetPct(current, target){
       const c = Number(current || 0);
       const t = Number(target || 0);
       if(!isFinite(c) || c <= 0 || !isFinite(t) || t <= 0) return 0;
       return ((t - c) / c) * 100;
+    }
+
+    function hiLo(series){
+      if(!Array.isArray(series) || series.length < 2) return { hi:0, lo:0 };
+      let hi = -Infinity, lo = Infinity;
+      for(const v of series){
+        if(!isFinite(v)) continue;
+        if(v > hi) hi = v;
+        if(v < lo) lo = v;
+      }
+      if(!isFinite(hi) || !isFinite(lo)) return { hi:0, lo:0 };
+      return { hi, lo };
     }
 
     function updateAlertInfo(){
@@ -601,9 +1252,8 @@
       const dB = Number(state.alerts.devve.below || 0);
       const fA = Number(state.alerts.fias.above || 0);
       const fB = Number(state.alerts.fias.below || 0);
-      const txt =
-        "Alarm, devve boven " + (dA>0 ? ("$"+dA) : "uit") + ", onder " + (dB>0 ? ("$"+dB) : "uit") +
-        ". fias boven " + (fA>0 ? ("$"+fA) : "uit") + ", onder " + (fB>0 ? ("$"+fB) : "uit") + ".";
+      const txt = "Alarm, devve boven " + (dA>0 ? ("$"+dA) : "uit") + ", onder " + (dB>0 ? ("$"+dB) : "uit")
+        + ". fias boven " + (fA>0 ? ("$"+fA) : "uit") + ", onder " + (fB>0 ? ("$"+fB) : "uit") + ".";
       $("alertInfo").textContent = txt;
     }
 
@@ -612,115 +1262,16 @@
       updateAlertInfo();
     }
 
-    function buildWidget(){
-      const host = $("widgetHost");
-      const p = state.cache.prices || { devveUsd:0, fiasUsd:0, eurusd:1 };
-      const dec = clampNum(state.settings.priceDecimals, 2, 8, 4);
-
-      const dev = Number(p.devveUsd || 0);
-      const fia = Number(p.fiasUsd || 0);
-
-      const dQtyT = Number(state.settings.positions.devve.qty || 0) + Number(state.settings.positions.devve.stake || 0);
-      const fQtyT = Number(state.settings.positions.fias.qty || 0) + Number(state.settings.positions.fias.stake || 0);
-
-      const totalUsd = dQtyT*dev + fQtyT*fia;
-
-      const wrap = document.createElement("div");
-      wrap.style.marginTop = "12px";
-      wrap.style.marginBottom = "12px";
-      wrap.style.display = "grid";
-      wrap.style.gridTemplateColumns = "1fr 1fr 1fr";
-      wrap.style.gap = "10px";
-
-      const mk = (title, value, sub) => {
-        const b = document.createElement("div");
-        b.style.border = "1px solid var(--line)";
-        b.style.borderRadius = "16px";
-        b.style.padding = "12px";
-        b.style.background = "linear-gradient(180deg, rgba(255,250,242,0.95), rgba(248,237,220,0.95))";
-        b.style.boxShadow = "var(--shadow2)";
-
-        const t = document.createElement("div");
-        t.style.fontSize = "12px";
-        t.style.color = "var(--muted)";
-        t.textContent = title;
-
-        const v = document.createElement("div");
-        v.style.fontSize = "18px";
-        v.style.marginTop = "6px";
-        v.textContent = value;
-
-        const s = document.createElement("div");
-        s.style.fontSize = "12px";
-        s.style.color = "var(--muted)";
-        s.style.marginTop = "4px";
-        s.textContent = sub;
-
-        b.appendChild(t);
-        b.appendChild(v);
-        b.appendChild(s);
-        return b;
-      };
-
-      wrap.appendChild(mk("Totale waarde", fmtMoneyUSD(totalUsd), "Snelle view"));
-      wrap.appendChild(mk("DEVVE prijs", "$" + dev.toFixed(dec), "24h " + (Number(state.cache.chg24.devve||0).toFixed(2)) + "%"));
-      wrap.appendChild(mk("FIAS prijs", "$" + fia.toFixed(dec), "24h " + (Number(state.cache.chg24.fias||0).toFixed(2)) + "%"));
-
-      host.innerHTML = "";
-      host.appendChild(wrap);
-    }
-
-    function buildRangeButtons(){
-      const host = $("rangeHost");
-      host.innerHTML = "";
-
-      const wrap = document.createElement("div");
-      wrap.className = "row";
-      wrap.style.gap = "8px";
-
-      const mk = (days, label) => {
-        const b = document.createElement("button");
-        b.textContent = label;
-        b.style.padding = "8px 10px";
-        b.style.borderRadius = "999px";
-        b.style.fontSize = "12px";
-        b.style.boxShadow = "none";
-        b.style.background = "rgba(255,250,242,0.92)";
-        b.style.border = "1px solid var(--line)";
-        if(Number(state.settings.chartDays) === days){
-          b.style.background = "linear-gradient(180deg, rgba(202,165,116,0.26), rgba(247,236,217,0.62))";
-          b.style.borderColor = "rgba(183,139,91,0.75)";
-          b.style.color = "#241e18";
-        }
-        b.addEventListener("click", async () => {
-          state.settings.chartDays = days;
-          saveState();
-          $("chartDays").value = String(days);
-          buildRangeButtons();
-          await refreshChartsOnly();
-        });
-        return b;
-      };
-
-      wrap.appendChild(mk(1,"24u"));
-      wrap.appendChild(mk(7,"7d"));
-      wrap.appendChild(mk(30,"30d"));
-
-      host.appendChild(wrap);
-
-      $("graphPill").textContent = "Grafiek, " + (state.settings.chartDays===1 ? "24 uur" : (state.settings.chartDays===7 ? "7 dagen" : "30 dagen")) + ", USD";
-    }
-
     async function fetchJsonTimeout(url, ms){
       const ctrl = new AbortController();
       const t = setTimeout(() => ctrl.abort(), ms);
       try{
         const r = await fetch(url, { cache:"no-store", signal:ctrl.signal });
-        if(!r.ok) return { ok:false, json:null, via:"http "+r.status };
+        if(!r.ok) return { ok:false, json:null, via:"http " + r.status };
         const j = await r.json();
         return { ok:true, json:j, via:"direct" };
       }catch(e){
-        return { ok:false, json:null, via:(e && e.name==="AbortError") ? "timeout" : "err" };
+        return { ok:false, json:null, via:(e && e.name === "AbortError") ? "timeout" : "err" };
       }finally{
         clearTimeout(t);
       }
@@ -731,9 +1282,9 @@
       const u1 = url + (url.includes("?") ? "&" : "?") + "t=" + stamp;
 
       const tries = [
-        { name:"direct", u:u1 },
+        { name:"direct",     u:u1 },
         { name:"allorigins", u:"https://api.allorigins.win/raw?url=" + encodeURIComponent(u1) },
-        { name:"corsproxy", u:"https://corsproxy.io/?" + encodeURIComponent(u1) }
+        { name:"corsproxy",  u:"https://corsproxy.io/?" + encodeURIComponent(u1) }
       ];
 
       let last = "fout";
@@ -756,7 +1307,7 @@
       const pick = (j) => {
         const pairs = Array.isArray(j && j.pairs) ? j.pairs : [];
         if(pairs.length === 0) return null;
-        pairs.sort((x,y) => Number((y?.liquidity?.usd)||0) - Number((x?.liquidity?.usd)||0));
+        pairs.sort((x,y) => (Number((y && y.liquidity && y.liquidity.usd) || 0) - Number((x && x.liquidity && x.liquidity.usd) || 0)));
         return pairs[0];
       };
 
@@ -764,14 +1315,14 @@
       const pFia = pick(b.json);
       if(!pDev || !pFia) return { ok:false, via:"dex no pairs" };
 
-      const devUsd = Number(pDev.priceUsd || 0);
-      const fiaUsd = Number(pFia.priceUsd || 0);
-      const devChg = Number(pDev?.priceChange?.h24 || 0);
-      const fiaChg = Number(pFia?.priceChange?.h24 || 0);
+      const devUsd = Number(pDev && pDev.priceUsd || 0);
+      const fiaUsd = Number(pFia && pFia.priceUsd || 0);
+      const devChg = Number(pDev && pDev.priceChange && pDev.priceChange.h24 || 0);
+      const fiaChg = Number(pFia && pFia.priceChange && pFia.priceChange.h24 || 0);
 
-      if(!isFinite(devUsd) || devUsd<=0 || !isFinite(fiaUsd) || fiaUsd<=0) return { ok:false, via:"dex bad price" };
+      if(!isFinite(devUsd) || devUsd <= 0 || !isFinite(fiaUsd) || fiaUsd <= 0) return { ok:false, via:"dex bad price" };
 
-      return { ok:true, devUsd, fiaUsd, devChg, fiaChg, via:"dexscreener " + a.via };
+      return { ok:true, devUsd, fiaUsd, devChg, fiaChg, via:"dexscreener" };
     }
 
     async function fetchPricesCoinGecko(){
@@ -780,13 +1331,13 @@
       if(!res.ok) return { ok:false, via:"cg " + res.via };
 
       const j = res.json || {};
-      const devUsd = Number(j.devve?.usd || 0);
-      const fiaUsd = Number(j.fias?.usd || 0);
-      const devEur = Number(j.devve?.eur || 0);
-      const devChg = Number(j.devve?.usd_24h_change || 0);
-      const fiaChg = Number(j.fias?.usd_24h_change || 0);
+      const devUsd = Number(j.devve && j.devve.usd || 0);
+      const fiaUsd = Number(j.fias && j.fias.usd || 0);
+      const devEur = Number(j.devve && j.devve.eur || 0);
+      const devChg = Number(j.devve && j.devve.usd_24h_change || 0);
+      const fiaChg = Number(j.fias && j.fias.usd_24h_change || 0);
 
-      if(!isFinite(devUsd) || devUsd<=0 || !isFinite(fiaUsd) || fiaUsd<=0) return { ok:false, via:"cg bad" };
+      if(!isFinite(devUsd) || devUsd <= 0 || !isFinite(fiaUsd) || fiaUsd <= 0) return { ok:false, via:"cg bad" };
 
       const eurusd = devEur > 0 ? (devUsd / devEur) : 1;
       return { ok:true, devUsd, fiaUsd, devChg, fiaChg, eurusd, via:"coingecko " + res.via };
@@ -796,9 +1347,9 @@
       const url = "https://open.er-api.com/v6/latest/EUR";
       const res = await fetchJsonSmart(url);
       if(!res.ok) return { ok:false, via:"fx " + res.via };
-      const usd = Number(res.json?.rates?.USD || 0);
-      if(!isFinite(usd) || usd<=0) return { ok:false, via:"fx bad" };
-      return { ok:true, eurusd:usd, via:"fx " + res.via };
+      const usd = Number(res.json && res.json.rates && res.json.rates.USD || 0);
+      if(!isFinite(usd) || usd <= 0) return { ok:false, via:"fx bad" };
+      return { ok:true, eurusd:usd, via:"fx" };
     }
 
     async function updatePrices(){
@@ -810,11 +1361,11 @@
         if(fx.ok) eurusd = fx.eurusd;
 
         state.cache.prices.devveUsd = dex.devUsd;
-        state.cache.prices.fiasUsd = dex.fiaUsd;
-        state.cache.prices.eurusd = eurusd;
+        state.cache.prices.fiasUsd  = dex.fiaUsd;
+        state.cache.prices.eurusd   = eurusd;
 
         state.cache.chg24.devve = dex.devChg;
-        state.cache.chg24.fias = dex.fiaChg;
+        state.cache.chg24.fias  = dex.fiaChg;
 
         state.cache.lastUpdateISO = new Date().toISOString();
         lastPriceSource = dex.via + ", fx " + (fx.ok ? fx.via : "fout");
@@ -827,11 +1378,11 @@
         eurusd = cg.eurusd || eurusd;
 
         state.cache.prices.devveUsd = cg.devUsd;
-        state.cache.prices.fiasUsd = cg.fiaUsd;
-        state.cache.prices.eurusd = eurusd;
+        state.cache.prices.fiasUsd  = cg.fiaUsd;
+        state.cache.prices.eurusd   = eurusd;
 
         state.cache.chg24.devve = cg.devChg;
-        state.cache.chg24.fias = cg.fiaChg;
+        state.cache.chg24.fias  = cg.fiaChg;
 
         state.cache.lastUpdateISO = new Date().toISOString();
         lastPriceSource = cg.via;
@@ -843,12 +1394,12 @@
       return { ok:false };
     }
 
-    async function fetchChartSeriesCoinGecko(coinId, days){
-      const url = "https://api.coingecko.com/api/v3/coins/" + coinId + "/market_chart?vs_currency=usd&days=" + days + "&interval=hourly";
+    async function fetchChartSeriesCoinGecko(coinId){
+      const url = "https://api.coingecko.com/api/v3/coins/" + coinId + "/market_chart?vs_currency=usd&days=7&interval=hourly";
       const res = await fetchJsonSmart(url);
       if(!res.ok) return { ok:false, series:[], via:"cg " + res.via };
 
-      const prices = Array.isArray(res.json?.prices) ? res.json.prices : [];
+      const prices = Array.isArray(res.json && res.json.prices) ? res.json.prices : [];
       const series = prices.map(p => Number(p[1])).filter(x => isFinite(x));
       if(series.length < 2) return { ok:false, series:[], via:"cg no data" };
 
@@ -866,36 +1417,51 @@
       const res = await fetchJsonSmart(url);
       if(!res.ok) return { ok:false, series:[], via:"dex " + res.via };
 
-      const pairs = Array.isArray(res.json?.pairs) ? res.json.pairs : [];
+      const pairs = Array.isArray(res.json && res.json.pairs) ? res.json.pairs : [];
       if(pairs.length === 0) return { ok:false, series:[], via:"dex no pairs" };
 
-      pairs.sort((x,y) => Number((y?.liquidity?.usd)||0) - Number((x?.liquidity?.usd)||0));
+      pairs.sort((x,y) => (Number((y && y.liquidity && y.liquidity.usd) || 0) - Number((x && x.liquidity && x.liquidity.usd) || 0)));
       const p = pairs[0];
 
-      const h24 = Number(p?.priceChange?.h24);
-      const now = Number(p?.priceUsd || 0);
-      if(!isFinite(now) || now<=0) return { ok:false, series:[], via:"dex bad" };
+      const h6  = Number(p && p.priceChange && p.priceChange.h6);
+      const h1  = Number(p && p.priceChange && p.priceChange.h1);
+      const h24 = Number(p && p.priceChange && p.priceChange.h24);
+      const now = Number(p && p.priceUsd || 0);
+
+      if(!isFinite(now) || now <= 0) return { ok:false, series:[], via:"dex bad" };
 
       const mk = (pct) => now / (1 + (pct/100));
       const p24 = isFinite(h24) ? mk(h24) : now;
+      const p6  = isFinite(h6)  ? mk(h6)  : now;
+      const p1  = isFinite(h1)  ? mk(h1)  : now;
 
       const series = [];
       for(let i=0;i<140;i++){
         const t = i / 139;
-        const v = p24 + (now - p24) * t;
+        let v = p24 + (p6 - p24) * Math.min(1, t*0.55);
+        v = v + (p1 - p6) * Math.max(0, (t-0.55)/0.30);
+        v = v + (now - p1) * Math.max(0, (t-0.85)/0.15);
         series.push(Number(v));
       }
       return { ok:true, series, via:"dex approx" };
     }
 
-    function drawLineChart(canvasId, series, markers){
+    function canvasToLocalPoint(canvas, clientX, clientY){
+      const rect = canvas.getBoundingClientRect();
+      const x = (clientX - rect.left) * (canvas.width / rect.width);
+      const y = (clientY - rect.top)  * (canvas.height / rect.height);
+      return { x, y, rect };
+    }
+
+    function drawLineChart(canvasId, series, markerList, activeMarker){
       const c = $(canvasId);
       const ctx = c.getContext("2d");
-      const w = c.width, h = c.height;
+      const w = c.width;
+      const h = c.height;
       ctx.clearRect(0,0,w,h);
 
       if(!Array.isArray(series) || series.length < 2){
-        ctx.fillStyle = "rgba(107,95,84,0.9)";
+        ctx.fillStyle = "rgba(111,98,87,0.9)";
         ctx.font = "16px -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial";
         ctx.fillText("geen data", 20, 40);
         return;
@@ -905,13 +1471,12 @@
       for(const v of series){ if(v < min) min = v; if(v > max) max = v; }
       if(!isFinite(min) || !isFinite(max) || min === max){ min = min - 1; max = max + 1; }
 
-      const padX = 18, padY = 18;
+      const padX = 18;
+      const padY = 18;
       const xStep = (w - padX*2) / (series.length - 1);
       const yScale = (h - padY*2) / (max - min);
 
-      const yOf = (val) => (h - padY) - ((val - min) * yScale);
-
-      ctx.strokeStyle = "rgba(226,209,187,1)";
+      ctx.strokeStyle = "rgba(227,208,179,1)";
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(padX, padY);
@@ -920,115 +1485,230 @@
       ctx.stroke();
 
       const grad = ctx.createLinearGradient(0,0,w,0);
-      grad.addColorStop(0, "rgba(202,165,116,0.95)");
-      grad.addColorStop(1, "rgba(183,139,91,0.95)");
+      grad.addColorStop(0, "rgba(191,155,108,0.96)");
+      grad.addColorStop(1, "rgba(171,130,86,0.96)");
       ctx.strokeStyle = grad;
       ctx.lineWidth = 2.6;
       ctx.beginPath();
       for(let i=0;i<series.length;i++){
         const x = padX + i * xStep;
-        const y = yOf(series[i]);
+        const y = (h - padY) - ((series[i] - min) * yScale);
         if(i === 0) ctx.moveTo(x,y);
         else ctx.lineTo(x,y);
       }
       ctx.stroke();
 
-      if(Array.isArray(markers) && markers.length){
-        ctx.lineWidth = 1.5;
-        for(const m of markers){
-          const y = yOf(m.value);
-          ctx.setLineDash([6,6]);
-          ctx.strokeStyle = m.color;
+      if(Array.isArray(markerList) && markerList.length){
+        for(const m of markerList){
+          const idx = Math.max(0, Math.min(series.length-1, Number(m.idx||0)));
+          const x = padX + idx * xStep;
+          const y = (h - padY) - ((series[idx] - min) * yScale);
+          ctx.fillStyle = "rgba(42,36,30,0.88)";
           ctx.beginPath();
-          ctx.moveTo(padX, y);
-          ctx.lineTo(w - padX, y);
-          ctx.stroke();
-          ctx.setLineDash([]);
-
-          ctx.fillStyle = m.color;
-          ctx.font = "12px -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial";
-          ctx.fillText(m.label, padX + 6, Math.max(14, y - 6));
+          ctx.arc(x,y,4.3,0,Math.PI*2);
+          ctx.fill();
         }
+      }
+
+      if(activeMarker && isFinite(activeMarker.idx)){
+        const idx = Math.max(0, Math.min(series.length-1, Number(activeMarker.idx||0)));
+        const x = padX + idx * xStep;
+        const y = (h - padY) - ((series[idx] - min) * yScale);
+
+        ctx.strokeStyle = "rgba(42,36,30,0.55)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(x, padY);
+        ctx.lineTo(x, h - padY);
+        ctx.stroke();
+
+        ctx.fillStyle = "rgba(42,36,30,0.92)";
+        ctx.beginPath();
+        ctx.arc(x,y,5.6,0,Math.PI*2);
+        ctx.fill();
       }
     }
 
-    function buildMarkers(symbol, price){
-      const dec = clampNum(state.settings.priceDecimals, 2, 8, 4);
-      const pos = state.settings.positions[symbol];
-      const al = state.alerts[symbol];
-
-      const out = [];
-      const add = (label, v, color) => {
-        const n = Number(v||0);
-        if(isFinite(n) && n > 0) out.push({ label: label + " $" + n.toFixed(dec), value:n, color });
-      };
-
-      add("aankoop", pos.avg, "rgba(107,95,84,0.95)");
-      add("doel", pos.target, "rgba(36,31,25,0.95)");
-      add("alarm boven", al.above, "rgba(27,138,90,0.95)");
-      add("alarm onder", al.below, "rgba(199,71,77,0.95)");
-
-      return out;
+    function nearestIndexFromX(seriesLen, canvas, clientX){
+      const rect = canvas.getBoundingClientRect();
+      const x = (clientX - rect.left) * (canvas.width / rect.width);
+      const padX = 18;
+      const usable = (canvas.width - padX*2);
+      const t = (x - padX) / usable;
+      const idx = Math.round(t * (seriesLen - 1));
+      return Math.max(0, Math.min(seriesLen - 1, idx));
     }
 
-    async function loadCharts(){
-      $("graphStatus").textContent = "laden";
-      const days = clampNum(state.settings.chartDays, 1, 30, 7);
-
-      const devA = await fetchChartSeriesCoinGecko("devve", days);
-      const fiaA = await fetchChartSeriesCoinGecko("fias", days);
-
-      let dev = devA, fia = fiaA;
-      if(!dev.ok) dev = await fetchChartSeriesDexApprox(DEVVE_CONTRACT);
-      if(!fia.ok) fia = await fetchChartSeriesDexApprox(FIAS_CONTRACT);
-
-      if(dev.ok) state.graphs.devve = { days, series:dev.series };
-      if(fia.ok) state.graphs.fias  = { days, series:fia.series };
-      state.graphs.ts = Date.now();
+    function addMarker(coin, idx){
+      const list = state.markers && state.markers[coin] ? state.markers[coin] : [];
+      const maxKeep = 12;
+      list.unshift({ idx:Number(idx), ts:Date.now() });
+      while(list.length > maxKeep) list.pop();
+      state.markers[coin] = list;
       saveState();
+      renderMarkerList();
+      toast("Marker gezet");
+    }
 
-      const devSeries = state.graphs.devve?.series || [];
-      const fiaSeries = state.graphs.fias?.series || [];
+    function clearMarkers(){
+      state.markers = { devve:[], fias:[] };
+      saveState();
+      renderMarkerList();
+      toast("Markers weg");
+    }
+
+    function renderMarkerList(){
+      const host = $("markList");
+      if(!host) return;
+      host.innerHTML = "";
 
       const devPrice = Number(state.cache.prices.devveUsd || 0);
       const fiaPrice = Number(state.cache.prices.fiasUsd || 0);
 
-      drawLineChart("chartDevve", devSeries, buildMarkers("devve", devPrice));
-      drawLineChart("chartFias",  fiaSeries, buildMarkers("fias",  fiaPrice));
+      const make = (coin, label, series, livePrice) => {
+        const m = (state.markers && state.markers[coin]) ? state.markers[coin] : [];
+        if(!m.length) return;
+
+        const head = document.createElement("div");
+        head.className = "row2";
+        head.innerHTML = '<div class="key">'+label+'</div><div class="key">live $'+(livePrice||0).toFixed(6)+'</div>';
+        host.appendChild(head);
+
+        for(const it of m){
+          const idx = Math.max(0, Math.min((series||[]).length-1, Number(it.idx||0)));
+          const v = (series && series.length) ? Number(series[idx]||0) : 0;
+          const pct = (v>0 && livePrice>0) ? ((livePrice - v)/v)*100 : 0;
+
+          const row = document.createElement("div");
+          row.className = "row2";
+          const cls = pct>0 ? "up" : (pct<0 ? "dn" : "");
+          row.innerHTML = '<div class="val">$'+(v||0).toFixed(6)+'</div><div class="val '+cls+'">'+(isFinite(pct)?pct.toFixed(2):"0.00")+'%</div>';
+          host.appendChild(row);
+        }
+      };
+
+      make("devve","DEVVE markers", state.graphs.devve, devPrice);
+      make("fias","FIAS markers", state.graphs.fias, fiaPrice);
+    }
+
+    function calcHighLowFromDex(priceNow, h24){
+      if(!isFinite(priceNow) || priceNow<=0) return { hi:0, lo:0 };
+      if(!isFinite(h24)) return { hi:priceNow, lo:priceNow };
+      const base = priceNow / (1 + (h24/100));
+      const hi = Math.max(priceNow, base) * (1 + Math.abs(h24)/200);
+      const lo = Math.min(priceNow, base) * (1 - Math.abs(h24)/220);
+      return { hi, lo };
+    }
+   async function loadCharts(){
+      $("graphStatus").textContent = "laden";
+
+      const devA = await fetchChartSeriesCoinGecko("devve");
+      const fiaA = await fetchChartSeriesCoinGecko("fias");
+
+      let dev = devA;
+      let fia = fiaA;
+
+      if(!dev.ok) dev = await fetchChartSeriesDexApprox(DEVVE_CONTRACT);
+      if(!fia.ok) fia = await fetchChartSeriesDexApprox(FIAS_CONTRACT);
+
+      if(dev.ok) state.graphs.devve = dev.series;
+      if(fia.ok) state.graphs.fias  = fia.series;
+
+      state.graphs.ts = Date.now();
+      saveState();
 
       lastChartSource = "dev " + dev.via + ", fias " + fia.via;
 
       const ok = dev.ok && fia.ok;
-      $("graphStatus").textContent = ok ? "ok" : "fout";
+      $("graphStatus").textContent = ok ? "ok" : ("fout, " + lastChartSource);
+
+      setChange("devveChg7", calc7dChange(state.graphs.devve));
+      setChange("fiasChg7",  calc7dChange(state.graphs.fias));
+
+      drawAllCharts();
+      renderHighLow();
+      renderMarkerList();
       updateNetInfo();
-
-      const devP = devSeries.length ? calcChangePct(devSeries[0], devSeries[devSeries.length-1]) : 0;
-      const fiaP = fiaSeries.length ? calcChangePct(fiaSeries[0], fiaSeries[fiaSeries.length-1]) : 0;
-
-      setChange("devveChgP", devP);
-      setChange("fiasChgP", fiaP);
 
       return ok;
     }
 
-    async function refreshChartsOnly(){
-      try{
-        $("statusLine").textContent = "Grafiek laden";
-        await withTimeout(loadCharts(), 20000, "grafiek timeout");
-        $("statusLine").textContent = "Klaar";
-      }catch(e){
-        $("graphStatus").textContent = "fout";
-        lastChartSource = "timeout of fout";
-        updateNetInfo();
-        $("statusLine").textContent = "Klaar";
-        toast("Grafiek halen lukt niet");
+    function drawAllCharts(){
+      const devC = $("chartDevve");
+      const fiaC = $("chartFias");
+
+      const activeDev = window.__activeDevMarker || null;
+      const activeFia = window.__activeFiaMarker || null;
+
+      drawLineChart("chartDevve", state.graphs.devve, state.markers.devve, activeDev);
+      drawLineChart("chartFias",  state.graphs.fias,  state.markers.fias,  activeFia);
+
+      if(devC){
+        devC.onpointermove = (e) => {
+          if(!state.graphs.devve || state.graphs.devve.length < 2) return;
+          const idx = nearestIndexFromX(state.graphs.devve.length, devC, e.clientX);
+          window.__activeDevMarker = { idx };
+          drawLineChart("chartDevve", state.graphs.devve, state.markers.devve, window.__activeDevMarker);
+        };
+        devC.onpointerleave = () => {
+          window.__activeDevMarker = null;
+          drawLineChart("chartDevve", state.graphs.devve, state.markers.devve, null);
+        };
+        devC.onpointerdown = (e) => {
+          if(!state.graphs.devve || state.graphs.devve.length < 2) return;
+          const idx = nearestIndexFromX(state.graphs.devve.length, devC, e.clientX);
+          addMarker("devve", idx);
+          drawLineChart("chartDevve", state.graphs.devve, state.markers.devve, { idx });
+        };
       }
+
+      if(fiaC){
+        fiaC.onpointermove = (e) => {
+          if(!state.graphs.fias || state.graphs.fias.length < 2) return;
+          const idx = nearestIndexFromX(state.graphs.fias.length, fiaC, e.clientX);
+          window.__activeFiaMarker = { idx };
+          drawLineChart("chartFias", state.graphs.fias, state.markers.fias, window.__activeFiaMarker);
+        };
+        fiaC.onpointerleave = () => {
+          window.__activeFiaMarker = null;
+          drawLineChart("chartFias", state.graphs.fias, state.markers.fias, null);
+        };
+        fiaC.onpointerdown = (e) => {
+          if(!state.graphs.fias || state.graphs.fias.length < 2) return;
+          const idx = nearestIndexFromX(state.graphs.fias.length, fiaC, e.clientX);
+          addMarker("fias", idx);
+          drawLineChart("chartFias", state.graphs.fias, state.markers.fias, { idx });
+        };
+      }
+    }
+
+    function renderHighLow(){
+      const devSeries = state.graphs.devve || [];
+      const fiaSeries = state.graphs.fias  || [];
+
+      const devNow = Number(state.cache.prices.devveUsd || 0);
+      const fiaNow = Number(state.cache.prices.fiasUsd  || 0);
+
+      const devHiLo7 = hiLo(devSeries);
+      const fiaHiLo7 = hiLo(fiaSeries);
+
+      const dev24 = calcHighLowFromDex(devNow, Number(state.cache.chg24.devve || 0));
+      const fia24 = calcHighLowFromDex(fiaNow, Number(state.cache.chg24.fias || 0));
+
+      if($("devveHi24")) $("devveHi24").textContent = "$" + (dev24.hi||0).toFixed(6);
+      if($("devveLo24")) $("devveLo24").textContent = "$" + (dev24.lo||0).toFixed(6);
+      if($("devveHi7"))  $("devveHi7").textContent  = "$" + (devHiLo7.hi||0).toFixed(6);
+      if($("devveLo7"))  $("devveLo7").textContent  = "$" + (devHiLo7.lo||0).toFixed(6);
+
+      if($("fiasHi24")) $("fiasHi24").textContent = "$" + (fia24.hi||0).toFixed(6);
+      if($("fiasLo24")) $("fiasLo24").textContent = "$" + (fia24.lo||0).toFixed(6);
+      if($("fiasHi7"))  $("fiasHi7").textContent  = "$" + (fiaHiLo7.hi||0).toFixed(6);
+      if($("fiasLo7"))  $("fiasLo7").textContent  = "$" + (fiaHiLo7.lo||0).toFixed(6);
     }
 
     function renderSettings(){
       $("autoMin").value = state.settings.autoMin;
       $("priceDecimals").value = state.settings.priceDecimals;
-      $("chartDays").value = String(state.settings.chartDays);
 
       $("devveQty").value = Number(state.settings.positions.devve.qty || 0);
       $("devveStakeQty").value = Number(state.settings.positions.devve.stake || 0);
@@ -1049,13 +1729,19 @@
 
       updateNotifButton();
       updateAlertInfo();
+
+      const simDev = Number(state.sim.devvePrice || 0);
+      const simFia = Number(state.sim.fiasPrice || 0);
+      if($("simDevve")) $("simDevve").value = simDev || "";
+      if($("simFias"))  $("simFias").value  = simFia || "";
     }
 
     function renderDashboard(){
       updateStoragePill();
+      updateNetInfo();
 
       const prices = state.cache.prices || { devveUsd:0, fiasUsd:0, eurusd:1 };
-      const dec = clampNum(state.settings.priceDecimals, 2, 8, 4);
+      const dec = Math.max(2, Math.min(8, Number(state.settings.priceDecimals || 4)));
       const eurusd = Number(prices.eurusd || 1);
 
       const devPrice = Number(prices.devveUsd || 0);
@@ -1065,24 +1751,24 @@
       $("fiasPrice").textContent  = "$" + fiaPrice.toFixed(dec);
       $("eurusd").textContent     = Number(eurusd || 1).toFixed(4);
 
-      setChange("devveChg", state.cache.chg24?.devve || 0);
-      setChange("fiasChg",  state.cache.chg24?.fias || 0);
+      setChange("devveChg", state.cache.chg24 && state.cache.chg24.devve || 0);
+      setChange("fiasChg",  state.cache.chg24 && state.cache.chg24.fias  || 0);
 
-      const devQtyW  = Number(state.settings.positions.devve.qty || 0);
-      const devStake = Number(state.settings.positions.devve.stake || 0);
-      const devQtyT  = devQtyW + devStake;
-      const devAvg   = Number(state.settings.positions.devve.avg || 0);
+      const devQtyW   = Number(state.settings.positions.devve.qty || 0);
+      const devStake  = Number(state.settings.positions.devve.stake || 0);
+      const devQtyT   = devQtyW + devStake;
+      const devAvg    = Number(state.settings.positions.devve.avg || 0);
 
-      const fiaQtyW  = Number(state.settings.positions.fias.qty || 0);
-      const fiaStake = Number(state.settings.positions.fias.stake || 0);
-      const fiaQtyT  = fiaQtyW + fiaStake;
-      const fiaAvg   = Number(state.settings.positions.fias.avg || 0);
+      const fiaQtyW   = Number(state.settings.positions.fias.qty || 0);
+      const fiaStake  = Number(state.settings.positions.fias.stake || 0);
+      const fiaQtyT   = fiaQtyW + fiaStake;
+      const fiaAvg    = Number(state.settings.positions.fias.avg || 0);
 
       $("devveBalTotal").textContent = fmtNumber(devQtyT, 8);
       $("fiasBalTotal").textContent  = fmtNumber(fiaQtyT, 8);
 
-      $("devveSplit").textContent = "Wallet, " + fmtNumber(devQtyW,8) + ". Staking, " + fmtNumber(devStake,8) + ".";
-      $("fiasSplit").textContent  = "Wallet, " + fmtNumber(fiaQtyW,8) + ". Staking, " + fmtNumber(fiaStake,8) + ".";
+      $("devveSplit").textContent = "Wallet, " + fmtNumber(devQtyW, 8) + ". Staking, " + fmtNumber(devStake, 8) + ".";
+      $("fiasSplit").textContent  = "Wallet, " + fmtNumber(fiaQtyW, 8) + ". Staking, " + fmtNumber(fiaStake, 8) + ".";
 
       $("devveBuy").textContent = "$" + devAvg.toFixed(dec);
       $("fiasBuy").textContent  = "$" + fiaAvg.toFixed(dec);
@@ -1148,16 +1834,44 @@
 
       $("devveAboveShow").textContent = dA > 0 ? ("$" + dA) : "uit";
       $("devveBelowShow").textContent = dB > 0 ? ("$" + dB) : "uit";
-      $("fiasAboveShow").textContent = fA > 0 ? ("$" + fA) : "uit";
-      $("fiasBelowShow").textContent = fB > 0 ? ("$" + fB) : "uit";
+      $("fiasAboveShow").textContent  = fA > 0 ? ("$" + fA) : "uit";
+      $("fiasBelowShow").textContent  = fB > 0 ? ("$" + fB) : "uit";
 
-      buildWidget();
-      buildRangeButtons();
-      updateNetInfo();
+      renderHighLow();
+
+      const simDev = Number(state.sim.devvePrice || 0);
+      const simFia = Number(state.sim.fiasPrice || 0);
+
+      const simDevPrice = simDev > 0 ? simDev : devPrice;
+      const simFiaPrice = simFia > 0 ? simFia : fiaPrice;
+
+      if($("simDevOut")) $("simDevOut").textContent = "$" + (simDevPrice||0).toFixed(dec);
+      if($("simFiaOut")) $("simFiaOut").textContent = "$" + (simFiaPrice||0).toFixed(dec);
+
+      const simDevUsd = devQtyT * simDevPrice;
+      const simFiaUsd = fiaQtyT * simFiaPrice;
+      const simTot = simDevUsd + simFiaUsd;
+      const simTotE = eurusd ? simTot / eurusd : 0;
+
+      if($("simTotalUsd")) $("simTotalUsd").textContent = fmtMoneyUSD(simTot);
+      if($("simTotalEur")) $("simTotalEur").textContent = fmtMoneyEUR(simTotE);
+
+      const simPL = simTot - investUsd;
+      const simPLPct = investUsd > 0 ? (simPL / investUsd) * 100 : 0;
+
+      if($("simPlUsd")){
+        $("simPlUsd").textContent = fmtMoneyUSD(simPL);
+        $("simPlUsd").className = "v " + (simPL >= 0 ? "up" : "dn");
+      }
+      if($("simPlPct")){
+        $("simPlPct").textContent = (isFinite(simPLPct) ? simPLPct.toFixed(2) : "0.00") + "%";
+        $("simPlPct").className = "small " + (simPL >= 0 ? "up" : "dn");
+      }
     }
-   function exportData(){
+
+    function exportData(){
       const data = { exportedAt:new Date().toISOString(), state };
-      const blob = new Blob([JSON.stringify(data,null,2)], { type:"application/json" });
+      const blob = new Blob([JSON.stringify(data,null,2)],{ type:"application/json" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
       a.download = "devve-fias-wallet-export.json";
@@ -1174,12 +1888,12 @@
     function startAuto(){
       stopAuto();
       if(!state.settings.autoOn) return;
-      const min = clampNum(state.settings.autoMin, 1, 120, 5);
+      const min = Math.max(1, Math.min(120, Number(state.settings.autoMin || 5)));
       autoTimer = setInterval(() => { refreshAll(); }, min * 60 * 1000);
     }
 
     function importDataFromObject(obj){
-      const incoming = (obj && obj.state) ? obj.state : obj;
+      const incoming = obj && obj.state ? obj.state : obj;
       const n = normalizeState(incoming);
       Object.keys(state).forEach(k => delete state[k]);
       Object.assign(state, n);
@@ -1195,15 +1909,15 @@
 
     function clearCourseCache(){
       state.cache.prices = { devveUsd:0, fiasUsd:0, eurusd:1 };
-      state.cache.chg24 = { devve:0, fias:0 };
+      state.cache.chg24  = { devve:0, fias:0 };
       state.cache.lastUpdateISO = "";
-      state.graphs.devve = { days: state.settings.chartDays, series: [] };
-      state.graphs.fias  = { days: state.settings.chartDays, series: [] };
+      state.graphs.devve = [];
+      state.graphs.fias  = [];
       state.graphs.ts = 0;
       saveState();
       renderDashboard();
-      drawLineChart("chartDevve", [], []);
-      drawLineChart("chartFias", [], []);
+      drawLineChart("chartDevve", []);
+      drawLineChart("chartFias",  []);
       $("graphStatus").textContent = "-";
       toast("Cache gereset");
     }
@@ -1241,12 +1955,12 @@
 
     function checkAlerts(){
       const devPrice = Number(state.cache.prices.devveUsd || 0);
-      const fiaPrice = Number(state.cache.prices.fiasUsd || 0);
+      const fiaPrice = Number(state.cache.prices.fiasUsd  || 0);
 
       const dA = Number(state.alerts.devve.above || 0);
       const dB = Number(state.alerts.devve.below || 0);
-      const fA = Number(state.alerts.fias.above || 0);
-      const fB = Number(state.alerts.fias.below || 0);
+      const fA = Number(state.alerts.fias.above  || 0);
+      const fB = Number(state.alerts.fias.below  || 0);
 
       const devAboveNow = dA > 0 && devPrice > 0 && devPrice >= dA;
       const devBelowNow = dB > 0 && devPrice > 0 && devPrice <= dB;
@@ -1317,157 +2031,160 @@
       }
     }
 
-    function wireUp(){
-      $("tabDash").addEventListener("click", () => setView("dashboard"));
-      $("tabSet").addEventListener("click", () => setView("settings"));
-
-      $("refreshBtn").addEventListener("click", () => refreshAll());
-
-      $("autoBtn").addEventListener("click", () => {
-        state.settings.autoOn = !state.settings.autoOn;
-        saveState();
-        renderSettings();
-        startAuto();
-        toast(state.settings.autoOn ? "Auto aan" : "Auto uit");
-      });
-
-      $("goSettings").addEventListener("click", () => setView("settings"));
-
-      $("notifBtn").addEventListener("click", async () => {
-        if(!canNotify()) return;
-        try{
-          const p = await Notification.requestPermission();
-          updateNotifButton();
-          if(p === "granted"){
-            toast("Meldingen aan");
-            sendNotify("Meldingen aan", "Alarmen zijn actief.");
-          }else{
-            toast("Meldingen niet toegestaan");
-          }
-        }catch(e){
-          toast("Meldingen fout");
-        }
-      });
-
-      $("saveSettingsBtn").addEventListener("click", () => {
-        state.settings.autoMin = Number($("autoMin").value || 5);
-        state.settings.priceDecimals = Number($("priceDecimals").value || 4);
-        state.settings.chartDays = clampNum(Number($("chartDays").value || 7), 1, 30, 7);
-
-        const devQty = Number(String($("devveQty").value || "0").replace(",", "."));
-        const devStake = Number(String($("devveStakeQty").value || "0").replace(",", "."));
-        const devAvg = Number(String($("devveAvg").value || "0").replace(",", "."));
-        const devTarget = Number(String($("devveTargetIn").value || "0").replace(",", "."));
-        const devAbove = Number(String($("devveAboveIn").value || "0").replace(",", "."));
-        const devBelow = Number(String($("devveBelowIn").value || "0").replace(",", "."));
-
-        const fiaQty = Number(String($("fiasQty").value || "0").replace(",", "."));
-        const fiaStake = Number(String($("fiasStakeQty").value || "0").replace(",", "."));
-        const fiaAvg = Number(String($("fiasAvg").value || "0").replace(",", "."));
-        const fiaTarget = Number(String($("fiasTargetIn").value || "0").replace(",", "."));
-        const fiaAbove = Number(String($("fiasAboveIn").value || "0").replace(",", "."));
-        const fiaBelow = Number(String($("fiasBelowIn").value || "0").replace(",", "."));
-
-        if(!isFinite(devQty) || devQty < 0) return toast("DEVVE wallet fout");
-        if(!isFinite(devStake) || devStake < 0) return toast("DEVVE staking fout");
-        if(!isFinite(devAvg) || devAvg < 0) return toast("DEVVE aankoop fout");
-        if(!isFinite(devTarget) || devTarget < 0) return toast("DEVVE doel fout");
-        if(!isFinite(devAbove) || devAbove < 0) return toast("DEVVE alarm boven fout");
-        if(!isFinite(devBelow) || devBelow < 0) return toast("DEVVE alarm onder fout");
-
-        if(!isFinite(fiaQty) || fiaQty < 0) return toast("FIAS wallet fout");
-        if(!isFinite(fiaStake) || fiaStake < 0) return toast("FIAS staking fout");
-        if(!isFinite(fiaAvg) || fiaAvg < 0) return toast("FIAS aankoop fout");
-        if(!isFinite(fiaTarget) || fiaTarget < 0) return toast("FIAS doel fout");
-        if(!isFinite(fiaAbove) || fiaAbove < 0) return toast("FIAS alarm boven fout");
-        if(!isFinite(fiaBelow) || fiaBelow < 0) return toast("FIAS alarm onder fout");
-
-        state.settings.positions.devve.qty = devQty;
-        state.settings.positions.devve.stake = devStake;
-        state.settings.positions.devve.avg = devAvg;
-        state.settings.positions.devve.target = devTarget;
-
-        state.settings.positions.fias.qty = fiaQty;
-        state.settings.positions.fias.stake = fiaStake;
-        state.settings.positions.fias.avg = fiaAvg;
-        state.settings.positions.fias.target = fiaTarget;
-
-        state.alerts.devve.above = devAbove;
-        state.alerts.devve.below = devBelow;
-        state.alerts.fias.above = fiaAbove;
-        state.alerts.fias.below = fiaBelow;
-
-        state.alertState.devve.above = false;
-        state.alertState.devve.below = false;
-        state.alertState.fias.above = false;
-        state.alertState.fias.below = false;
-
-        saveState();
-        renderSettings();
-        renderDashboard();
-        startAuto();
-        toast("Opgeslagen");
-        setView("dashboard");
-        checkAlerts();
-        refreshChartsOnly();
-      });
-
-      $("exportBtn").addEventListener("click", () => exportData());
-
-      $("importBtn").addEventListener("click", () => {
-        stopAuto();
-        $("importFile").click();
-      });
-
-      $("importFile").addEventListener("change", async (e) => {
-        const f = e.target.files && e.target.files[0];
-        if(!f) return;
-        try{
-          $("statusLine").textContent = "Importeren";
-          const txt = await f.text();
-          const obj = JSON.parse(txt);
-          importDataFromObject(obj);
-        }catch(err){
-          $("statusLine").textContent = "Import fout";
-          toast("Import fout");
-          startAuto();
-        }finally{
-          e.target.value = "";
-        }
-      });
-
-      $("clearCacheBtn").addEventListener("click", () => clearCourseCache());
-
-      $("resetBtn").addEventListener("click", () => {
-        if(confirm("Alles wissen")) resetAll();
-      });
-
-      $("chartDays").addEventListener("change", async () => {
-        state.settings.chartDays = clampNum(Number($("chartDays").value || 7), 1, 30, 7);
-        saveState();
-        buildRangeButtons();
-        await refreshChartsOnly();
-      });
-    }
-
     function renderAll(){
       renderSettings();
       renderDashboard();
-
-      const devSeries = state.graphs.devve?.series || [];
-      const fiaSeries = state.graphs.fias?.series || [];
-
-      drawLineChart("chartDevve", devSeries, buildMarkers("devve", Number(state.cache.prices.devveUsd || 0)));
-      drawLineChart("chartFias",  fiaSeries, buildMarkers("fias",  Number(state.cache.prices.fiasUsd || 0)));
-
+      drawAllCharts();
       $("graphStatus").textContent = "-";
       $("statusLine").textContent = "Klaar";
-      buildRangeButtons();
-      buildWidget();
-      updateNetInfo();
+      renderMarkerList();
+      renderHighLow();
     }
 
-    wireUp();
+    $("tabDash").addEventListener("click", () => setView("dashboard"));
+    $("tabSet").addEventListener("click",  () => setView("settings"));
+
+    $("refreshBtn").addEventListener("click", () => refreshAll());
+
+    $("autoBtn").addEventListener("click", () => {
+      state.settings.autoOn = !state.settings.autoOn;
+      saveState();
+      renderSettings();
+      startAuto();
+      toast(state.settings.autoOn ? "Auto aan" : "Auto uit");
+    });
+
+    $("goSettings").addEventListener("click", () => setView("settings"));
+
+    $("notifBtn").addEventListener("click", async () => {
+      if(!canNotify()) return;
+      try{
+        const p = await Notification.requestPermission();
+        updateNotifButton();
+        if(p === "granted"){
+          toast("Meldingen aan");
+          sendNotify("Meldingen aan", "Alarmen zijn actief.");
+        }else{
+          toast("Meldingen niet toegestaan");
+        }
+      }catch(e){
+        toast("Meldingen fout");
+      }
+    });
+
+    if($("markersClear")){
+      $("markersClear").addEventListener("click", () => {
+        clearMarkers();
+        drawAllCharts();
+      });
+    }
+
+    if($("simApply")){
+      $("simApply").addEventListener("click", () => {
+        const dec = Math.max(2, Math.min(8, Number(state.settings.priceDecimals || 4)));
+
+        const d = Number(String(($("simDevve").value || "0")).replace(",", "."));
+        const f = Number(String(($("simFias").value  || "0")).replace(",", "."));
+
+        state.sim.devvePrice = (isFinite(d) && d > 0) ? d : 0;
+        state.sim.fiasPrice  = (isFinite(f) && f > 0) ? f : 0;
+        saveState();
+        renderDashboard();
+        toast("Simulator gezet");
+      });
+    }
+
+    $("saveSettingsBtn").addEventListener("click", () => {
+      state.settings.autoMin = Number($("autoMin").value || 5);
+      state.settings.priceDecimals = Number($("priceDecimals").value || 4);
+
+      const devQty    = Number(String($("devveQty").value || "0").replace(",", "."));
+      const devStake  = Number(String($("devveStakeQty").value || "0").replace(",", "."));
+      const devAvg    = Number(String($("devveAvg").value || "0").replace(",", "."));
+      const devTarget = Number(String($("devveTargetIn").value || "0").replace(",", "."));
+      const devAbove  = Number(String($("devveAboveIn").value || "0").replace(",", "."));
+      const devBelow  = Number(String($("devveBelowIn").value || "0").replace(",", "."));
+
+      const fiaQty    = Number(String($("fiasQty").value || "0").replace(",", "."));
+      const fiaStake  = Number(String($("fiasStakeQty").value || "0").replace(",", "."));
+      const fiaAvg    = Number(String($("fiasAvg").value || "0").replace(",", "."));
+      const fiaTarget = Number(String($("fiasTargetIn").value || "0").replace(",", "."));
+      const fiaAbove  = Number(String($("fiasAboveIn").value || "0").replace(",", "."));
+      const fiaBelow  = Number(String($("fiasBelowIn").value || "0").replace(",", "."));
+
+      if(!isFinite(devQty) || devQty < 0) return toast("DEVVE wallet fout");
+      if(!isFinite(devStake) || devStake < 0) return toast("DEVVE staking fout");
+      if(!isFinite(devAvg) || devAvg < 0) return toast("DEVVE aankoop fout");
+      if(!isFinite(devTarget) || devTarget < 0) return toast("DEVVE doel fout");
+      if(!isFinite(devAbove) || devAbove < 0) return toast("DEVVE alarm boven fout");
+      if(!isFinite(devBelow) || devBelow < 0) return toast("DEVVE alarm onder fout");
+
+      if(!isFinite(fiaQty) || fiaQty < 0) return toast("FIAS wallet fout");
+      if(!isFinite(fiaStake) || fiaStake < 0) return toast("FIAS staking fout");
+      if(!isFinite(fiaAvg) || fiaAvg < 0) return toast("FIAS aankoop fout");
+      if(!isFinite(fiaTarget) || fiaTarget < 0) return toast("FIAS doel fout");
+      if(!isFinite(fiaAbove) || fiaAbove < 0) return toast("FIAS alarm boven fout");
+      if(!isFinite(fiaBelow) || fiaBelow < 0) return toast("FIAS alarm onder fout");
+
+      state.settings.positions.devve.qty = devQty;
+      state.settings.positions.devve.stake = devStake;
+      state.settings.positions.devve.avg = devAvg;
+      state.settings.positions.devve.target = devTarget;
+
+      state.settings.positions.fias.qty = fiaQty;
+      state.settings.positions.fias.stake = fiaStake;
+      state.settings.positions.fias.avg = fiaAvg;
+      state.settings.positions.fias.target = fiaTarget;
+
+      state.alerts.devve.above = devAbove;
+      state.alerts.devve.below = devBelow;
+      state.alerts.fias.above  = fiaAbove;
+      state.alerts.fias.below  = fiaBelow;
+
+      state.alertState.devve.above = false;
+      state.alertState.devve.below = false;
+      state.alertState.fias.above  = false;
+      state.alertState.fias.below  = false;
+
+      saveState();
+      renderSettings();
+      renderDashboard();
+      startAuto();
+      toast("Opgeslagen");
+      setView("dashboard");
+      checkAlerts();
+    });
+
+    $("exportBtn").addEventListener("click", () => exportData());
+
+    $("importBtn").addEventListener("click", () => {
+      stopAuto();
+      $("importFile").click();
+    });
+
+    $("importFile").addEventListener("change", async (e) => {
+      const f = e.target.files && e.target.files[0];
+      if(!f) return;
+      try{
+        $("statusLine").textContent = "Importeren";
+        const txt = await f.text();
+        const obj = JSON.parse(txt);
+        importDataFromObject(obj);
+      }catch(err){
+        $("statusLine").textContent = "Import fout";
+        toast("Import fout");
+        startAuto();
+      }finally{
+        e.target.value = "";
+      }
+    });
+
+    $("clearCacheBtn").addEventListener("click", () => clearCourseCache());
+
+    $("resetBtn").addEventListener("click", () => {
+      if(confirm("Alles wissen")) resetAll();
+    });
+
     renderAll();
     startAuto();
     refreshAll();
