@@ -268,6 +268,8 @@
           <button id="importBtn" class="primary" style="width:100%">Importeer data</button>
           <input id="importFile" type="file" accept="application/json" style="display:none" />
           <div style="height:8px"></div>
+          <button id="clearCacheBtn" style="width:100%">Reset koers cache</button>
+          <div style="height:8px"></div>
           <button id="resetBtn" style="width:100%">Reset app data</button>
           <div class="sep"></div>
           <div class="small" id="netInfo">Bron prijzen, -. Bron grafiek, -.</div>
@@ -339,7 +341,7 @@
   <script>
     const DEVVE_CONTRACT = "0x8248270620aa532e4d64316017be5e873e37cc09";
     const FIAS_CONTRACT  = "0x8e4f1ce473b292d56934c36976356e3e22c35585";
-    const LS_KEY = "rb_devve_fias_cream_nowallets_v1";
+    const LS_KEY = "rb_devve_fias_cream_nowallets_v2_timeout";
 
     const $ = (id) => document.getElementById(id);
 
@@ -474,22 +476,37 @@
       $("netInfo").textContent = "Bron prijzen, " + lastPriceSource + ". Bron grafiek, " + lastChartSource + ".";
     }
 
+    async function fetchJsonWithTimeout(url, ms){
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), ms);
+
+      try{
+        const r = await fetch(url, { cache:"no-store", signal: ctrl.signal });
+        if(!r.ok) return { ok:false, json:null, via:"http " + r.status };
+        const j = await r.json();
+        return { ok:true, json:j, via:"direct" };
+      }catch(e){
+        return { ok:false, json:null, via:(e && e.name === "AbortError") ? "timeout" : "err" };
+      }finally{
+        clearTimeout(t);
+      }
+    }
+
     async function fetchJsonSmart(url){
+      const stamp = Date.now().toString();
+      const u1 = url + (url.includes("?") ? "&" : "?") + "t=" + stamp;
+
       const tries = [
-        { name:"direct", u:url },
-        { name:"allorigins", u:"https://api.allorigins.win/raw?url=" + encodeURIComponent(url) },
-        { name:"corsproxy", u:"https://corsproxy.io/?" + encodeURIComponent(url) }
+        { name:"direct", u:u1 },
+        { name:"allorigins", u:"https://api.allorigins.win/raw?url=" + encodeURIComponent(u1) },
+        { name:"corsproxy", u:"https://corsproxy.io/?" + encodeURIComponent(u1) }
       ];
+
       let last = "fout";
       for(const t of tries){
-        try{
-          const r = await fetch(t.u, { cache:"no-store" });
-          if(!r.ok){ last = t.name + " " + r.status; continue; }
-          const j = await r.json();
-          return { ok:true, json:j, via:t.name };
-        }catch(e){
-          last = t.name + " err";
-        }
+        const res = await fetchJsonWithTimeout(t.u, 12000);
+        if(res.ok) return { ok:true, json:res.json, via:t.name };
+        last = t.name + " " + res.via;
       }
       return { ok:false, json:null, via:last };
     }
@@ -503,9 +520,9 @@
       if(!a.ok || !b.ok) return { ok:false, via:"dex " + a.via + " " + b.via };
 
       const pick = (j) => {
-        const pairs = Array.isArray(j?.pairs) ? j.pairs : [];
+        const pairs = Array.isArray(j && j.pairs) ? j.pairs : [];
         if(pairs.length === 0) return null;
-        pairs.sort((x,y) => (Number(y?.liquidity?.usd||0) - Number(x?.liquidity?.usd||0)));
+        pairs.sort((x,y) => (Number((y && y.liquidity && y.liquidity.usd) || 0) - Number((x && x.liquidity && x.liquidity.usd) || 0)));
         return pairs[0];
       };
 
@@ -513,10 +530,10 @@
       const pFia = pick(b.json);
       if(!pDev || !pFia) return { ok:false, via:"dex no pairs" };
 
-      const devUsd = Number(pDev?.priceUsd || 0);
-      const fiaUsd = Number(pFia?.priceUsd || 0);
-      const devChg = Number(pDev?.priceChange?.h24 || 0);
-      const fiaChg = Number(pFia?.priceChange?.h24 || 0);
+      const devUsd = Number(pDev && pDev.priceUsd || 0);
+      const fiaUsd = Number(pFia && pFia.priceUsd || 0);
+      const devChg = Number(pDev && pDev.priceChange && pDev.priceChange.h24 || 0);
+      const fiaChg = Number(pFia && pFia.priceChange && pFia.priceChange.h24 || 0);
 
       if(!isFinite(devUsd) || devUsd <= 0 || !isFinite(fiaUsd) || fiaUsd <= 0) return { ok:false, via:"dex bad price" };
 
@@ -528,12 +545,12 @@
       const res = await fetchJsonSmart(url);
       if(!res.ok) return { ok:false, via:"cg " + res.via };
 
-      const j = res.json;
-      const devUsd = Number(j?.devve?.usd || 0);
-      const fiaUsd = Number(j?.fias?.usd || 0);
-      const devEur = Number(j?.devve?.eur || 0);
-      const devChg = Number(j?.devve?.usd_24h_change || 0);
-      const fiaChg = Number(j?.fias?.usd_24h_change || 0);
+      const j = res.json || {};
+      const devUsd = Number(j.devve && j.devve.usd || 0);
+      const fiaUsd = Number(j.fias && j.fias.usd || 0);
+      const devEur = Number(j.devve && j.devve.eur || 0);
+      const devChg = Number(j.devve && j.devve.usd_24h_change || 0);
+      const fiaChg = Number(j.fias && j.fias.usd_24h_change || 0);
 
       if(!isFinite(devUsd) || devUsd <= 0 || !isFinite(fiaUsd) || fiaUsd <= 0) return { ok:false, via:"cg bad" };
 
@@ -545,7 +562,7 @@
       const url = "https://open.er-api.com/v6/latest/EUR";
       const res = await fetchJsonSmart(url);
       if(!res.ok) return { ok:false, via:"fx " + res.via };
-      const usd = Number(res.json?.rates?.USD || 0);
+      const usd = Number(res.json && res.json.rates && res.json.rates.USD || 0);
       if(!isFinite(usd) || usd <= 0) return { ok:false, via:"fx bad" };
       return { ok:true, eurusd:usd, via:"fx" };
     }
@@ -597,7 +614,7 @@
       const res = await fetchJsonSmart(url);
       if(!res.ok) return { ok:false, series:[], via:"cg " + res.via };
 
-      const prices = Array.isArray(res.json?.prices) ? res.json.prices : [];
+      const prices = Array.isArray(res.json && res.json.prices) ? res.json.prices : [];
       const series = prices.map(p => Number(p[1])).filter(x => isFinite(x));
       if(series.length < 2) return { ok:false, series:[], via:"cg no data" };
 
@@ -615,16 +632,16 @@
       const res = await fetchJsonSmart(url);
       if(!res.ok) return { ok:false, series:[], via:"dex " + res.via };
 
-      const pairs = Array.isArray(res.json?.pairs) ? res.json.pairs : [];
+      const pairs = Array.isArray(res.json && res.json.pairs) ? res.json.pairs : [];
       if(pairs.length === 0) return { ok:false, series:[], via:"dex no pairs" };
 
-      pairs.sort((x,y) => (Number(y?.liquidity?.usd||0) - Number(x?.liquidity?.usd||0)));
+      pairs.sort((x,y) => (Number((y && y.liquidity && y.liquidity.usd) || 0) - Number((x && x.liquidity && x.liquidity.usd) || 0)));
       const p = pairs[0];
 
-      const h6 = Number(p?.priceChange?.h6);
-      const h1 = Number(p?.priceChange?.h1);
-      const h24 = Number(p?.priceChange?.h24);
-      const now = Number(p?.priceUsd || 0);
+      const h6 = Number(p && p.priceChange && p.priceChange.h6);
+      const h1 = Number(p && p.priceChange && p.priceChange.h1);
+      const h24 = Number(p && p.priceChange && p.priceChange.h24);
+      const now = Number(p && p.priceUsd || 0);
 
       if(!isFinite(now) || now <= 0) return { ok:false, series:[], via:"dex bad" };
 
@@ -748,8 +765,8 @@
       $("fiasPrice").textContent  = "$" + Number(prices.fiasUsd  || 0).toFixed(dec);
       $("eurusd").textContent     = Number(eurusd || 1).toFixed(4);
 
-      setChange("devveChg", state.cache.chg24?.devve || 0);
-      setChange("fiasChg", state.cache.chg24?.fias || 0);
+      setChange("devveChg", state.cache.chg24 && state.cache.chg24.devve || 0);
+      setChange("fiasChg", state.cache.chg24 && state.cache.chg24.fias || 0);
 
       const devQty = Number(state.settings.positions.devve.qty || 0);
       const devAvg = Number(state.settings.positions.devve.avg || 0);
@@ -824,6 +841,17 @@
       setTimeout(() => URL.revokeObjectURL(a.href), 1000);
     }
 
+    function stopAuto(){
+      if(autoTimer){ clearInterval(autoTimer); autoTimer = null; }
+    }
+
+    function startAuto(){
+      stopAuto();
+      if(!state.settings.autoOn) return;
+      const min = Math.max(1, Math.min(120, Number(state.settings.autoMin || 5)));
+      autoTimer = setInterval(() => { refreshAll(); }, min * 60 * 1000);
+    }
+
     function hardReloadAfterImport(){
       stopAuto();
       isRefreshing = false;
@@ -832,7 +860,7 @@
     }
 
     function importDataFromObject(obj){
-      const incoming = obj?.state ? obj.state : obj;
+      const incoming = obj && obj.state ? obj.state : obj;
       const n = normalizeState(incoming);
 
       Object.keys(state).forEach(k => delete state[k]);
@@ -848,14 +876,19 @@
       location.reload();
     }
 
-    function startAuto(){
-      stopAuto();
-      if(!state.settings.autoOn) return;
-      const min = Math.max(1, Math.min(120, Number(state.settings.autoMin || 5)));
-      autoTimer = setInterval(() => { refreshAll(); }, min * 60 * 1000);
-    }
-    function stopAuto(){
-      if(autoTimer){ clearInterval(autoTimer); autoTimer = null; }
+    function clearCourseCache(){
+      state.cache.prices = { devveUsd:0, fiasUsd:0, eurusd:1 };
+      state.cache.chg24 = { devve:0, fias:0 };
+      state.cache.lastUpdateISO = "";
+      state.graphs.devve = [];
+      state.graphs.fias = [];
+      state.graphs.ts = 0;
+      saveState();
+      renderDashboard();
+      drawLineChart("chartDevve", []);
+      drawLineChart("chartFias", []);
+      $("graphStatus").textContent = "-";
+      toast("Cache gereset");
     }
 
     async function refreshAll(){
@@ -865,7 +898,10 @@
       $("refreshBtn").disabled = true;
       $("statusLine").textContent = "Verversen";
 
+      let watchdog = null;
       try{
+        watchdog = setTimeout(() => { throw new Error("watchdog"); }, 25000);
+
         const p = await updatePrices();
         renderDashboard();
 
@@ -873,15 +909,17 @@
           await loadCharts();
         }catch(e){
           $("graphStatus").textContent = "fout";
-          lastChartSource = "chart crash";
+          lastChartSource = "chart fout";
           updateNetInfo();
         }
 
         $("statusLine").textContent = p.ok ? "Klaar" : "Klaar, prijzen fout";
+        if(!p.ok) toast("Prijzen halen lukt niet");
       }catch(e){
         $("statusLine").textContent = "Fout";
-        toast("Verversen fout");
+        toast("Verversen vast, probeer opnieuw");
       }finally{
+        if(watchdog) clearTimeout(watchdog);
         isRefreshing = false;
         $("refreshBtn").disabled = false;
       }
@@ -961,6 +999,8 @@
         e.target.value = "";
       }
     });
+
+    $("clearCacheBtn").addEventListener("click", () => clearCourseCache());
 
     $("resetBtn").addEventListener("click", () => { if(confirm("Alles wissen")) resetAll(); });
 
