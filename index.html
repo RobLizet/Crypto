@@ -175,7 +175,7 @@
     <div class="top">
       <div class="title">
         <h1>DevvE + FIAS Wallet</h1>
-        <div class="sub" id="statusLine">Start</div>
+        <div class="sub" id="statusLine">Klaar</div>
       </div>
       <div class="btns">
         <button id="refreshBtn" class="primary">Ververs</button>
@@ -187,7 +187,7 @@
       <div class="grid">
         <div class="card">
           <div class="row">
-            <div class="pill" id="activeWalletPill">Portfolio, handmatig</div>
+            <div class="pill" id="activeWalletPill">Geen actieve wallet</div>
             <div class="pill" id="storagePill">Opslag</div>
           </div>
 
@@ -276,7 +276,7 @@
         </div>
 
         <div class="card">
-          <div style="font-size:14px">Wallet status</div>
+          <div style="font-size:14px">Status</div>
           <div class="small" id="walletInfo">Wallets, 0. Actief, geen.</div>
           <div class="sep"></div>
           <div class="small" id="netInfo">Bron prijzen, -. Bron grafiek, -.</div>
@@ -287,14 +287,14 @@
     <div id="viewWallets" class="view hide">
       <div class="card">
         <div style="font-size:14px">Wallets</div>
-        <div class="small">Je kan adressen toevoegen. Actieve wallet werkt per direct.</div>
+        <div class="small">Actieve wallet wordt bovenaan op dashboard getoond.</div>
 
         <div class="sep"></div>
 
         <div class="formRow">
           <div>
             <label>Naam</label>
-            <input id="wName" placeholder="Bijv. Ledger, MetaMask" />
+            <input id="wName" placeholder="Bijv. Nano, Stax, MetaMask" />
           </div>
           <div>
             <label>Adres</label>
@@ -313,14 +313,14 @@
         <div class="list" id="walletList"></div>
 
         <div class="sep"></div>
-        <div class="small">Tip. Gebruik altijd het beginscherm icoon. Dan blijven wallets staan.</div>
+        <div class="small">Tip. Open altijd via beginscherm icoon.</div>
       </div>
     </div>
 
     <div id="viewSettings" class="view hide">
       <div class="card">
         <div style="font-size:14px">Instellingen</div>
-        <div class="small">Hier staan jouw aantallen en aankoopprijzen.</div>
+        <div class="small">Aantallen en aankoopprijzen.</div>
 
         <div class="sep"></div>
 
@@ -382,12 +382,13 @@
   <script>
     const DEVVE_CONTRACT = "0x8248270620aa532e4d64316017be5e873e37cc09";
     const FIAS_CONTRACT  = "0x8e4f1ce473b292d56934c36976356e3e22c35585";
-    const LS_KEY = "rb_devve_fias_wallet_cream_v1";
+    const LS_KEY = "rb_devve_fias_wallet_cream_final_v2";
 
     const $ = (id) => document.getElementById(id);
 
     const state = loadState();
     let autoTimer = null;
+    let isRefreshing = false;
 
     let lastPriceSource = "-";
     let lastChartSource = "-";
@@ -417,7 +418,6 @@
         devve: { qty: 35000, avg: 0.30 },
         fias:  { qty: 50384, avg: 0.01129 }
       };
-
       if(!s.settings.positions.devve) s.settings.positions.devve = { qty: 35000, avg: 0.30 };
       if(!s.settings.positions.fias)  s.settings.positions.fias  = { qty: 50384, avg: 0.01129 };
 
@@ -425,7 +425,6 @@
         id: w.id || ("w_" + Math.random().toString(16).slice(2) + Date.now().toString(16)),
         name: w.name || "Wallet",
         addr: String(w.addr || "").trim(),
-        stakedDevve: Number(w.stakedDevve || 0)
       }));
 
       if(typeof s.activeWalletId !== "string") s.activeWalletId = "";
@@ -525,6 +524,21 @@
       return state.wallets.find(w => w.id === state.activeWalletId) || null;
     }
 
+    function updateWalletInfo(){
+      const w = activeWallet();
+      const activeTxt = w ? (w.name || "Wallet") : "geen";
+      $("walletInfo").textContent = "Wallets, " + state.wallets.length + ". Actief, " + activeTxt + ".";
+      if(w){
+        $("activeWalletPill").textContent = "Actieve wallet, " + activeTxt + ".";
+      }else{
+        $("activeWalletPill").textContent = "Geen actieve wallet";
+      }
+    }
+
+    function updateNetInfo(){
+      $("netInfo").textContent = "Bron prijzen, " + lastPriceSource + ". Bron grafiek, " + lastChartSource + ".";
+    }
+
     async function fetchJsonSmart(url){
       const tries = [
         { name:"direct", u:url },
@@ -569,7 +583,7 @@
       const devChg = Number(pDev?.priceChange?.h24 || 0);
       const fiaChg = Number(pFia?.priceChange?.h24 || 0);
 
-      if(!isFinite(devUsd) || !isFinite(fiaUsd)) return { ok:false, via:"dex bad price" };
+      if(!isFinite(devUsd) || devUsd <= 0 || !isFinite(fiaUsd) || fiaUsd <= 0) return { ok:false, via:"dex bad price" };
 
       return { ok:true, devUsd, fiaUsd, devChg, fiaChg, via:"dexscreener" };
     }
@@ -586,7 +600,7 @@
       const devChg = Number(j?.devve?.usd_24h_change || 0);
       const fiaChg = Number(j?.fias?.usd_24h_change || 0);
 
-      if(!isFinite(devUsd) || !isFinite(fiaUsd) || devUsd <= 0) return { ok:false, via:"cg bad" };
+      if(!isFinite(devUsd) || devUsd <= 0 || !isFinite(fiaUsd) || fiaUsd <= 0) return { ok:false, via:"cg bad" };
 
       const eurusd = devEur > 0 ? (devUsd / devEur) : 1;
       return { ok:true, devUsd, fiaUsd, devChg, fiaChg, eurusd, via:"coingecko " + res.via };
@@ -612,10 +626,12 @@
         state.cache.prices.devveUsd = dex.devUsd;
         state.cache.prices.fiasUsd = dex.fiaUsd;
         state.cache.prices.eurusd = eurusd;
+
         state.cache.chg24.devve = dex.devChg;
         state.cache.chg24.fias = dex.fiaChg;
+
         state.cache.lastUpdateISO = new Date().toISOString();
-        lastPriceSource = dex.via + ", fx " + (eurusd ? "ok" : "no");
+        lastPriceSource = dex.via + ", fx " + (fx.ok ? fx.via : "fout");
         saveState();
         return { ok:true };
       }
@@ -627,8 +643,10 @@
         state.cache.prices.devveUsd = cg.devUsd;
         state.cache.prices.fiasUsd = cg.fiaUsd;
         state.cache.prices.eurusd = eurusd;
+
         state.cache.chg24.devve = cg.devChg;
         state.cache.chg24.fias = cg.fiaChg;
+
         state.cache.lastUpdateISO = new Date().toISOString();
         lastPriceSource = cg.via;
         saveState();
@@ -657,7 +675,7 @@
       return { ok:true, series:out, via:"cg " + res.via };
     }
 
-    async function fetchChartSeriesDexScreener(tokenAddr){
+    async function fetchChartSeriesDexScreenerApprox(tokenAddr){
       const url = "https://api.dexscreener.com/latest/dex/tokens/" + tokenAddr;
       const res = await fetchJsonSmart(url);
       if(!res.ok) return { ok:false, series:[], via:"dex " + res.via };
@@ -675,51 +693,20 @@
 
       if(!isFinite(now) || now <= 0) return { ok:false, series:[], via:"dex bad" };
 
+      const mk = (pct) => now / (1 + (pct/100));
+      const p24 = isFinite(h24) ? mk(h24) : now;
+      const p6  = isFinite(h6)  ? mk(h6)  : now;
+      const p1  = isFinite(h1)  ? mk(h1)  : now;
+
       const series = [];
-      const base = now;
-      const mk = (pct) => base / (1 + (pct/100));
-
-      const p24 = isFinite(h24) ? mk(h24) : base;
-      const p6  = isFinite(h6)  ? mk(h6)  : base;
-      const p1  = isFinite(h1)  ? mk(h1)  : base;
-
       for(let i=0;i<120;i++){
         const t = i / 119;
         let v = p24 + (p6 - p24) * Math.min(1, t*0.55);
         v = v + (p1 - p6) * Math.max(0, (t-0.55)/0.30);
-        v = v + (base - p1) * Math.max(0, (t-0.85)/0.15);
+        v = v + (now - p1) * Math.max(0, (t-0.85)/0.15);
         series.push(Number(v));
       }
-
       return { ok:true, series, via:"dex approx" };
-    }
-
-    async function loadCharts(){
-      $("graphStatus").textContent = "laden";
-
-      const devA = await fetchChartSeriesCoinGecko("devve");
-      const fiaA = await fetchChartSeriesCoinGecko("fias");
-
-      let dev = devA;
-      let fia = fiaA;
-
-      if(!dev.ok) dev = await fetchChartSeriesDexScreener(DEVVE_CONTRACT);
-      if(!fia.ok) fia = await fetchChartSeriesDexScreener(FIAS_CONTRACT);
-
-      if(dev.ok) state.graphs.devve = dev.series;
-      if(fia.ok) state.graphs.fias = fia.series;
-      state.graphs.ts = Date.now();
-      saveState();
-
-      drawLineChart("chartDevve", state.graphs.devve);
-      drawLineChart("chartFias", state.graphs.fias);
-
-      lastChartSource = "dev " + (dev.ok ? dev.via : dev.via) + ", fias " + (fia.ok ? fia.via : fia.via);
-
-      if(dev.ok && fia.ok) $("graphStatus").textContent = "ok";
-      else $("graphStatus").textContent = "fout, " + lastChartSource;
-
-      updateNetInfo();
     }
 
     function drawLineChart(canvasId, series){
@@ -772,6 +759,34 @@
       ctx.fillText("$" + Number(series[series.length-1]).toFixed(4), 20, 32);
     }
 
+    async function loadCharts(){
+      $("graphStatus").textContent = "laden";
+
+      const devA = await fetchChartSeriesCoinGecko("devve");
+      const fiaA = await fetchChartSeriesCoinGecko("fias");
+
+      let dev = devA;
+      let fia = fiaA;
+
+      if(!dev.ok) dev = await fetchChartSeriesDexScreenerApprox(DEVVE_CONTRACT);
+      if(!fia.ok) fia = await fetchChartSeriesDexScreenerApprox(FIAS_CONTRACT);
+
+      if(dev.ok) state.graphs.devve = dev.series;
+      if(fia.ok) state.graphs.fias = fia.series;
+      state.graphs.ts = Date.now();
+      saveState();
+
+      drawLineChart("chartDevve", state.graphs.devve);
+      drawLineChart("chartFias", state.graphs.fias);
+
+      lastChartSource = "dev " + dev.via + ", fias " + fia.via;
+
+      if(dev.ok && fia.ok) $("graphStatus").textContent = "ok";
+      else $("graphStatus").textContent = "fout, " + lastChartSource;
+
+      updateNetInfo();
+    }
+
     function renderWallets(){
       const sel = $("activeSelect");
       sel.innerHTML = "";
@@ -820,6 +835,7 @@
           renderWallets();
           renderDashboard();
           toast("Actieve wallet gezet");
+          setView("dashboard");
         };
 
         const delBtn = document.createElement("button");
@@ -855,17 +871,6 @@
 
       $("autoBtn").textContent = state.settings.autoOn ? "Auto, aan" : "Auto, uit";
       $("originLine").textContent = "Open via beginscherm icoon. Domein, " + location.origin;
-    }
-
-    function updateWalletInfo(){
-      const w = activeWallet();
-      const activeTxt = w ? (w.name || "Wallet") : "geen";
-      $("walletInfo").textContent = "Wallets, " + state.wallets.length + ". Actief, " + activeTxt + ".";
-      $("activeWalletPill").textContent = "Portfolio, handmatig. Wallet actief, " + activeTxt + ".";
-    }
-
-    function updateNetInfo(){
-      $("netInfo").textContent = "Bron prijzen, " + lastPriceSource + ". Bron grafiek, " + lastChartSource + ".";
     }
 
     function renderDashboard(){
@@ -978,27 +983,29 @@
     }
 
     async function refreshAll(){
-      $("statusLine").textContent = "Verversen";
-      let okPrices = false;
+      if(isRefreshing) return;
+      isRefreshing = true;
 
+      $("statusLine").textContent = "Verversen";
       try{
         const p = await updatePrices();
-        okPrices = !!p.ok;
+        renderDashboard();
+
+        try{
+          await loadCharts();
+        }catch(e){
+          $("graphStatus").textContent = "fout";
+          lastChartSource = "chart crash";
+          updateNetInfo();
+        }
+
+        $("statusLine").textContent = p.ok ? "Klaar" : "Klaar, prijzen fout";
       }catch(e){
-        okPrices = false;
+        $("statusLine").textContent = "Fout";
+        toast("Verversen fout");
+      }finally{
+        isRefreshing = false;
       }
-
-      renderDashboard();
-
-      try{
-        await loadCharts();
-      }catch(e){
-        $("graphStatus").textContent = "fout";
-        lastChartSource = "chart crash";
-        updateNetInfo();
-      }
-
-      $("statusLine").textContent = okPrices ? "Klaar" : "Klaar, prijzen fout";
     }
 
     function renderAll(){
@@ -1032,7 +1039,7 @@
       if(!v.ok){ toast(v.reason); return; }
 
       const id = "w_" + Math.random().toString(16).slice(2) + Date.now().toString(16);
-      state.wallets.unshift({ id, name, addr, stakedDevve: 0 });
+      state.wallets.unshift({ id, name, addr });
 
       if(!state.activeWalletId) state.activeWalletId = id;
 
@@ -1053,6 +1060,7 @@
       renderWallets();
       renderDashboard();
       toast("Actieve wallet gezet");
+      setView("dashboard");
     });
 
     $("saveSettingsBtn").addEventListener("click", () => {
