@@ -16,8 +16,6 @@
       --text:#e8eef7;
       --muted:#9fb0c7;
       --line:#223043;
-      --good:#28d17c;
-      --bad:#ff5b6b;
       --accent:#66a7ff;
       --chip:#1b2736;
     }
@@ -64,12 +62,7 @@
       color:var(--muted);
       padding:6px 10px;border-radius:999px;font-size:12px
     }
-    .muted{color:var(--muted)}
-    .big{
-      font-size:26px;
-      letter-spacing:-0.3px;
-      margin:8px 0 2px
-    }
+    .big{font-size:26px;letter-spacing:-0.3px;margin:8px 0 2px}
     .small{font-size:12px;color:var(--muted)}
     .tokens{display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px}
     @media (min-width:520px){.tokens{grid-template-columns:1fr 1fr}}
@@ -155,51 +148,45 @@
         <div class="card">
           <div class="row">
             <div class="pill" id="activeWalletPill">Geen wallet</div>
-            <div class="pill" id="netPill">Ethereum, ERC20</div>
+            <div class="pill">Ethereum, ERC20</div>
           </div>
 
-          <div class="big" id="totalUsd">$0,00</div>
-          <div class="small" id="totalEur">€0,00</div>
+          <div class="big" id="totalUsd">$0.00</div>
+          <div class="small" id="totalEur">€0.00</div>
 
           <div class="tokens">
             <div class="token">
               <p class="sym">DEVVE</p>
               <p class="bal" id="devveBal">0</p>
-              <div class="val" id="devveVal">$0,00. €0,00</div>
+              <div class="val" id="devveVal">$0.00. €0.00</div>
             </div>
             <div class="token">
               <p class="sym">FIAS</p>
               <p class="bal" id="fiasBal">0</p>
-              <div class="val" id="fiasVal">$0,00. €0,00</div>
+              <div class="val" id="fiasVal">$0.00. €0.00</div>
             </div>
           </div>
 
           <div class="sep"></div>
           <div class="row">
-            <div class="small">Prijs DEVVE, <span id="devvePrice">$0,0000</span></div>
-            <div class="small">Prijs FIAS, <span id="fiasPrice">$0,0000</span></div>
+            <div class="small">Prijs DEVVE, <span id="devvePrice">$0.0000</span></div>
+            <div class="small">Prijs FIAS, <span id="fiasPrice">$0.0000</span></div>
           </div>
           <div class="row" style="margin-top:6px">
-            <div class="small">EURUSD, <span id="eurusd">1,0000</span></div>
+            <div class="small">EURUSD, <span id="eurusd">1.0000</span></div>
             <div class="small">Laatste update, <span id="lastUpdate">-</span></div>
           </div>
 
           <div class="foot">
             <div>made by Rob Borghouts 2026</div>
-            <div id="sourceLine">Bronnen, Ethplorer, CoinGecko</div>
+            <div>Bronnen, Ethplorer, CoinGecko</div>
           </div>
         </div>
 
         <div class="card">
-          <div class="row">
-            <div>
-              <div style="font-size:14px">Snelle acties</div>
-              <div class="small">Wallets beheren, instellingen, export</div>
-            </div>
-          </div>
-
+          <div style="font-size:14px">Snelle acties</div>
+          <div class="small">Wallets beheren, instellingen, export</div>
           <div class="sep"></div>
-
           <button id="goWallets" style="width:100%">Wallets</button>
           <div style="height:8px"></div>
           <button id="goSettings" style="width:100%">Instellingen</button>
@@ -207,24 +194,16 @@
           <button id="exportBtn" style="width:100%">Exporteer data</button>
           <div style="height:8px"></div>
           <button id="resetBtn" style="width:100%">Reset app data</button>
-
           <div class="sep"></div>
-
-          <div class="small">
-            Tip, iPhone, Safari, Deel, Zet op beginscherm.
-          </div>
+          <div class="small">Tip, iPhone, Safari, Deel, Zet op beginscherm.</div>
         </div>
       </div>
     </div>
 
     <div id="viewWallets" class="view hide">
       <div class="card">
-        <div class="row">
-          <div>
-            <div style="font-size:14px">Wallets</div>
-            <div class="small">Voeg adressen toe. Kies jouw actieve wallet.</div>
-          </div>
-        </div>
+        <div style="font-size:14px">Wallets</div>
+        <div class="small">Voeg adressen toe. Kies jouw actieve wallet.</div>
 
         <div class="sep"></div>
 
@@ -253,12 +232,8 @@
 
     <div id="viewSettings" class="view hide">
       <div class="card">
-        <div class="row">
-          <div>
-            <div style="font-size:14px">Instellingen</div>
-            <div class="small">Alles wordt lokaal opgeslagen op jouw toestel.</div>
-          </div>
-        </div>
+        <div style="font-size:14px">Instellingen</div>
+        <div class="small">Alles wordt lokaal opgeslagen op jouw toestel.</div>
 
         <div class="sep"></div>
 
@@ -291,10 +266,7 @@
         <button id="saveSettingsBtn" class="primary" style="width:100%">Opslaan</button>
 
         <div class="sep"></div>
-
-        <div class="small">
-          Als Ethplorer even hapert, zet handmatige balans aan. Laat hem leeg om on-chain te gebruiken.
-        </div>
+        <div class="small">Laat handmatig leeg om on-chain te gebruiken.</div>
       </div>
     </div>
   </div>
@@ -310,13 +282,11 @@
   <script>
     const DEVVE_CONTRACT = "0x8248270620aa532e4d64316017be5e873e37cc09";
     const FIAS_CONTRACT  = "0x8e4f1ce473b292d56934c36976356e3e22c35585";
-
-    const LS_KEY = "rb_devve_fias_wallet_v1";
+    const LS_KEY = "rb_devve_fias_wallet_v2";
 
     const $ = (id) => document.getElementById(id);
 
     const state = loadState();
-
     let autoTimer = null;
 
     function loadState(){
@@ -327,23 +297,13 @@
       return {
         wallets: [],
         activeWalletId: "",
-        settings: {
-          autoOn: true,
-          autoMin: 5,
-          priceDecimals: 4,
-          manualDevve: "",
-          manualFias: ""
-        },
-        cache: {
-          lastUpdateISO: "",
-          prices: { devveUsd: 0, fiasUsd: 0, eurusd: 1 }
-        }
+        settings: { autoOn:true, autoMin:5, priceDecimals:4, manualDevve:"", manualFias:"" },
+        cache: { lastUpdateISO:"", prices:{ devveUsd:0, fiasUsd:0, eurusd:1 } },
+        lastBalances: { devveBal:0, fiasBal:0 }
       };
     }
 
-    function saveState(){
-      localStorage.setItem(LS_KEY, JSON.stringify(state));
-    }
+    function saveState(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
 
     function toast(msg){
       const t = $("toast");
@@ -366,17 +326,17 @@
     }
 
     function setView(which){
-      const views = {
-        dashboard: $("viewDashboard"),
-        wallets: $("viewWallets"),
-        settings: $("viewSettings")
-      };
+      const views = { dashboard:$("viewDashboard"), wallets:$("viewWallets"), settings:$("viewSettings") };
       Object.keys(views).forEach(k => views[k].classList.toggle("hide", k !== which));
       document.querySelectorAll(".tab").forEach(el => el.classList.toggle("active", el.dataset.tab === which));
     }
 
     function validAddr(a){
-      return /^0x[a-fA-F0-9]{40}$/.test((a||"").trim());
+      const s = String(a || "").trim();
+      if(!s.startsWith("0x")) return { ok:false, reason:"Adres moet met 0x beginnen" };
+      if(s.length !== 42) return { ok:false, reason:"Adres moet 42 tekens zijn" };
+      if(!/^0x[a-fA-F0-9]{40}$/.test(s)) return { ok:false, reason:"Alleen 0 tot 9 en a tot f" };
+      return { ok:true, reason:"" };
     }
 
     function activeWallet(){
@@ -406,6 +366,7 @@
       state.wallets.forEach(w => {
         const div = document.createElement("div");
         div.className = "item";
+
         const left = document.createElement("div");
         const nm = document.createElement("div");
         nm.textContent = w.name || "Wallet";
@@ -420,15 +381,15 @@
         right.style.gap = "8px";
 
         const useBtn = document.createElement("button");
+        useBtn.textContent = "Gebruik";
         useBtn.onclick = async () => {
-  state.activeWalletId = w.id;
-  saveState();
-  renderAll();
-  setView("dashboard");
-  toast("Actief, verversen");
-  await refreshAll();
-};
-        
+          state.activeWalletId = w.id;
+          saveState();
+          renderAll();
+          setView("dashboard");
+          toast("Actief, verversen");
+          await refreshAll();
+        };
 
         const delBtn = document.createElement("button");
         delBtn.textContent = "Verwijder";
@@ -449,7 +410,17 @@
       });
     }
 
-    function renderDashboard(snapshot){
+    function renderSettings(){
+      $("autoMin").value = state.settings.autoMin;
+      $("priceDecimals").value = state.settings.priceDecimals;
+      $("manualDevve").value = state.settings.manualDevve;
+      $("manualFias").value = state.settings.manualFias;
+      $("autoBtn").textContent = state.settings.autoOn ? "Auto, aan" : "Auto, uit";
+    }
+
+    function renderStatus(text){ $("statusLine").textContent = text; }
+
+    function renderDashboard(){
       const w = activeWallet();
       $("activeWalletPill").textContent = w ? (w.name || "Wallet") + " , " + w.addr.slice(0,6) + "…" + w.addr.slice(-4) : "Geen wallet";
 
@@ -457,11 +428,11 @@
       const dec = Math.max(2, Math.min(8, Number(state.settings.priceDecimals || 4)));
 
       $("devvePrice").textContent = "$" + (prices.devveUsd || 0).toFixed(dec);
-      $("fiasPrice").textContent = "$" + (prices.fiasUsd || 0).toFixed(dec);
-      $("eurusd").textContent = (prices.eurusd || 1).toFixed(4);
+      $("fiasPrice").textContent  = "$" + (prices.fiasUsd  || 0).toFixed(dec);
+      $("eurusd").textContent     = (prices.eurusd || 1).toFixed(4);
 
-      const devveBal = snapshot?.devveBal ?? 0;
-      const fiasBal  = snapshot?.fiasBal ?? 0;
+      const devveBal = Number(state.lastBalances.devveBal || 0);
+      const fiasBal  = Number(state.lastBalances.fiasBal || 0);
 
       $("devveBal").textContent = fmtNumber(devveBal, 8);
       $("fiasBal").textContent  = fmtNumber(fiasBal, 8);
@@ -481,19 +452,6 @@
 
       const lu = state.cache.lastUpdateISO ? new Date(state.cache.lastUpdateISO) : null;
       $("lastUpdate").textContent = lu ? lu.toLocaleString("nl-NL") : "-";
-    }
-
-    function renderSettings(){
-      $("autoMin").value = state.settings.autoMin;
-      $("priceDecimals").value = state.settings.priceDecimals;
-      $("manualDevve").value = state.settings.manualDevve;
-      $("manualFias").value = state.settings.manualFias;
-
-      $("autoBtn").textContent = state.settings.autoOn ? "Auto, aan" : "Auto, uit";
-    }
-
-    function renderStatus(text){
-      $("statusLine").textContent = text;
     }
 
     async function fetchPrices(){
@@ -537,8 +495,10 @@
     async function refreshAll(){
       const w = activeWallet();
       if(!w){
-        renderStatus("Geen wallet gekozen");
-        renderDashboard({devveBal:0,fiasBal:0});
+        state.lastBalances = { devveBal:0, fiasBal:0 };
+        saveState();
+        renderStatus("Kies eerst een wallet");
+        renderDashboard();
         return;
       }
 
@@ -562,14 +522,14 @@
         }
 
         state.cache.lastUpdateISO = new Date().toISOString();
+        state.lastBalances = { devveBal, fiasBal };
         saveState();
 
-        renderDashboard({devveBal,fiasBal});
+        renderDashboard();
         renderStatus("Laatste update, " + new Date(state.cache.lastUpdateISO).toLocaleTimeString("nl-NL"));
       }catch(e){
         renderStatus("Fout bij verversen");
         toast(String(e.message || e));
-        renderDashboard({devveBal:0,fiasBal:0});
       }
     }
 
@@ -584,13 +544,7 @@
     }
 
     function exportData(){
-      const data = {
-        exportedAt: new Date().toISOString(),
-        wallets: state.wallets,
-        activeWalletId: state.activeWalletId,
-        settings: state.settings,
-        cache: state.cache
-      };
+      const data = { exportedAt:new Date().toISOString(), state };
       const blob = new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
@@ -609,13 +563,9 @@
     function renderAll(){
       renderWallets();
       renderSettings();
-      renderDashboard({devveBal:0,fiasBal:0});
+      renderDashboard();
       const w = activeWallet();
-      if(w){
-        renderStatus("Klaar om te verversen");
-      }else{
-        renderStatus("Kies eerst een wallet");
-      }
+      renderStatus(w ? "Klaar om te verversen" : "Kies eerst een wallet");
     }
 
     document.querySelectorAll(".tab").forEach(el => {
@@ -635,7 +585,8 @@
     $("addWalletBtn").addEventListener("click", () => {
       const name = $("wName").value.trim() || "Wallet";
       const addr = $("wAddr").value.trim();
-      if(!validAddr(addr)){ toast("Adres klopt niet"); return; }
+      const v = validAddr(addr);
+      if(!v.ok){ toast(v.reason); return; }
 
       const id = "w_" + Math.random().toString(16).slice(2) + Date.now().toString(16);
       state.wallets.unshift({ id, name, addr });
@@ -645,13 +596,16 @@
       $("wAddr").value = "";
       saveState();
       renderAll();
-      toast("Wallet toegevoegd");
+      toast("Wallet toegevoegd, totaal " + state.wallets.length);
     });
 
-    $("activeSelect").addEventListener("change", (e) => {
+    $("activeSelect").addEventListener("change", async (e) => {
       state.activeWalletId = e.target.value;
       saveState();
       renderAll();
+      setView("dashboard");
+      toast("Actief, verversen");
+      await refreshAll();
     });
 
     $("saveSettingsBtn").addEventListener("click", () => {
@@ -666,24 +620,14 @@
     });
 
     $("exportBtn").addEventListener("click", exportData);
-    $("resetBtn").addEventListener("click", () => {
-      const ok = confirm("Alles wissen");
-      if(ok) resetAll();
-    });
+    $("resetBtn").addEventListener("click", () => { if(confirm("Alles wissen")) resetAll(); });
 
     $("goWallets").addEventListener("click", () => setView("wallets"));
     $("goSettings").addEventListener("click", () => setView("settings"));
 
-    if("serviceWorker" in navigator){
-      window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(()=>{}));
-    }
-
     renderAll();
     startAuto();
-
-    if(activeWallet()){
-      refreshAll();
-    }
+    if(activeWallet()) refreshAll();
   </script>
 </body>
 </html>
