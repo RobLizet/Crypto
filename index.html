@@ -5,34 +5,37 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="theme-color" content="#f6f7fb" />
+  <meta name="theme-color" content="#fbf6ee" />
   <title>DevvE + FIAS Wallet</title>
   <style>
     :root{
-      --bg1:#f6f7fb;
-      --bg2:#eef1f7;
-      --card:#ffffff;
-      --text:#1f2a37;
-      --muted:#607086;
-      --line:#d9e2ee;
-      --chip:#f1f5fb;
-      --good:#1fa971;
-      --bad:#d94a5b;
-      --shadow:0 10px 30px rgba(31,42,55,0.08);
-      --shadow2:0 6px 18px rgba(31,42,55,0.06);
+      --bg1:#fbf6ee;
+      --bg2:#f3eadb;
+      --card:#fffaf2;
+      --card2:#fff6e6;
+      --text:#2a241e;
+      --muted:#6f6257;
+      --line:#eadbc7;
+      --chip:#f7ecd9;
+      --accent:#caa574;
+      --accent2:#b78b5b;
+      --good:#1b8a5a;
+      --bad:#c7474d;
+      --shadow:0 10px 30px rgba(42,36,30,0.10);
+      --shadow2:0 6px 16px rgba(42,36,30,0.08);
       --radius:18px;
     }
     *{box-sizing:border-box}
     body{
       margin:0;
       font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      background:radial-gradient(1100px 700px at 20% 10%, #ffffff 0%, var(--bg1) 40%, var(--bg2) 100%);
+      background:radial-gradient(1100px 700px at 18% 8%, #ffffff 0%, var(--bg1) 42%, var(--bg2) 100%);
       color:var(--text);
     }
-    .wrap{max-width:980px;margin:0 auto;padding:16px 14px 90px}
+    .wrap{max-width:980px;margin:0 auto;padding:16px 14px 92px}
     .top{
       display:flex;gap:12px;align-items:center;justify-content:space-between;
-      padding:10px 0 14px;border-bottom:1px solid rgba(217,226,238,0.9);margin-bottom:14px;
+      padding:10px 0 14px;border-bottom:1px solid rgba(234,219,199,0.95);margin-bottom:14px;
     }
     .title{display:flex;flex-direction:column;gap:2px}
     .title h1{font-size:18px;margin:0}
@@ -40,7 +43,7 @@
     .btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
     button{
       border:1px solid var(--line);
-      background:linear-gradient(180deg,#fbfcff,#f3f6ff);
+      background:linear-gradient(180deg,var(--card),var(--card2));
       color:var(--text);
       padding:10px 12px;
       border-radius:14px;
@@ -50,16 +53,16 @@
       -webkit-tap-highlight-color:transparent;
     }
     button.primary{
-      background:linear-gradient(180deg, rgba(110,168,254,0.95), rgba(155,140,255,0.95));
-      border-color:rgba(110,168,254,0.6);
-      color:#0b1020;
-      box-shadow:0 10px 28px rgba(110,168,254,0.25);
+      background:linear-gradient(180deg, rgba(202,165,116,0.98), rgba(183,139,91,0.98));
+      border-color:rgba(183,139,91,0.75);
+      color:#241e18;
+      box-shadow:0 10px 24px rgba(183,139,91,0.24);
     }
     button:active{transform:translateY(1px)}
     .grid{display:grid;grid-template-columns:1fr;gap:12px}
     @media (min-width:860px){.grid{grid-template-columns:1.2fr .8fr}}
     .card{
-      background:linear-gradient(180deg,var(--card),#fbfcff);
+      background:linear-gradient(180deg,var(--card),#fffdf8);
       border:1px solid var(--line);
       border-radius:var(--radius);
       padding:14px;
@@ -67,30 +70,41 @@
     }
     .row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
     .pill{
-      background:linear-gradient(180deg, var(--chip), #f8faff);
+      background:linear-gradient(180deg, var(--chip), #fff7ea);
       border:1px solid var(--line);
       color:var(--muted);
       padding:6px 10px;border-radius:999px;font-size:12px
     }
     .big{font-size:26px;letter-spacing:-0.3px;margin:8px 0 2px}
     .small{font-size:12px;color:var(--muted)}
+    .sep{height:1px;background:rgba(234,219,199,0.95);margin:12px 0}
     .tokens{display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px}
     @media (min-width:520px){.tokens{grid-template-columns:1fr 1fr}}
     .token{
-      background:linear-gradient(180deg, rgba(110,168,254,0.08), rgba(155,140,255,0.06));
-      border:1px solid rgba(217,226,238,0.95);
+      background:linear-gradient(180deg, rgba(202,165,116,0.10), rgba(247,236,217,0.65));
+      border:1px solid rgba(234,219,199,0.98);
       border-radius:16px;
       padding:12px;
     }
     .token .sym{font-size:14px;margin:0 0 6px}
     .token .bal{font-size:20px;margin:0}
     .token .val{font-size:12px;color:var(--muted);margin-top:6px}
-    .sep{height:1px;background:rgba(217,226,238,0.9);margin:12px 0}
+    .kpiRow{display:grid;grid-template-columns:1fr;gap:8px;margin-top:10px}
+    @media (min-width:520px){.kpiRow{grid-template-columns:1fr 1fr}}
+    .kpi{
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px;
+      background:rgba(255,250,242,0.92);
+      box-shadow:var(--shadow2);
+    }
+    .kpi .h{font-size:12px;color:var(--muted)}
+    .kpi .v{font-size:18px;margin-top:6px}
     label{display:block;font-size:12px;color:var(--muted);margin:0 0 6px}
     input,select{
       width:100%;
       border:1px solid var(--line);
-      background:rgba(255,255,255,0.92);
+      background:rgba(255,250,242,0.95);
       color:var(--text);
       padding:12px 12px;
       border-radius:14px;
@@ -103,15 +117,15 @@
     .list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
     .item{
       display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;
-      border:1px solid var(--line);border-radius:16px;padding:10px;background:rgba(255,255,255,0.78);
+      border:1px solid var(--line);border-radius:16px;padding:10px;background:rgba(255,250,242,0.88);
       box-shadow:var(--shadow2);
     }
     .addr{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;color:var(--muted)}
     .nav{
       position:fixed;left:0;right:0;bottom:0;
-      background:rgba(246,247,251,0.92);
+      background:rgba(251,246,238,0.92);
       backdrop-filter:blur(14px);
-      border-top:1px solid rgba(217,226,238,0.9);
+      border-top:1px solid rgba(234,219,199,0.95);
       display:flex;gap:8px;justify-content:center;padding:10px 10px;
     }
     .tab{
@@ -122,24 +136,24 @@
       text-align:center;
       font-size:13px;
       color:var(--muted);
-      background:rgba(255,255,255,0.85);
+      background:rgba(255,250,242,0.92);
       box-shadow:var(--shadow2);
     }
     .tab.active{
-      color:#0b1020;
-      border-color:rgba(110,168,254,0.7);
-      background:linear-gradient(180deg, rgba(110,168,254,0.22), rgba(155,140,255,0.16));
+      color:#241e18;
+      border-color:rgba(183,139,91,0.75);
+      background:linear-gradient(180deg, rgba(202,165,116,0.24), rgba(247,236,217,0.55));
     }
     .hide{display:none}
     .toast{
       position:fixed;left:50%;bottom:78px;transform:translateX(-50%);
-      background:rgba(31,42,55,0.92);
+      background:rgba(42,36,30,0.92);
       border:1px solid rgba(255,255,255,0.22);
       color:#ffffff;
       padding:10px 12px;border-radius:14px;font-size:13px;
       max-width:92vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
       opacity:0;pointer-events:none;transition:opacity .18s ease;
-      box-shadow:0 18px 40px rgba(31,42,55,0.22);
+      box-shadow:0 18px 40px rgba(42,36,30,0.22);
     }
     .toast.show{opacity:1}
     .chg{font-weight:700}
@@ -151,20 +165,9 @@
       display:block;
       border:1px solid var(--line);
       border-radius:14px;
-      background:linear-gradient(180deg, rgba(110,168,254,0.08), rgba(155,140,255,0.06));
+      background:linear-gradient(180deg, rgba(202,165,116,0.12), rgba(247,236,217,0.55));
       box-shadow:var(--shadow2);
     }
-    .kpiRow{display:grid;grid-template-columns:1fr;gap:8px;margin-top:10px}
-    @media (min-width:520px){.kpiRow{grid-template-columns:1fr 1fr}}
-    .kpi{
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:12px;
-      background:rgba(255,255,255,0.85);
-      box-shadow:var(--shadow2);
-    }
-    .kpi .h{font-size:12px;color:var(--muted)}
-    .kpi .v{font-size:18px;margin-top:6px}
   </style>
 </head>
 <body>
@@ -184,7 +187,7 @@
       <div class="grid">
         <div class="card">
           <div class="row">
-            <div class="pill" id="activeWalletPill">Handmatig portfolio</div>
+            <div class="pill" id="activeWalletPill">Portfolio, handmatig</div>
             <div class="pill" id="storagePill">Opslag</div>
           </div>
 
@@ -241,10 +244,12 @@
             <div class="pill">Grafiek, 7 dagen, USD</div>
             <div class="pill" id="graphStatus">-</div>
           </div>
+
           <div style="height:10px"></div>
           <div class="small">DevvE</div>
           <div style="height:6px"></div>
           <canvas id="chartDevve" width="900" height="240"></canvas>
+
           <div style="height:10px"></div>
           <div class="small">FIAS</div>
           <div style="height:6px"></div>
@@ -255,19 +260,12 @@
         </div>
 
         <div class="card">
-          <div style="font-size:14px">Wallets, optioneel</div>
-          <div class="small">Je kan adressen toevoegen, maar jouw portfolio werkt ook zonder wallets.</div>
+          <div style="font-size:14px">Snelle acties</div>
+          <div class="small">Wallets, instellingen, export, import</div>
           <div class="sep"></div>
           <button id="goWallets" style="width:100%">Wallets</button>
           <div style="height:8px"></div>
           <button id="goSettings" style="width:100%">Instellingen</button>
-          <div class="sep"></div>
-          <div class="small" id="allLine">Wallets, 0</div>
-        </div>
-
-        <div class="card">
-          <div style="font-size:14px">Snelle acties</div>
-          <div class="small">Export, import, reset</div>
           <div class="sep"></div>
           <button id="exportBtn" style="width:100%">Exporteer data</button>
           <div style="height:8px"></div>
@@ -276,13 +274,20 @@
           <div style="height:8px"></div>
           <button id="resetBtn" style="width:100%">Reset app data</button>
         </div>
+
+        <div class="card">
+          <div style="font-size:14px">Wallet status</div>
+          <div class="small" id="walletInfo">Wallets, 0. Actief, geen.</div>
+          <div class="sep"></div>
+          <div class="small" id="netInfo">Bron prijzen, -. Bron grafiek, -.</div>
+        </div>
       </div>
     </div>
 
     <div id="viewWallets" class="view hide">
       <div class="card">
         <div style="font-size:14px">Wallets</div>
-        <div class="small">Alles wordt lokaal opgeslagen op jouw toestel.</div>
+        <div class="small">Je kan adressen toevoegen. Actieve wallet werkt per direct.</div>
 
         <div class="sep"></div>
 
@@ -306,13 +311,16 @@
         <select id="activeSelect"></select>
 
         <div class="list" id="walletList"></div>
+
+        <div class="sep"></div>
+        <div class="small">Tip. Gebruik altijd het beginscherm icoon. Dan blijven wallets staan.</div>
       </div>
     </div>
 
     <div id="viewSettings" class="view hide">
       <div class="card">
         <div style="font-size:14px">Instellingen</div>
-        <div class="small">Je holdings en aankoopprijzen staan hier.</div>
+        <div class="small">Hier staan jouw aantallen en aankoopprijzen.</div>
 
         <div class="sep"></div>
 
@@ -374,13 +382,15 @@
   <script>
     const DEVVE_CONTRACT = "0x8248270620aa532e4d64316017be5e873e37cc09";
     const FIAS_CONTRACT  = "0x8e4f1ce473b292d56934c36976356e3e22c35585";
-    const LS_KEY = "rb_devve_fias_wallet_home_v2";
+    const LS_KEY = "rb_devve_fias_wallet_cream_v1";
 
     const $ = (id) => document.getElementById(id);
 
     const state = loadState();
     let autoTimer = null;
-    let graphsLoaded = false;
+
+    let lastPriceSource = "-";
+    let lastChartSource = "-";
 
     function toast(msg){
       const t = $("toast");
@@ -388,8 +398,6 @@
       t.classList.add("show");
       setTimeout(() => t.classList.remove("show"), 1800);
     }
-
-    function renderStatus(text){ $("statusLine").textContent = text; }
 
     function normalizeState(s){
       if(!s || typeof s !== "object") s = {};
@@ -399,8 +407,6 @@
       if(!s.cache.prices) s.cache.prices = { devveUsd:0, fiasUsd:0, eurusd:1 };
       if(!s.cache.chg24) s.cache.chg24 = { devve:0, fias:0 };
       if(!s.cache.lastUpdateISO) s.cache.lastUpdateISO = "";
-      if(!s.lastBalances) s.lastBalances = { devveBal:0, fiasBal:0 };
-      if(!s.perWallet || typeof s.perWallet !== "object") s.perWallet = {};
       if(!s.graphs) s.graphs = { devve: [], fias: [], ts: 0 };
 
       if(typeof s.settings.autoOn !== "boolean") s.settings.autoOn = true;
@@ -411,6 +417,7 @@
         devve: { qty: 35000, avg: 0.30 },
         fias:  { qty: 50384, avg: 0.01129 }
       };
+
       if(!s.settings.positions.devve) s.settings.positions.devve = { qty: 35000, avg: 0.30 };
       if(!s.settings.positions.fias)  s.settings.positions.fias  = { qty: 50384, avg: 0.01129 };
 
@@ -421,6 +428,7 @@
         stakedDevve: Number(w.stakedDevve || 0)
       }));
 
+      if(typeof s.activeWalletId !== "string") s.activeWalletId = "";
       return s;
     }
 
@@ -453,8 +461,6 @@
           }
         },
         cache: { lastUpdateISO:"", prices:{ devveUsd:0, fiasUsd:0, eurusd:1 }, chg24:{ devve:0, fias:0 } },
-        lastBalances: { devveBal:0, fiasBal:0 },
-        perWallet: {},
         graphs: { devve: [], fias: [], ts: 0 }
       });
       safeSave(fresh);
@@ -463,7 +469,7 @@
 
     function saveState(){
       const ok = safeSave(state);
-      if(!ok) toast("Opslag werkt niet, open via beginscherm");
+      if(!ok) toast("Opslag werkt niet");
       updateStoragePill();
     }
 
@@ -477,19 +483,6 @@
         ok = false;
       }
       $("storagePill").textContent = ok ? "Opslag, ok" : "Opslag, uit";
-    }
-
-    function fmtNumber(n, digits=2){
-      if(!isFinite(n)) n = 0;
-      return n.toLocaleString("nl-NL",{maximumFractionDigits:digits, minimumFractionDigits:0});
-    }
-    function fmtMoneyUSD(n){
-      if(!isFinite(n)) n = 0;
-      return n.toLocaleString("en-US",{style:"currency",currency:"USD",maximumFractionDigits:2});
-    }
-    function fmtMoneyEUR(n){
-      if(!isFinite(n)) n = 0;
-      return n.toLocaleString("nl-NL",{style:"currency",currency:"EUR",maximumFractionDigits:2});
     }
 
     function setView(which){
@@ -506,6 +499,19 @@
       return { ok:true, reason:"" };
     }
 
+    function fmtNumber(n, digits=2){
+      if(!isFinite(n)) n = 0;
+      return n.toLocaleString("nl-NL",{maximumFractionDigits:digits, minimumFractionDigits:0});
+    }
+    function fmtMoneyUSD(n){
+      if(!isFinite(n)) n = 0;
+      return n.toLocaleString("en-US",{style:"currency",currency:"USD",maximumFractionDigits:2});
+    }
+    function fmtMoneyEUR(n){
+      if(!isFinite(n)) n = 0;
+      return n.toLocaleString("nl-NL",{style:"currency",currency:"EUR",maximumFractionDigits:2});
+    }
+
     function setChange(elId, val){
       const el = $(elId);
       const n = Number(val || 0);
@@ -515,91 +521,205 @@
       if(n < 0) el.classList.add("dn");
     }
 
+    function activeWallet(){
+      return state.wallets.find(w => w.id === state.activeWalletId) || null;
+    }
+
     async function fetchJsonSmart(url){
       const tries = [
         { name:"direct", u:url },
         { name:"allorigins", u:"https://api.allorigins.win/raw?url=" + encodeURIComponent(url) },
         { name:"corsproxy", u:"https://corsproxy.io/?" + encodeURIComponent(url) }
       ];
-
-      let lastErr = "fout";
+      let last = "fout";
       for(const t of tries){
         try{
           const r = await fetch(t.u, { cache:"no-store" });
-          if(!r.ok){
-            lastErr = t.name + " " + r.status;
-            continue;
-          }
+          if(!r.ok){ last = t.name + " " + r.status; continue; }
           const j = await r.json();
           return { ok:true, json:j, via:t.name };
         }catch(e){
-          lastErr = t.name + " err";
+          last = t.name + " err";
         }
       }
-      return { ok:false, json:null, via:lastErr };
+      return { ok:false, json:null, via:last };
     }
 
-    async function fetchPricesAndChanges(){
+    async function fetchPricesDexScreener(){
+      const urlDev = "https://api.dexscreener.com/latest/dex/tokens/" + DEVVE_CONTRACT;
+      const urlFia = "https://api.dexscreener.com/latest/dex/tokens/" + FIAS_CONTRACT;
+
+      const a = await fetchJsonSmart(urlDev);
+      const b = await fetchJsonSmart(urlFia);
+      if(!a.ok || !b.ok) return { ok:false, via:"dex " + a.via + " " + b.via };
+
+      const pick = (j) => {
+        const pairs = Array.isArray(j?.pairs) ? j.pairs : [];
+        if(pairs.length === 0) return null;
+        pairs.sort((x,y) => (Number(y?.liquidity?.usd||0) - Number(x?.liquidity?.usd||0)));
+        return pairs[0];
+      };
+
+      const pDev = pick(a.json);
+      const pFia = pick(b.json);
+      if(!pDev || !pFia) return { ok:false, via:"dex no pairs" };
+
+      const devUsd = Number(pDev?.priceUsd || 0);
+      const fiaUsd = Number(pFia?.priceUsd || 0);
+      const devChg = Number(pDev?.priceChange?.h24 || 0);
+      const fiaChg = Number(pFia?.priceChange?.h24 || 0);
+
+      if(!isFinite(devUsd) || !isFinite(fiaUsd)) return { ok:false, via:"dex bad price" };
+
+      return { ok:true, devUsd, fiaUsd, devChg, fiaChg, via:"dexscreener" };
+    }
+
+    async function fetchPricesCoinGecko(){
       const url = "https://api.coingecko.com/api/v3/simple/price?ids=devve,fias&vs_currencies=usd,eur&include_24hr_change=true";
       const res = await fetchJsonSmart(url);
-      if(!res.ok) throw new Error("prijs " + res.via);
+      if(!res.ok) return { ok:false, via:"cg " + res.via };
 
       const j = res.json;
+      const devUsd = Number(j?.devve?.usd || 0);
+      const fiaUsd = Number(j?.fias?.usd || 0);
+      const devEur = Number(j?.devve?.eur || 0);
+      const devChg = Number(j?.devve?.usd_24h_change || 0);
+      const fiaChg = Number(j?.fias?.usd_24h_change || 0);
 
-      const devveUsd = Number(j?.devve?.usd || 0);
-      const fiasUsd  = Number(j?.fias?.usd || 0);
-      const devveEur = Number(j?.devve?.eur || 0);
+      if(!isFinite(devUsd) || !isFinite(fiaUsd) || devUsd <= 0) return { ok:false, via:"cg bad" };
 
-      const devveChg = Number(j?.devve?.usd_24h_change || 0);
-      const fiasChg  = Number(j?.fias?.usd_24h_change || 0);
-
-      const eurusd = devveEur > 0 ? (devveUsd / devveEur) : (state.cache.prices.eurusd || 1);
-
-      state.cache.prices = { devveUsd, fiasUsd, eurusd };
-      state.cache.chg24 = { devve: devveChg, fias: fiasChg };
-      state.cache.lastUpdateISO = new Date().toISOString();
-      saveState();
+      const eurusd = devEur > 0 ? (devUsd / devEur) : 1;
+      return { ok:true, devUsd, fiaUsd, devChg, fiaChg, eurusd, via:"coingecko " + res.via };
     }
 
-    async function fetchBalancesEthplorer(addr){
-      const url = "https://api.ethplorer.io/getAddressInfo/" + addr + "?apiKey=freekey";
+    async function fetchEurUsdFallback(){
+      const url = "https://open.er-api.com/v6/latest/EUR";
       const res = await fetchJsonSmart(url);
-      if(!res.ok) throw new Error("wallet " + res.via);
-
-      const j = res.json;
-
-      const tokens = Array.isArray(j?.tokens) ? j.tokens : [];
-      let devveBal = 0;
-      let fiasBal = 0;
-
-      for(const t of tokens){
-        const ca = (t?.tokenInfo?.address || "").toLowerCase();
-        const dec = Number(t?.tokenInfo?.decimals || 0);
-        const rawBal = Number(t?.balance || 0);
-        const bal = dec ? (rawBal / Math.pow(10, dec)) : rawBal;
-
-        if(ca === DEVVE_CONTRACT.toLowerCase()) devveBal = bal;
-        if(ca === FIAS_CONTRACT.toLowerCase())  fiasBal  = bal;
-      }
-      return { devveBal, fiasBal };
+      if(!res.ok) return { ok:false, via:"fx " + res.via };
+      const usd = Number(res.json?.rates?.USD || 0);
+      if(!isFinite(usd) || usd <= 0) return { ok:false, via:"fx bad" };
+      return { ok:true, eurusd:usd, via:"fx" };
     }
 
-    async function fetchChartSeries(coinId){
+    async function updatePrices(){
+      let eurusd = Number(state.cache.prices.eurusd || 1);
+
+      const dex = await fetchPricesDexScreener();
+      if(dex.ok){
+        const fx = await fetchEurUsdFallback();
+        if(fx.ok) eurusd = fx.eurusd;
+
+        state.cache.prices.devveUsd = dex.devUsd;
+        state.cache.prices.fiasUsd = dex.fiaUsd;
+        state.cache.prices.eurusd = eurusd;
+        state.cache.chg24.devve = dex.devChg;
+        state.cache.chg24.fias = dex.fiaChg;
+        state.cache.lastUpdateISO = new Date().toISOString();
+        lastPriceSource = dex.via + ", fx " + (eurusd ? "ok" : "no");
+        saveState();
+        return { ok:true };
+      }
+
+      const cg = await fetchPricesCoinGecko();
+      if(cg.ok){
+        eurusd = cg.eurusd || eurusd;
+
+        state.cache.prices.devveUsd = cg.devUsd;
+        state.cache.prices.fiasUsd = cg.fiaUsd;
+        state.cache.prices.eurusd = eurusd;
+        state.cache.chg24.devve = cg.devChg;
+        state.cache.chg24.fias = cg.fiaChg;
+        state.cache.lastUpdateISO = new Date().toISOString();
+        lastPriceSource = cg.via;
+        saveState();
+        return { ok:true };
+      }
+
+      lastPriceSource = "prijzen fout, " + dex.via + ", " + cg.via;
+      return { ok:false };
+    }
+
+    async function fetchChartSeriesCoinGecko(coinId){
       const url = "https://api.coingecko.com/api/v3/coins/" + coinId + "/market_chart?vs_currency=usd&days=7&interval=hourly";
       const res = await fetchJsonSmart(url);
-      if(!res.ok) return { ok:false, series:[], via:res.via };
+      if(!res.ok) return { ok:false, series:[], via:"cg " + res.via };
 
-      const j = res.json;
-      const prices = Array.isArray(j?.prices) ? j.prices : [];
+      const prices = Array.isArray(res.json?.prices) ? res.json.prices : [];
       const series = prices.map(p => Number(p[1])).filter(x => isFinite(x));
+      if(series.length < 2) return { ok:false, series:[], via:"cg no data" };
 
       const target = 120;
-      if(series.length <= target) return { ok:true, series, via:res.via };
+      if(series.length <= target) return { ok:true, series, via:"cg " + res.via };
 
       const step = Math.max(1, Math.floor(series.length / target));
       const out = [];
       for(let i=0;i<series.length;i+=step) out.push(series[i]);
-      return { ok:true, series:out, via:res.via };
+      return { ok:true, series:out, via:"cg " + res.via };
+    }
+
+    async function fetchChartSeriesDexScreener(tokenAddr){
+      const url = "https://api.dexscreener.com/latest/dex/tokens/" + tokenAddr;
+      const res = await fetchJsonSmart(url);
+      if(!res.ok) return { ok:false, series:[], via:"dex " + res.via };
+
+      const pairs = Array.isArray(res.json?.pairs) ? res.json.pairs : [];
+      if(pairs.length === 0) return { ok:false, series:[], via:"dex no pairs" };
+
+      pairs.sort((x,y) => (Number(y?.liquidity?.usd||0) - Number(x?.liquidity?.usd||0)));
+      const p = pairs[0];
+
+      const h6 = Number(p?.priceChange?.h6);
+      const h1 = Number(p?.priceChange?.h1);
+      const h24 = Number(p?.priceChange?.h24);
+      const now = Number(p?.priceUsd || 0);
+
+      if(!isFinite(now) || now <= 0) return { ok:false, series:[], via:"dex bad" };
+
+      const series = [];
+      const base = now;
+      const mk = (pct) => base / (1 + (pct/100));
+
+      const p24 = isFinite(h24) ? mk(h24) : base;
+      const p6  = isFinite(h6)  ? mk(h6)  : base;
+      const p1  = isFinite(h1)  ? mk(h1)  : base;
+
+      for(let i=0;i<120;i++){
+        const t = i / 119;
+        let v = p24 + (p6 - p24) * Math.min(1, t*0.55);
+        v = v + (p1 - p6) * Math.max(0, (t-0.55)/0.30);
+        v = v + (base - p1) * Math.max(0, (t-0.85)/0.15);
+        series.push(Number(v));
+      }
+
+      return { ok:true, series, via:"dex approx" };
+    }
+
+    async function loadCharts(){
+      $("graphStatus").textContent = "laden";
+
+      const devA = await fetchChartSeriesCoinGecko("devve");
+      const fiaA = await fetchChartSeriesCoinGecko("fias");
+
+      let dev = devA;
+      let fia = fiaA;
+
+      if(!dev.ok) dev = await fetchChartSeriesDexScreener(DEVVE_CONTRACT);
+      if(!fia.ok) fia = await fetchChartSeriesDexScreener(FIAS_CONTRACT);
+
+      if(dev.ok) state.graphs.devve = dev.series;
+      if(fia.ok) state.graphs.fias = fia.series;
+      state.graphs.ts = Date.now();
+      saveState();
+
+      drawLineChart("chartDevve", state.graphs.devve);
+      drawLineChart("chartFias", state.graphs.fias);
+
+      lastChartSource = "dev " + (dev.ok ? dev.via : dev.via) + ", fias " + (fia.ok ? fia.via : fia.via);
+
+      if(dev.ok && fia.ok) $("graphStatus").textContent = "ok";
+      else $("graphStatus").textContent = "fout, " + lastChartSource;
+
+      updateNetInfo();
     }
 
     function drawLineChart(canvasId, series){
@@ -610,7 +730,7 @@
       ctx.clearRect(0,0,w,h);
 
       if(!Array.isArray(series) || series.length < 2){
-        ctx.fillStyle = "rgba(96,112,134,0.9)";
+        ctx.fillStyle = "rgba(111,98,87,0.9)";
         ctx.font = "16px -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial";
         ctx.fillText("geen data", 20, 40);
         return;
@@ -625,7 +745,7 @@
       const xStep = (w - padX*2) / (series.length - 1);
       const yScale = (h - padY*2) / (max - min);
 
-      ctx.strokeStyle = "rgba(217,226,238,1)";
+      ctx.strokeStyle = "rgba(234,219,199,1)";
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(padX, padY);
@@ -634,8 +754,8 @@
       ctx.stroke();
 
       const grad = ctx.createLinearGradient(0,0,w,0);
-      grad.addColorStop(0, "rgba(110,168,254,0.95)");
-      grad.addColorStop(1, "rgba(155,140,255,0.95)");
+      grad.addColorStop(0, "rgba(202,165,116,0.95)");
+      grad.addColorStop(1, "rgba(183,139,91,0.95)");
       ctx.strokeStyle = grad;
       ctx.lineWidth = 2.6;
       ctx.beginPath();
@@ -647,59 +767,35 @@
       }
       ctx.stroke();
 
-      ctx.fillStyle = "rgba(96,112,134,0.95)";
+      ctx.fillStyle = "rgba(111,98,87,0.95)";
       ctx.font = "14px -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial";
-      ctx.fillText("$" + series[series.length-1].toFixed(4), 20, 32);
-    }
-
-    async function loadGraphs(){
-      $("graphStatus").textContent = "laden";
-      graphsLoaded = false;
-
-      const dev = await fetchChartSeries("devve");
-      const fia = await fetchChartSeries("fias");
-
-      if(dev.ok){
-        state.graphs.devve = dev.series;
-      }
-      if(fia.ok){
-        state.graphs.fias = fia.series;
-      }
-      state.graphs.ts = Date.now();
-      saveState();
-
-      drawLineChart("chartDevve", state.graphs.devve);
-      drawLineChart("chartFias", state.graphs.fias);
-
-      graphsLoaded = dev.ok && fia.ok;
-      if(graphsLoaded){
-        $("graphStatus").textContent = "ok";
-      }else{
-        $("graphStatus").textContent = "fout, " + (dev.ok ? "dev ok" : "dev " + dev.via) + ", " + (fia.ok ? "fias ok" : "fias " + fia.via);
-      }
+      ctx.fillText("$" + Number(series[series.length-1]).toFixed(4), 20, 32);
     }
 
     function renderWallets(){
       const sel = $("activeSelect");
       sel.innerHTML = "";
+
       const opt0 = document.createElement("option");
       opt0.value = "";
       opt0.textContent = "Geen";
       sel.appendChild(opt0);
 
-      state.wallets.forEach(w => {
+      for(const w of state.wallets){
         const opt = document.createElement("option");
         opt.value = w.id;
-        opt.textContent = (w.name || "Wallet") + ", " + w.addr.slice(0,6) + "…" + w.addr.slice(-4);
+        opt.textContent = (w.name || "Wallet") + ", " + (w.addr ? (w.addr.slice(0,6) + "…" + w.addr.slice(-4)) : "");
         sel.appendChild(opt);
-      });
+      }
 
+      const exists = state.wallets.some(w => w.id === state.activeWalletId);
+      if(!exists) state.activeWalletId = "";
       sel.value = state.activeWalletId || "";
 
       const list = $("walletList");
       list.innerHTML = "";
 
-      state.wallets.forEach(w => {
+      for(const w of state.wallets){
         const div = document.createElement("div");
         div.className = "item";
 
@@ -708,7 +804,7 @@
         nm.textContent = w.name || "Wallet";
         const ad = document.createElement("div");
         ad.className = "addr";
-        ad.textContent = w.addr;
+        ad.textContent = w.addr || "";
         left.appendChild(nm);
         left.appendChild(ad);
 
@@ -716,26 +812,14 @@
         right.style.display = "flex";
         right.style.gap = "8px";
 
-        const stakeBtn = document.createElement("button");
-        stakeBtn.textContent = "Staked";
-        stakeBtn.onclick = () => {
-          const cur = Number(w.stakedDevve || 0);
-          const v = prompt("Staked DEVVE voor " + (w.name || "wallet"), String(cur));
-          if(v === null) return;
-          const n = Number(String(v).replace(",", "."));
-          if(!isFinite(n) || n < 0){ toast("Geen geldig getal"); return; }
-          w.stakedDevve = n;
-          saveState();
-          toast("Staked gezet");
-        };
-
         const useBtn = document.createElement("button");
-        useBtn.textContent = "Gebruik";
-        useBtn.onclick = async () => {
+        useBtn.textContent = "Actief";
+        useBtn.onclick = () => {
           state.activeWalletId = w.id;
           saveState();
-          setView("dashboard");
-          await refreshAll();
+          renderWallets();
+          renderDashboard();
+          toast("Actieve wallet gezet");
         };
 
         const delBtn = document.createElement("button");
@@ -743,21 +827,21 @@
         delBtn.onclick = () => {
           state.wallets = state.wallets.filter(x => x.id !== w.id);
           if(state.activeWalletId === w.id) state.activeWalletId = "";
-          delete state.perWallet[w.id];
           saveState();
           renderWallets();
+          renderDashboard();
+          toast("Wallet verwijderd");
         };
 
-        right.appendChild(stakeBtn);
         right.appendChild(useBtn);
         right.appendChild(delBtn);
 
         div.appendChild(left);
         div.appendChild(right);
         list.appendChild(div);
-      });
+      }
 
-      $("allLine").textContent = "Wallets, " + state.wallets.length;
+      updateWalletInfo();
     }
 
     function renderSettings(){
@@ -773,20 +857,32 @@
       $("originLine").textContent = "Open via beginscherm icoon. Domein, " + location.origin;
     }
 
+    function updateWalletInfo(){
+      const w = activeWallet();
+      const activeTxt = w ? (w.name || "Wallet") : "geen";
+      $("walletInfo").textContent = "Wallets, " + state.wallets.length + ". Actief, " + activeTxt + ".";
+      $("activeWalletPill").textContent = "Portfolio, handmatig. Wallet actief, " + activeTxt + ".";
+    }
+
+    function updateNetInfo(){
+      $("netInfo").textContent = "Bron prijzen, " + lastPriceSource + ". Bron grafiek, " + lastChartSource + ".";
+    }
+
     function renderDashboard(){
       updateStoragePill();
+      updateWalletInfo();
+      updateNetInfo();
 
       const prices = state.cache.prices || { devveUsd:0, fiasUsd:0, eurusd:1 };
       const dec = Math.max(2, Math.min(8, Number(state.settings.priceDecimals || 4)));
+      const eurusd = Number(prices.eurusd || 1);
 
-      $("devvePrice").textContent = "$" + (prices.devveUsd || 0).toFixed(dec);
-      $("fiasPrice").textContent  = "$" + (prices.fiasUsd  || 0).toFixed(dec);
-      $("eurusd").textContent     = (prices.eurusd || 1).toFixed(4);
+      $("devvePrice").textContent = "$" + Number(prices.devveUsd || 0).toFixed(dec);
+      $("fiasPrice").textContent  = "$" + Number(prices.fiasUsd  || 0).toFixed(dec);
+      $("eurusd").textContent     = Number(eurusd || 1).toFixed(4);
 
       setChange("devveChg", state.cache.chg24?.devve || 0);
       setChange("fiasChg", state.cache.chg24?.fias || 0);
-
-      const eurusd = prices.eurusd || 1;
 
       const devQty = Number(state.settings.positions.devve.qty || 0);
       const devAvg = Number(state.settings.positions.devve.avg || 0);
@@ -799,13 +895,15 @@
       $("devveBuy").textContent = "$" + devAvg.toFixed(dec);
       $("fiasBuy").textContent  = "$" + fiaAvg.toFixed(dec);
 
-      const devUsd = devQty * (prices.devveUsd || 0);
-      const fiaUsd = fiaQty * (prices.fiasUsd || 0);
+      const devUsd = devQty * Number(prices.devveUsd || 0);
+      const fiaUsd = fiaQty * Number(prices.fiasUsd  || 0);
       const totalUsd = devUsd + fiaUsd;
+      const totalEur = eurusd ? (totalUsd / eurusd) : 0;
 
       const devInv = devQty * devAvg;
       const fiaInv = fiaQty * fiaAvg;
       const investUsd = devInv + fiaInv;
+      const investEur = eurusd ? (investUsd / eurusd) : 0;
 
       const plUsd = totalUsd - investUsd;
       const plPct = investUsd > 0 ? (plUsd / investUsd) * 100 : 0;
@@ -814,10 +912,10 @@
       $("fiasVal").textContent  = fmtMoneyUSD(fiaUsd) + ". " + fmtMoneyEUR(eurusd ? fiaUsd / eurusd : 0);
 
       $("totalUsd").textContent = fmtMoneyUSD(totalUsd);
-      $("totalEur").textContent = fmtMoneyEUR(eurususd ? (totalUsd / eurusd) : 0);
+      $("totalEur").textContent = fmtMoneyEUR(totalEur);
 
       $("investUsd").textContent = fmtMoneyUSD(investUsd);
-      $("investEur").textContent = fmtMoneyEUR(eurusd ? (investUsd / eurusd) : 0);
+      $("investEur").textContent = fmtMoneyEUR(investEur);
 
       const plEl = $("plUsd");
       plEl.textContent = fmtMoneyUSD(plUsd);
@@ -827,41 +925,19 @@
       plPctEl.textContent = (isFinite(plPct) ? plPct.toFixed(2) : "0.00") + "%";
       plPctEl.className = "small " + (plUsd >= 0 ? "up" : "dn");
 
-      const devPLEl = $("devvePL");
       const devPL = devUsd - devInv;
+      const fiaPL = fiaUsd - fiaInv;
+
+      const devPLEl = $("devvePL");
       devPLEl.textContent = fmtMoneyUSD(devPL);
       devPLEl.className = (devPL >= 0 ? "up" : "dn");
 
       const fiaPLEl = $("fiasPL");
-      const fiaPL = fiaUsd - fiaInv;
       fiaPLEl.textContent = fmtMoneyUSD(fiaPL);
       fiaPLEl.className = (fiaPL >= 0 ? "up" : "dn");
 
       const lu = state.cache.lastUpdateISO ? new Date(state.cache.lastUpdateISO) : null;
       $("lastUpdate").textContent = lu ? lu.toLocaleString("nl-NL") : "-";
-    }
-
-    async function refreshAll(){
-      renderStatus("Verversen");
-      try{
-        await fetchPricesAndChanges();
-        renderDashboard();
-        await loadGraphs();
-        renderStatus("Klaar");
-      }catch(e){
-        renderStatus("Fout");
-        toast("Verversen fout, probeer later");
-      }
-    }
-
-    function startAuto(){
-      stopAuto();
-      if(!state.settings.autoOn) return;
-      const min = Math.max(1, Math.min(120, Number(state.settings.autoMin || 5)));
-      autoTimer = setInterval(refreshAll, min * 60 * 1000);
-    }
-    function stopAuto(){
-      if(autoTimer){ clearInterval(autoTimer); autoTimer = null; }
     }
 
     function exportData(){
@@ -878,12 +954,9 @@
 
     function importDataFromObject(obj){
       const incoming = obj?.state ? obj.state : obj;
-      if(!incoming || typeof incoming !== "object") throw new Error("geen data");
-
       const n = normalizeState(incoming);
       Object.keys(state).forEach(k => delete state[k]);
       Object.assign(state, n);
-
       saveState();
       renderAll();
       toast("Import klaar");
@@ -894,18 +967,55 @@
       location.reload();
     }
 
+    function startAuto(){
+      stopAuto();
+      if(!state.settings.autoOn) return;
+      const min = Math.max(1, Math.min(120, Number(state.settings.autoMin || 5)));
+      autoTimer = setInterval(() => { refreshAll(); }, min * 60 * 1000);
+    }
+    function stopAuto(){
+      if(autoTimer){ clearInterval(autoTimer); autoTimer = null; }
+    }
+
+    async function refreshAll(){
+      $("statusLine").textContent = "Verversen";
+      let okPrices = false;
+
+      try{
+        const p = await updatePrices();
+        okPrices = !!p.ok;
+      }catch(e){
+        okPrices = false;
+      }
+
+      renderDashboard();
+
+      try{
+        await loadCharts();
+      }catch(e){
+        $("graphStatus").textContent = "fout";
+        lastChartSource = "chart crash";
+        updateNetInfo();
+      }
+
+      $("statusLine").textContent = okPrices ? "Klaar" : "Klaar, prijzen fout";
+    }
+
     function renderAll(){
       renderWallets();
       renderSettings();
       renderDashboard();
-      $("graphStatus").textContent = graphsLoaded ? "ok" : "-";
+      drawLineChart("chartDevve", state.graphs.devve);
+      drawLineChart("chartFias", state.graphs.fias);
+      $("graphStatus").textContent = "-";
+      $("statusLine").textContent = "Klaar";
     }
 
     document.querySelectorAll(".tab").forEach(el => {
       el.addEventListener("click", () => setView(el.dataset.tab));
     });
 
-    $("refreshBtn").addEventListener("click", refreshAll);
+    $("refreshBtn").addEventListener("click", () => refreshAll());
 
     $("autoBtn").addEventListener("click", () => {
       state.settings.autoOn = !state.settings.autoOn;
@@ -924,17 +1034,24 @@
       const id = "w_" + Math.random().toString(16).slice(2) + Date.now().toString(16);
       state.wallets.unshift({ id, name, addr, stakedDevve: 0 });
 
+      if(!state.activeWalletId) state.activeWalletId = id;
+
       $("wName").value = "";
       $("wAddr").value = "";
 
       saveState();
       renderWallets();
+      renderDashboard();
       toast("Wallet toegevoegd");
     });
 
     $("activeSelect").addEventListener("change", (e) => {
-      state.activeWalletId = e.target.value;
+      const id = String(e.target.value || "");
+      const exists = state.wallets.some(w => w.id === id);
+      state.activeWalletId = exists ? id : "";
       saveState();
+      renderWallets();
+      renderDashboard();
       toast("Actieve wallet gezet");
     });
 
@@ -964,8 +1081,7 @@
       toast("Opgeslagen");
     });
 
-    $("exportBtn").addEventListener("click", exportData);
-
+    $("exportBtn").addEventListener("click", () => exportData());
     $("importBtn").addEventListener("click", () => $("importFile").click());
 
     $("importFile").addEventListener("change", async (e) => {
@@ -987,11 +1103,9 @@
     $("goWallets").addEventListener("click", () => setView("wallets"));
     $("goSettings").addEventListener("click", () => setView("settings"));
 
-    (async () => {
-      renderAll();
-      startAuto();
-      await refreshAll();
-    })();
+    renderAll();
+    startAuto();
+    refreshAll();
   </script>
 </body>
 </html>
