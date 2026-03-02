@@ -5,38 +5,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="theme-color" content="#fdf7ef" />
+  <meta name="theme-color" content="#fbf3e8" />
   <title>DevvE + FIAS Wallet</title>
   <style>
     :root{
-  --bg1:#fdf7ef;
-  --bg2:#efe2cf;
-  --card:#fffdf8;
-  --card2:#f9eddc;
-  --text:#2a241e;
-  --muted:#6f6257;
-  --line:#e4d3ba;
-  --chip:#f4e6d2;
-  --accent:#b88a56;
-  --accent2:#9f6f3e;
-  --good:#1b8a5a;
-  --bad:#c7474d;
-  --shadow:0 10px 30px rgba(42,36,30,0.10);
-  --shadow2:0 6px 16px rgba(42,36,30,0.08);
-  --radius:18px;
-}
+      --bg1:#fbf3e8;
+      --bg2:#e7d3bb;
+      --card:#fffdf8;
+      --card2:#f4e2cc;
+      --text:#241f19;
+      --muted:#6b5f55;
+      --line:#d9c3a7;
+      --chip:#efdcc4;
+      --accent:#b07a3f;
+      --accent2:#8e5a24;
+      --good:#0f7a4c;
+      --bad:#c13b43;
+      --shadow:0 12px 34px rgba(36,31,25,0.12);
+      --shadow2:0 8px 18px rgba(36,31,25,0.10);
+      --radius:18px;
+    }
+
     *{ box-sizing:border-box; }
+    html,body{ height:100%; }
     body{
       margin:0;
       font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
       background:radial-gradient(1100px 700px at 18% 8%, #ffffff 0%, var(--bg1) 42%, var(--bg2) 100%);
       color:var(--text);
+      -webkit-tap-highlight-color:transparent;
     }
-    .wrap{ max-width:980px; margin:0 auto; padding:16px 14px 92px; }
+
+    .wrap{ max-width:980px; margin:0 auto; padding:16px 14px 98px; }
+
     .top{
       display:flex; gap:12px; align-items:center; justify-content:space-between;
       padding:10px 0 14px;
-      border-bottom:1px solid rgba(228,211,186,0.98);
+      border-bottom:1px solid rgba(217,195,167,0.98);
       margin-bottom:14px;
     }
     .title{ display:flex; flex-direction:column; gap:2px; }
@@ -53,30 +58,31 @@
       font-size:13px;
       cursor:pointer;
       box-shadow:var(--shadow2);
-      -webkit-tap-highlight-color:transparent;
+      touch-action:manipulation;
     }
     button.primary{
-      border-color:rgba(159,111,62,0.50);
-      background:linear-gradient(180deg, rgba(184,138,86,0.95), rgba(159,111,62,0.92));
-      color:#241e18;
-      box-shadow:0 10px 24px rgba(159,111,62,0.22);
+      border-color:rgba(142,90,36,0.55);
+      background:linear-gradient(180deg, rgba(176,122,63,0.98), rgba(142,90,36,0.95));
+      color:#1f1811;
+      box-shadow:0 12px 26px rgba(142,90,36,0.26);
     }
     button:active{ transform:translateY(1px); }
-    button:disabled{ opacity:0.65; cursor:default; }
+    button:disabled{ opacity:0.65; cursor:default; transform:none; }
 
     .grid{ display:grid; grid-template-columns:1fr; gap:12px; }
     @media (min-width:860px){ .grid{ grid-template-columns:1.2fr .8fr; } }
 
     .card{
-      background:linear-gradient(180deg,var(--card), #fffdf8);
+      background:linear-gradient(180deg,var(--card), #fffaf2);
       border:1px solid var(--line);
       border-radius:var(--radius);
       padding:14px;
       box-shadow:var(--shadow);
     }
+
     .row{ display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
     .pill{
-      background:linear-gradient(180deg, var(--chip), #fff7ea);
+      background:linear-gradient(180deg, var(--chip), #fff5e6);
       border:1px solid var(--line);
       color:var(--muted);
       padding:6px 10px;
@@ -85,14 +91,14 @@
     }
     .big{ font-size:26px; letter-spacing:-0.3px; margin:8px 0 2px; }
     .small{ font-size:12px; color:var(--muted); }
-    .sep{ height:1px; background:rgba(228,211,186,0.98); margin:12px 0; }
+    .sep{ height:1px; background:rgba(217,195,167,0.98); margin:12px 0; }
 
     .tokens{ display:grid; grid-template-columns:1fr; gap:10px; margin-top:10px; }
     @media (min-width:520px){ .tokens{ grid-template-columns:1fr 1fr; } }
 
     .token{
-      background:linear-gradient(180deg, rgba(184,138,86,0.12), rgba(244,230,210,0.75));
-      border:1px solid rgba(228,211,186,0.98);
+      background:linear-gradient(180deg, rgba(176,122,63,0.16), rgba(239,220,196,0.80));
+      border:1px solid rgba(217,195,167,0.98);
       border-radius:16px;
       padding:12px;
     }
@@ -107,7 +113,7 @@
       border:1px solid var(--line);
       border-radius:16px;
       padding:12px;
-      background:rgba(255,253,248,0.92);
+      background:rgba(255,253,248,0.94);
       box-shadow:var(--shadow2);
     }
     .kpi .h{ font-size:12px; color:var(--muted); }
@@ -117,7 +123,7 @@
     input{
       width:100%;
       border:1px solid var(--line);
-      background:rgba(255,253,248,0.96);
+      background:rgba(255,253,248,0.97);
       color:var(--text);
       padding:12px 12px;
       border-radius:14px;
@@ -130,12 +136,14 @@
 
     .nav{
       position:fixed; left:0; right:0; bottom:0;
-      background:rgba(253,247,239,0.92);
+      background:rgba(251,243,232,0.92);
       backdrop-filter:blur(14px);
-      border-top:1px solid rgba(228,211,186,0.98);
+      border-top:1px solid rgba(217,195,167,0.98);
       display:flex; gap:8px; justify-content:center;
       padding:10px 10px;
+      z-index:50;
     }
+
     .tab{
       flex:1; max-width:220px;
       border:1px solid var(--line);
@@ -148,17 +156,19 @@
       box-shadow:var(--shadow2);
       cursor:pointer;
       user-select:none;
+      touch-action:manipulation;
     }
     .tab.active{
-      color:#241e18;
-      border-color:rgba(159,111,62,0.55);
-      background:linear-gradient(180deg, rgba(184,138,86,0.22), rgba(244,230,210,0.60));
+      color:#1f1811;
+      border-color:rgba(142,90,36,0.60);
+      background:linear-gradient(180deg, rgba(176,122,63,0.26), rgba(239,220,196,0.70));
     }
+
     .hide{ display:none; }
 
     .toast{
-      position:fixed; left:50%; bottom:78px; transform:translateX(-50%);
-      background:rgba(42,36,30,0.92);
+      position:fixed; left:50%; bottom:82px; transform:translateX(-50%);
+      background:rgba(36,31,25,0.92);
       border:1px solid rgba(255,255,255,0.22);
       color:#ffffff;
       padding:10px 12px;
@@ -171,7 +181,8 @@
       opacity:0;
       pointer-events:none;
       transition:opacity .18s ease;
-      box-shadow:0 18px 40px rgba(42,36,30,0.22);
+      box-shadow:0 18px 40px rgba(36,31,25,0.24);
+      z-index:60;
     }
     .toast.show{ opacity:1; }
 
@@ -185,7 +196,7 @@
       display:block;
       border:1px solid var(--line);
       border-radius:14px;
-      background:linear-gradient(180deg, rgba(184,138,86,0.14), rgba(244,230,210,0.60));
+      background:linear-gradient(180deg, rgba(176,122,63,0.18), rgba(239,220,196,0.70));
       box-shadow:var(--shadow2);
     }
   </style>
@@ -198,12 +209,11 @@
         <div class="sub" id="statusLine">Klaar</div>
       </div>
       <div class="btns">
-        <button id="refreshBtn" class="primary">Ververs</button>
-        <button id="autoBtn">Auto, aan</button>
+        <button id="refreshBtn" class="primary" type="button">Ververs</button>
+        <button id="autoBtn" type="button">Auto, aan</button>
       </div>
     </div>
-
-    <div id="viewDashboard" class="view">
+   <div id="viewDashboard" class="view">
       <div class="grid">
         <div class="card">
           <div class="row">
@@ -287,29 +297,30 @@
           <div class="sep"></div>
           <div class="small">made by Rob Borghouts 2026</div>
         </div>
-       <div class="card">
+
+        <div class="card">
           <div style="font-size:14px">Snelle acties</div>
           <div class="small">Instellingen, meldingen, export, import, reset</div>
           <div class="sep"></div>
 
-          <button id="goSettings" style="width:100%">Instellingen</button>
+          <button id="goSettings" type="button" style="width:100%">Instellingen</button>
           <div style="height:8px"></div>
 
-          <button id="notifBtn" class="primary" style="width:100%">Meldingen toestaan</button>
+          <button id="notifBtn" class="primary" type="button" style="width:100%">Meldingen toestaan</button>
 
           <div class="sep"></div>
 
-          <button id="exportBtn" style="width:100%">Exporteer data</button>
+          <button id="exportBtn" type="button" style="width:100%">Exporteer data</button>
           <div style="height:8px"></div>
 
-          <button id="importBtn" class="primary" style="width:100%">Importeer data</button>
+          <button id="importBtn" class="primary" type="button" style="width:100%">Importeer data</button>
           <input id="importFile" type="file" accept="application/json" style="display:none" />
 
           <div style="height:8px"></div>
-          <button id="clearCacheBtn" style="width:100%">Reset koers cache</button>
+          <button id="clearCacheBtn" type="button" style="width:100%">Reset koers cache</button>
 
           <div style="height:8px"></div>
-          <button id="resetBtn" style="width:100%">Reset app data</button>
+          <button id="resetBtn" type="button" style="width:100%">Reset app data</button>
 
           <div class="sep"></div>
 
@@ -362,8 +373,7 @@
             <input id="devveTargetIn" type="number" step="0.00000001" />
           </div>
         </div>
-
-        <div style="height:10px"></div>
+       <div style="height:10px"></div>
 
         <div class="formRow">
           <div>
@@ -417,7 +427,7 @@
 
         <div class="sep"></div>
 
-        <button id="saveSettingsBtn" class="primary" style="width:100%">Opslaan</button>
+        <button id="saveSettingsBtn" class="primary" type="button" style="width:100%">Opslaan</button>
 
         <div class="sep"></div>
         <div class="small" id="originLine">-</div>
@@ -425,9 +435,9 @@
     </div>
   </div>
 
-  <div class="nav">
-    <div class="tab active" id="tabDash">Dashboard</div>
-    <div class="tab" id="tabSet">Instellingen</div>
+  <div class="nav" role="navigation" aria-label="Navigatie">
+    <button class="tab active" id="tabDash" type="button" role="tab" aria-selected="true">Dashboard</button>
+    <button class="tab" id="tabSet" type="button" role="tab" aria-selected="false">Instellingen</button>
   </div>
 
   <div class="toast" id="toast"></div>
@@ -438,6 +448,13 @@
     const LS_KEY = "rb_devve_fias_allin_v2_timeoutfix";
 
     const $ = (id) => document.getElementById(id);
+
+    function bindTap(el, fn){
+      if(!el) return;
+      el.addEventListener("click", (e) => { e.preventDefault(); fn(e); }, { passive:false });
+      el.addEventListener("touchend", (e) => { e.preventDefault(); fn(e); }, { passive:false });
+      el.addEventListener("pointerup", (e) => { fn(e); });
+    }
 
     const state = loadState();
     let autoTimer = null;
@@ -530,13 +547,13 @@
       safeSave(fresh);
       return fresh;
     }
-   function saveState(){
+
+    function saveState(){
       const ok = safeSave(state);
       if(!ok) toast("Opslag werkt niet");
       updateStoragePill();
     }
-
-    function updateStoragePill(){
+   function updateStoragePill(){
       let ok = true;
       try{
         const k = "__t";
@@ -555,6 +572,8 @@
       set.classList.toggle("hide", which !== "settings");
       $("tabDash").classList.toggle("active", which === "dashboard");
       $("tabSet").classList.toggle("active", which === "settings");
+      $("tabDash").setAttribute("aria-selected", which === "dashboard" ? "true" : "false");
+      $("tabSet").setAttribute("aria-selected", which === "settings" ? "true" : "false");
     }
 
     function fmtNumber(n, digits=2){
@@ -741,7 +760,8 @@
       lastPriceSource = "prijzen fout, " + dex.via + ", " + cg.via;
       return { ok:false };
     }
-   async function fetchChartSeriesCoinGecko(coinId){
+
+    async function fetchChartSeriesCoinGecko(coinId){
       const url = "https://api.coingecko.com/api/v3/coins/" + coinId + "/market_chart?vs_currency=usd&days=7&interval=hourly";
       const res = await fetchJsonSmart(url);
       if(!res.ok) return { ok:false, series:[], via:"cg " + res.via };
@@ -801,7 +821,7 @@
       ctx.clearRect(0,0,w,h);
 
       if(!Array.isArray(series) || series.length < 2){
-        ctx.fillStyle = "rgba(111,98,87,0.9)";
+        ctx.fillStyle = "rgba(107,95,85,0.95)";
         ctx.font = "16px -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial";
         ctx.fillText("geen data", 20, 40);
         return;
@@ -816,7 +836,7 @@
       const xStep = (w - padX*2) / (series.length - 1);
       const yScale = (h - padY*2) / (max - min);
 
-      ctx.strokeStyle = "rgba(228,211,186,1)";
+      ctx.strokeStyle = "rgba(217,195,167,1)";
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(padX, padY);
@@ -825,8 +845,8 @@
       ctx.stroke();
 
       const grad = ctx.createLinearGradient(0,0,w,0);
-      grad.addColorStop(0, "rgba(184,138,86,0.95)");
-      grad.addColorStop(1, "rgba(159,111,62,0.95)");
+      grad.addColorStop(0, "rgba(176,122,63,0.98)");
+      grad.addColorStop(1, "rgba(142,90,36,0.98)");
       ctx.strokeStyle = grad;
       ctx.lineWidth = 2.6;
       ctx.beginPath();
@@ -1169,12 +1189,12 @@
       $("statusLine").textContent = "Klaar";
     }
 
-    $("tabDash").addEventListener("click", () => setView("dashboard"));
-    $("tabSet").addEventListener("click", () => setView("settings"));
+    bindTap($("tabDash"), () => setView("dashboard"));
+    bindTap($("tabSet"),  () => setView("settings"));
 
-    $("refreshBtn").addEventListener("click", () => refreshAll());
+    bindTap($("refreshBtn"), () => refreshAll());
 
-    $("autoBtn").addEventListener("click", () => {
+    bindTap($("autoBtn"), () => {
       state.settings.autoOn = !state.settings.autoOn;
       saveState();
       renderSettings();
@@ -1182,9 +1202,9 @@
       toast(state.settings.autoOn ? "Auto aan" : "Auto uit");
     });
 
-    $("goSettings").addEventListener("click", () => setView("settings"));
+    bindTap($("goSettings"), () => setView("settings"));
 
-    $("notifBtn").addEventListener("click", async () => {
+    bindTap($("notifBtn"), async () => {
       if(!canNotify()) return;
       try{
         const p = await Notification.requestPermission();
@@ -1200,7 +1220,7 @@
       }
     });
 
-    $("saveSettingsBtn").addEventListener("click", () => {
+    bindTap($("saveSettingsBtn"), () => {
       state.settings.autoMin = Number($("autoMin").value || 5);
       state.settings.priceDecimals = Number($("priceDecimals").value || 4);
 
@@ -1261,9 +1281,9 @@
       checkAlerts();
     });
 
-    $("exportBtn").addEventListener("click", () => exportData());
+    bindTap($("exportBtn"), () => exportData());
 
-    $("importBtn").addEventListener("click", () => {
+    bindTap($("importBtn"), () => {
       stopAuto();
       $("importFile").click();
     });
@@ -1285,9 +1305,9 @@
       }
     });
 
-    $("clearCacheBtn").addEventListener("click", () => clearCourseCache());
+    bindTap($("clearCacheBtn"), () => clearCourseCache());
 
-    $("resetBtn").addEventListener("click", () => { if(confirm("Alles wissen")) resetAll(); });
+    bindTap($("resetBtn"), () => { if(confirm("Alles wissen")) resetAll(); });
 
     renderAll();
     startAuto();
