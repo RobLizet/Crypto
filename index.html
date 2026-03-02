@@ -17,6 +17,8 @@
       --muted:#9fb0c7;
       --line:#223043;
       --chip:#1b2736;
+      --good:#28d17c;
+      --bad:#ff5b6b;
     }
     *{box-sizing:border-box}
     body{
@@ -127,6 +129,17 @@
       color:var(--muted);
       display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap
     }
+    .chg{font-weight:600}
+    .up{color:var(--good)}
+    .dn{color:var(--bad)}
+    canvas{
+      width:100%;
+      height:120px;
+      display:block;
+      border:1px solid var(--line);
+      border-radius:12px;
+      background:rgba(0,0,0,0.12);
+    }
   </style>
 </head>
 <body>
@@ -159,28 +172,57 @@
               <p class="bal" id="devveBal">0</p>
               <div class="val" id="devveVal">$0.00. €0.00</div>
               <div class="val" id="devveStakedLine">Staked, 0</div>
+              <div class="val">24h, <span id="devveChg" class="chg">0.00%</span></div>
             </div>
             <div class="token">
               <p class="sym">FIAS</p>
               <p class="bal" id="fiasBal">0</p>
               <div class="val" id="fiasVal">$0.00. €0.00</div>
+              <div class="val">24h, <span id="fiasChg" class="chg">0.00%</span></div>
             </div>
           </div>
 
           <div class="sep"></div>
+
           <div class="row">
             <div class="small">Prijs DEVVE, <span id="devvePrice">$0.0000</span></div>
             <div class="small">Prijs FIAS, <span id="fiasPrice">$0.0000</span></div>
           </div>
+
           <div class="row" style="margin-top:6px">
             <div class="small">EURUSD, <span id="eurusd">1.0000</span></div>
             <div class="small">Laatste update, <span id="lastUpdate">-</span></div>
           </div>
 
+          <div class="sep"></div>
+
+          <div class="row">
+            <div class="pill">Grafiek, 7 dagen, USD</div>
+            <div class="pill" id="graphStatus">-</div>
+          </div>
+          <div style="height:10px"></div>
+          <div class="small">DevvE</div>
+          <div style="height:6px"></div>
+          <canvas id="chartDevve" width="900" height="240"></canvas>
+          <div style="height:10px"></div>
+          <div class="small">FIAS</div>
+          <div style="height:6px"></div>
+          <canvas id="chartFias" width="900" height="240"></canvas>
+
           <div class="foot">
             <div>made by Rob Borghouts 2026</div>
             <div>Bronnen, Ethplorer, CoinGecko</div>
           </div>
+        </div>
+
+        <div class="card">
+          <div style="font-size:14px">Totaal alle wallets</div>
+          <div class="small">DEVVE on chain plus staked. FIAS on chain.</div>
+          <div class="sep"></div>
+          <div class="big" id="allUsd">$0.00</div>
+          <div class="small" id="allEur">€0.00</div>
+          <div class="sep"></div>
+          <div class="small" id="allLine">Wallets, 0</div>
         </div>
 
         <div class="card">
@@ -282,28 +324,79 @@
   <script>
     const DEVVE_CONTRACT = "0x8248270620aa532e4d64316017be5e873e37cc09";
     const FIAS_CONTRACT  = "0x8e4f1ce473b292d56934c36976356e3e22c35585";
-    const LS_KEY = "rb_devve_fias_wallet_v3";
+
+    const LS_KEY_V5 = "rb_devve_fias_wallet_v5";
+    const LS_KEY_V3 = "rb_devve_fias_wallet_v3";
 
     const $ = (id) => document.getElementById(id);
 
-    const state = loadState();
+    const state = loadStateWithMigration();
     let autoTimer = null;
+    let graphsLoaded = false;
 
-    function loadState(){
-      const raw = localStorage.getItem(LS_KEY);
-      if(raw){
-        try{ return JSON.parse(raw); }catch(e){}
+    function loadStateWithMigration(){
+      const v5raw = localStorage.getItem(LS_KEY_V5);
+      if(v5raw){
+        try{ return normalizeState(JSON.parse(v5raw)); }catch(e){}
       }
-      return {
+
+      const v3raw = localStorage.getItem(LS_KEY_V3);
+      if(v3raw){
+        try{
+          const v3 = JSON.parse(v3raw);
+          const migrated = {
+            wallets: Array.isArray(v3.wallets) ? v3.wallets.map(w => ({
+              id: w.id,
+              name: w.name || "Wallet",
+              addr: w.addr,
+              stakedDevve: Number(w.stakedDevve || 0)
+            })) : [],
+            activeWalletId: v3.activeWalletId || "",
+            settings: v3.settings || { autoOn:true, autoMin:5, priceDecimals:4, manualDevve:"", manualFias:"" },
+            cache: v3.cache || { lastUpdateISO:"", prices:{ devveUsd:0, fiasUsd:0, eurusd:1 }, chg24:{ devve:0, fias:0 } },
+            lastBalances: v3.lastBalances || { devveBal:0, fiasBal:0 },
+            perWallet: v3.perWallet || {},
+            graphs: { devve: [], fias: [], ts: 0 }
+          };
+          const n = normalizeState(migrated);
+          localStorage.setItem(LS_KEY_V5, JSON.stringify(n));
+          return n;
+        }catch(e){}
+      }
+
+      const fresh = normalizeState({
         wallets: [],
         activeWalletId: "",
         settings: { autoOn:true, autoMin:5, priceDecimals:4, manualDevve:"", manualFias:"" },
-        cache: { lastUpdateISO:"", prices:{ devveUsd:0, fiasUsd:0, eurusd:1 } },
-        lastBalances: { devveBal:0, fiasBal:0 }
-      };
+        cache: { lastUpdateISO:"", prices:{ devveUsd:0, fiasUsd:0, eurusd:1 }, chg24:{ devve:0, fias:0 } },
+        lastBalances: { devveBal:0, fiasBal:0 },
+        perWallet: {},
+        graphs: { devve: [], fias: [], ts: 0 }
+      });
+      localStorage.setItem(LS_KEY_V5, JSON.stringify(fresh));
+      return fresh;
     }
 
-    function saveState(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+    function normalizeState(s){
+      if(!s || typeof s !== "object") s = {};
+      if(!Array.isArray(s.wallets)) s.wallets = [];
+      if(!s.settings) s.settings = { autoOn:true, autoMin:5, priceDecimals:4, manualDevve:"", manualFias:"" };
+      if(!s.cache) s.cache = { lastUpdateISO:"", prices:{ devveUsd:0, fiasUsd:0, eurusd:1 }, chg24:{ devve:0, fias:0 } };
+      if(!s.cache.prices) s.cache.prices = { devveUsd:0, fiasUsd:0, eurusd:1 };
+      if(!s.cache.chg24) s.cache.chg24 = { devve:0, fias:0 };
+      if(!s.lastBalances) s.lastBalances = { devveBal:0, fiasBal:0 };
+      if(!s.perWallet || typeof s.perWallet !== "object") s.perWallet = {};
+      if(!s.graphs) s.graphs = { devve: [], fias: [], ts: 0 };
+      s.wallets = s.wallets.map(w => ({
+        id: w.id || ("w_" + Math.random().toString(16).slice(2) + Date.now().toString(16)),
+        name: w.name || "Wallet",
+        addr: String(w.addr || "").trim(),
+        stakedDevve: Number(w.stakedDevve || 0)
+      }));
+      return s;
+    }
+
+    function saveState(){ localStorage.setItem(LS_KEY_V5, JSON.stringify(state)); }
 
     function toast(msg){
       const t = $("toast");
@@ -341,6 +434,15 @@
 
     function activeWallet(){
       return state.wallets.find(w => w.id === state.activeWalletId) || null;
+    }
+
+    function setChange(elId, val){
+      const el = $(elId);
+      const n = Number(val || 0);
+      el.textContent = (isFinite(n) ? n.toFixed(2) : "0.00") + "%";
+      el.classList.remove("up","dn");
+      if(n > 0) el.classList.add("up");
+      if(n < 0) el.classList.add("dn");
     }
 
     function renderWallets(){
@@ -410,6 +512,7 @@
         delBtn.onclick = () => {
           state.wallets = state.wallets.filter(x => x.id !== w.id);
           if(state.activeWalletId === w.id) state.activeWalletId = "";
+          delete state.perWallet[w.id];
           saveState();
           renderAll();
           toast("Verwijderd");
@@ -435,6 +538,28 @@
 
     function renderStatus(text){ $("statusLine").textContent = text; }
 
+    function renderAllWalletTotals(){
+      const prices = state.cache.prices || { devveUsd:0, fiasUsd:0, eurusd:1 };
+      const eurusd = prices.eurusd || 1;
+
+      let sumDevve = 0;
+      let sumFias = 0;
+
+      for(const w of state.wallets){
+        const pw = state.perWallet[w.id] || { devve:0, fias:0 };
+        const st = Number(w.stakedDevve || 0);
+        sumDevve += Number(pw.devve || 0) + st;
+        sumFias  += Number(pw.fias  || 0);
+      }
+
+      const allUsd = (sumDevve * (prices.devveUsd || 0)) + (sumFias * (prices.fiasUsd || 0));
+      const allEur = eurusd ? (allUsd / eurusd) : 0;
+
+      $("allUsd").textContent = fmtMoneyUSD(allUsd);
+      $("allEur").textContent = fmtMoneyEUR(allEur);
+      $("allLine").textContent = "Wallets, " + state.wallets.length + ". DEVVE, " + fmtNumber(sumDevve, 4) + ". FIAS, " + fmtNumber(sumFias, 4);
+    }
+
     function renderDashboard(){
       const w = activeWallet();
       $("activeWalletPill").textContent = w ? (w.name || "Wallet") + " , " + w.addr.slice(0,6) + "…" + w.addr.slice(-4) : "Geen wallet";
@@ -446,6 +571,9 @@
       $("fiasPrice").textContent  = "$" + (prices.fiasUsd  || 0).toFixed(dec);
       $("eurusd").textContent     = (prices.eurusd || 1).toFixed(4);
 
+      setChange("devveChg", state.cache.chg24?.devve || 0);
+      setChange("fiasChg", state.cache.chg24?.fias || 0);
+
       const devveBal = Number(state.lastBalances.devveBal || 0);
       const fiasBal  = Number(state.lastBalances.fiasBal || 0);
 
@@ -454,7 +582,6 @@
 
       $("devveBal").textContent = fmtNumber(devveTotal, 8);
       $("fiasBal").textContent  = fmtNumber(fiasBal, 8);
-
       $("devveStakedLine").textContent = "Staked, " + fmtNumber(devveStaked, 8);
 
       const devveUsd = devveTotal * (prices.devveUsd || 0);
@@ -472,10 +599,18 @@
 
       const lu = state.cache.lastUpdateISO ? new Date(state.cache.lastUpdateISO) : null;
       $("lastUpdate").textContent = lu ? lu.toLocaleString("nl-NL") : "-";
+
+      renderAllWalletTotals();
+
+      if(graphsLoaded){
+        $("graphStatus").textContent = "ok";
+      }else{
+        $("graphStatus").textContent = "laden";
+      }
     }
 
-    async function fetchPrices(){
-      const url = "https://api.coingecko.com/api/v3/simple/price?ids=devve,fias&vs_currencies=usd,eur";
+    async function fetchPricesAndChanges(){
+      const url = "https://api.coingecko.com/api/v3/simple/price?ids=devve,fias&vs_currencies=usd,eur&include_24hr_change=true";
       const r = await fetch(url,{cache:"no-store"});
       if(!r.ok) throw new Error("CoinGecko fout");
       const j = await r.json();
@@ -484,9 +619,13 @@
       const fiasUsd  = Number(j?.fias?.usd || 0);
       const devveEur = Number(j?.devve?.eur || 0);
 
+      const devveChg = Number(j?.devve?.usd_24h_change || 0);
+      const fiasChg  = Number(j?.fias?.usd_24h_change || 0);
+
       const eurusd = devveEur > 0 ? (devveUsd / devveEur) : (state.cache.prices.eurusd || 1);
 
       state.cache.prices = { devveUsd, fiasUsd, eurusd };
+      state.cache.chg24 = { devve: devveChg, fias: fiasChg };
       saveState();
     }
 
@@ -512,6 +651,25 @@
       return { devveBal, fiasBal };
     }
 
+    async function refreshAllWalletBalances(){
+      if(state.wallets.length === 0){
+        state.perWallet = {};
+        saveState();
+        renderAllWalletTotals();
+        return;
+      }
+      for(const w of state.wallets){
+        try{
+          const b = await fetchBalancesEthplorer(w.addr);
+          state.perWallet[w.id] = { devve: b.devveBal, fias: b.fiasBal };
+        }catch(e){
+          if(!state.perWallet[w.id]) state.perWallet[w.id] = { devve:0, fias:0 };
+        }
+      }
+      saveState();
+      renderAllWalletTotals();
+    }
+
     async function refreshAll(){
       const w = activeWallet();
       if(!w){
@@ -519,12 +677,14 @@
         saveState();
         renderStatus("Kies eerst een wallet");
         renderDashboard();
+        await fetchPricesAndChanges().catch(()=>{});
+        await refreshAllWalletBalances();
         return;
       }
 
       renderStatus("Bezig met verversen");
       try{
-        await fetchPrices();
+        await fetchPricesAndChanges();
 
         let devveBal = 0;
         let fiasBal = 0;
@@ -543,10 +703,18 @@
 
         state.cache.lastUpdateISO = new Date().toISOString();
         state.lastBalances = { devveBal, fiasBal };
+        state.perWallet[w.id] = { devve: devveBal, fias: fiasBal };
+
         saveState();
 
         renderDashboard();
         renderStatus("Laatste update, " + new Date(state.cache.lastUpdateISO).toLocaleTimeString("nl-NL"));
+
+        refreshAllWalletBalances();
+
+        if(!graphsLoaded){
+          loadGraphs().catch(()=>{});
+        }
       }catch(e){
         renderStatus("Fout bij verversen");
         toast(String(e.message || e));
@@ -576,8 +744,103 @@
     }
 
     function resetAll(){
-      localStorage.removeItem(LS_KEY);
+      localStorage.removeItem(LS_KEY_V5);
       location.reload();
+    }
+
+    function drawLineChart(canvasId, series){
+      const c = $(canvasId);
+      const ctx = c.getContext("2d");
+      const w = c.width;
+      const h = c.height;
+      ctx.clearRect(0,0,w,h);
+
+      if(!Array.isArray(series) || series.length < 2){
+        ctx.fillStyle = "rgba(159,176,199,0.7)";
+        ctx.font = "16px -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial";
+        ctx.fillText("geen data", 20, 40);
+        return;
+      }
+
+      let min = Infinity, max = -Infinity;
+      for(const v of series){ if(v < min) min = v; if(v > max) max = v; }
+      if(!isFinite(min) || !isFinite(max) || min === max){ min = min - 1; max = max + 1; }
+
+      const padX = 18;
+      const padY = 18;
+      const xStep = (w - padX*2) / (series.length - 1);
+      const yScale = (h - padY*2) / (max - min);
+
+      ctx.strokeStyle = "rgba(34,48,67,1)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(padX, padY);
+      ctx.lineTo(padX, h - padY);
+      ctx.lineTo(w - padX, h - padY);
+      ctx.stroke();
+
+      ctx.strokeStyle = "rgba(102,167,255,0.95)";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      for(let i=0;i<series.length;i++){
+        const x = padX + i * xStep;
+        const y = (h - padY) - ((series[i] - min) * yScale);
+        if(i === 0) ctx.moveTo(x,y);
+        else ctx.lineTo(x,y);
+      }
+      ctx.stroke();
+
+      ctx.fillStyle = "rgba(159,176,199,0.85)";
+      ctx.font = "14px -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial";
+      ctx.fillText("$" + series[series.length-1].toFixed(4), 20, 32);
+    }
+
+    async function fetchChartSeries(coinId){
+      const url = "https://api.coingecko.com/api/v3/coins/" + coinId + "/market_chart?vs_currency=usd&days=7&interval=hourly";
+      const r = await fetch(url,{cache:"no-store"});
+      if(!r.ok) throw new Error("Chart fout");
+      const j = await r.json();
+      const prices = Array.isArray(j?.prices) ? j.prices : [];
+      const series = prices.map(p => Number(p[1])).filter(x => isFinite(x));
+      const target = 120;
+      if(series.length <= target) return series;
+      const step = Math.floor(series.length / target);
+      const out = [];
+      for(let i=0;i<series.length;i+=step) out.push(series[i]);
+      return out;
+    }
+
+    async function loadGraphs(){
+      $("graphStatus").textContent = "laden";
+      graphsLoaded = false;
+
+      try{
+        const now = Date.now();
+        const age = now - Number(state.graphs.ts || 0);
+        const canUseCache = age < (30 * 60 * 1000) && Array.isArray(state.graphs.devve) && state.graphs.devve.length > 10;
+
+        if(canUseCache){
+          drawLineChart("chartDevve", state.graphs.devve);
+          drawLineChart("chartFias", state.graphs.fias);
+          graphsLoaded = true;
+          $("graphStatus").textContent = "ok";
+          return;
+        }
+
+        const dev = await fetchChartSeries("devve");
+        const fia = await fetchChartSeries("fias");
+
+        state.graphs = { devve: dev, fias: fia, ts: now };
+        saveState();
+
+        drawLineChart("chartDevve", dev);
+        drawLineChart("chartFias", fia);
+
+        graphsLoaded = true;
+        $("graphStatus").textContent = "ok";
+      }catch(e){
+        $("graphStatus").textContent = "fout";
+      }
     }
 
     function renderAll(){
@@ -616,6 +879,7 @@
       saveState();
       renderAll();
       toast("Wallet toegevoegd, totaal " + state.wallets.length);
+      refreshAllWalletBalances();
     });
 
     $("activeSelect").addEventListener("change", async (e) => {
@@ -646,6 +910,15 @@
 
     renderAll();
     startAuto();
+
+    fetchPricesAndChanges().then(() => {
+      renderAllWalletTotals();
+      renderDashboard();
+    }).catch(()=>{});
+
+    refreshAllWalletBalances();
+    loadGraphs().then(() => { graphsLoaded = true; renderDashboard(); }).catch(()=>{});
+
     if(activeWallet()) refreshAll();
   </script>
 </body>
