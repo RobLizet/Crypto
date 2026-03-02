@@ -420,13 +420,15 @@
         right.style.gap = "8px";
 
         const useBtn = document.createElement("button");
-        useBtn.textContent = "Gebruik";
-        useBtn.onclick = () => {
-          state.activeWalletId = w.id;
-          saveState();
-          renderAll();
-          toast("Actief gezet");
-        };
+        useBtn.onclick = async () => {
+  state.activeWalletId = w.id;
+  saveState();
+  renderAll();
+  setView("dashboard");
+  toast("Actief, verversen");
+  await refreshAll();
+};
+        
 
         const delBtn = document.createElement("button");
         delBtn.textContent = "Verwijder";
