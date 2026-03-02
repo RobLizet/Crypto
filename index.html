@@ -4,33 +4,39 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="theme-color" content="#0b0f14" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#f6f7fb" />
   <link rel="manifest" href="manifest.webmanifest" />
   <title>DevvE + FIAS Wallet</title>
   <style>
     :root{
-      --bg:#0b0f14;
-      --card:#121924;
-      --card2:#0f1620;
-      --text:#e8eef7;
-      --muted:#9fb0c7;
-      --line:#223043;
-      --chip:#1b2736;
-      --good:#28d17c;
-      --bad:#ff5b6b;
+      --bg1:#f6f7fb;
+      --bg2:#eef1f7;
+      --card:#ffffff;
+      --card2:#fbfcff;
+      --text:#1f2a37;
+      --muted:#607086;
+      --line:#d9e2ee;
+      --chip:#f1f5fb;
+      --accent:#6ea8fe;
+      --accent2:#9b8cff;
+      --good:#1fa971;
+      --bad:#d94a5b;
+      --shadow:0 10px 30px rgba(31,42,55,0.08);
+      --shadow2:0 6px 18px rgba(31,42,55,0.06);
+      --radius:18px;
     }
     *{box-sizing:border-box}
     body{
       margin:0;
       font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      background:linear-gradient(180deg,var(--bg),#070a0e 65%);
+      background:radial-gradient(1100px 700px at 20% 10%, #ffffff 0%, var(--bg1) 40%, var(--bg2) 100%);
       color:var(--text);
     }
     .wrap{max-width:980px;margin:0 auto;padding:16px 14px 90px}
     .top{
       display:flex;gap:12px;align-items:center;justify-content:space-between;
-      padding:10px 0 14px;border-bottom:1px solid var(--line);margin-bottom:14px;
+      padding:10px 0 14px;border-bottom:1px solid rgba(217,226,238,0.9);margin-bottom:14px;
     }
     .title{display:flex;flex-direction:column;gap:2px}
     .title h1{font-size:18px;margin:0}
@@ -38,27 +44,34 @@
     .btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
     button{
       border:1px solid var(--line);
-      background:var(--card2);
+      background:linear-gradient(180deg,var(--card2),#f3f6ff);
       color:var(--text);
       padding:10px 12px;
-      border-radius:12px;
+      border-radius:14px;
       font-size:13px;
       cursor:pointer;
+      box-shadow:var(--shadow2);
       -webkit-tap-highlight-color:transparent;
     }
-    button.primary{background:linear-gradient(180deg,#2a66ff,#1d4fd8);border-color:#2a66ff}
+    button.primary{
+      background:linear-gradient(180deg, rgba(110,168,254,0.95), rgba(155,140,255,0.95));
+      border-color:rgba(110,168,254,0.6);
+      color:#0b1020;
+      box-shadow:0 10px 28px rgba(110,168,254,0.25);
+    }
     button:active{transform:translateY(1px)}
     .grid{display:grid;grid-template-columns:1fr;gap:12px}
     @media (min-width:860px){.grid{grid-template-columns:1.2fr .8fr}}
     .card{
-      background:linear-gradient(180deg,var(--card),#0f1520);
+      background:linear-gradient(180deg,var(--card),#fbfcff);
       border:1px solid var(--line);
-      border-radius:16px;
+      border-radius:var(--radius);
       padding:14px;
+      box-shadow:var(--shadow);
     }
     .row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
     .pill{
-      background:var(--chip);
+      background:linear-gradient(180deg, var(--chip), #f8faff);
       border:1px solid var(--line);
       color:var(--muted);
       padding:6px 10px;border-radius:999px;font-size:12px
@@ -68,59 +81,69 @@
     .tokens{display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px}
     @media (min-width:520px){.tokens{grid-template-columns:1fr 1fr}}
     .token{
-      background:rgba(0,0,0,0.15);
-      border:1px solid var(--line);
-      border-radius:14px;
+      background:linear-gradient(180deg, rgba(110,168,254,0.08), rgba(155,140,255,0.06));
+      border:1px solid rgba(217,226,238,0.95);
+      border-radius:16px;
       padding:12px;
     }
     .token .sym{font-size:14px;margin:0 0 6px}
     .token .bal{font-size:20px;margin:0}
     .token .val{font-size:12px;color:var(--muted);margin-top:6px}
-    .sep{height:1px;background:var(--line);margin:12px 0}
+    .sep{height:1px;background:rgba(217,226,238,0.9);margin:12px 0}
     label{display:block;font-size:12px;color:var(--muted);margin:0 0 6px}
     input,select{
       width:100%;
       border:1px solid var(--line);
-      background:rgba(0,0,0,0.20);
+      background:rgba(255,255,255,0.9);
       color:var(--text);
       padding:12px 12px;
-      border-radius:12px;
+      border-radius:14px;
       font-size:14px;
       outline:none;
+      box-shadow:var(--shadow2);
     }
     .formRow{display:grid;grid-template-columns:1fr;gap:10px}
     @media (min-width:520px){.formRow{grid-template-columns:1fr 1fr}}
     .list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
     .item{
       display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;
-      border:1px solid var(--line);border-radius:14px;padding:10px;background:rgba(0,0,0,0.12)
+      border:1px solid var(--line);border-radius:16px;padding:10px;background:rgba(255,255,255,0.75);
+      box-shadow:var(--shadow2);
     }
     .addr{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;color:var(--muted)}
     .nav{
       position:fixed;left:0;right:0;bottom:0;
-      background:rgba(11,15,20,0.88);
+      background:rgba(246,247,251,0.92);
       backdrop-filter:blur(14px);
-      border-top:1px solid var(--line);
+      border-top:1px solid rgba(217,226,238,0.9);
       display:flex;gap:8px;justify-content:center;padding:10px 10px;
     }
     .tab{
       flex:1;max-width:220px;
       border:1px solid var(--line);
-      border-radius:14px;
+      border-radius:16px;
       padding:10px 12px;
       text-align:center;
       font-size:13px;
       color:var(--muted);
-      background:rgba(0,0,0,0.18);
+      background:rgba(255,255,255,0.8);
+      box-shadow:var(--shadow2);
     }
-    .tab.active{color:var(--text);border-color:#2a66ff}
+    .tab.active{
+      color:#0b1020;
+      border-color:rgba(110,168,254,0.7);
+      background:linear-gradient(180deg, rgba(110,168,254,0.22), rgba(155,140,255,0.16));
+    }
     .hide{display:none}
     .toast{
       position:fixed;left:50%;bottom:78px;transform:translateX(-50%);
-      background:rgba(0,0,0,0.72);border:1px solid var(--line);
-      color:var(--text);padding:10px 12px;border-radius:12px;font-size:13px;
+      background:rgba(31,42,55,0.92);
+      border:1px solid rgba(255,255,255,0.22);
+      color:#ffffff;
+      padding:10px 12px;border-radius:14px;font-size:13px;
       max-width:92vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
       opacity:0;pointer-events:none;transition:opacity .18s ease;
+      box-shadow:0 18px 40px rgba(31,42,55,0.22);
     }
     .toast.show{opacity:1}
     .foot{
@@ -129,7 +152,7 @@
       color:var(--muted);
       display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap
     }
-    .chg{font-weight:600}
+    .chg{font-weight:700}
     .up{color:var(--good)}
     .dn{color:var(--bad)}
     canvas{
@@ -137,8 +160,9 @@
       height:120px;
       display:block;
       border:1px solid var(--line);
-      border-radius:12px;
-      background:rgba(0,0,0,0.12);
+      border-radius:14px;
+      background:linear-gradient(180deg, rgba(110,168,254,0.08), rgba(155,140,255,0.06));
+      box-shadow:var(--shadow2);
     }
   </style>
 </head>
@@ -308,7 +332,7 @@
         <button id="saveSettingsBtn" class="primary" style="width:100%">Opslaan</button>
 
         <div class="sep"></div>
-        <div class="small">Laat handmatig leeg om on-chain te gebruiken.</div>
+        <div class="small">Laat handmatig leeg om on chain te gebruiken.</div>
       </div>
     </div>
   </div>
@@ -325,20 +349,31 @@
     const DEVVE_CONTRACT = "0x8248270620aa532e4d64316017be5e873e37cc09";
     const FIAS_CONTRACT  = "0x8e4f1ce473b292d56934c36976356e3e22c35585";
 
-    const LS_KEY = "rb_devve_fias_wallet_v6";
-    const OLD_KEYS = [
-      "rb_devve_fias_wallet_v5",
-      "rb_devve_fias_wallet_v4",
-      "rb_devve_fias_wallet_v3",
-      "rb_devve_fias_wallet_v2",
-      "rb_devve_fias_wallet_v1"
-    ];
+    const LS_KEY = "rb_devve_fias_wallet_soft_v1";
 
     const $ = (id) => document.getElementById(id);
 
-    const state = loadStateWithMigration();
+    const state = loadState();
     let autoTimer = null;
     let graphsLoaded = false;
+
+    function loadState(){
+      const raw = localStorage.getItem(LS_KEY);
+      if(raw){
+        try{ return normalizeState(JSON.parse(raw)); }catch(e){}
+      }
+      const fresh = normalizeState({
+        wallets: [],
+        activeWalletId: "",
+        settings: { autoOn:true, autoMin:5, priceDecimals:4, manualDevve:"", manualFias:"" },
+        cache: { lastUpdateISO:"", prices:{ devveUsd:0, fiasUsd:0, eurusd:1 }, chg24:{ devve:0, fias:0 } },
+        lastBalances: { devveBal:0, fiasBal:0 },
+        perWallet: {},
+        graphs: { devve: [], fias: [], ts: 0 }
+      });
+      localStorage.setItem(LS_KEY, JSON.stringify(fresh));
+      return fresh;
+    }
 
     function normalizeState(s){
       if(!s || typeof s !== "object") s = {};
@@ -359,58 +394,6 @@
       }));
 
       return s;
-    }
-
-    function loadStateWithMigration(){
-      const cur = localStorage.getItem(LS_KEY);
-      if(cur){
-        try{ return normalizeState(JSON.parse(cur)); }catch(e){}
-      }
-
-      let pickedKey = "";
-      let picked = null;
-
-      for(const k of OLD_KEYS){
-        const raw = localStorage.getItem(k);
-        if(!raw) continue;
-        try{
-          const obj = JSON.parse(raw);
-          const wallets = Array.isArray(obj?.wallets) ? obj.wallets : [];
-          if(wallets.length > 0){
-            pickedKey = k;
-            picked = obj;
-            break;
-          }
-        }catch(e){}
-      }
-
-      if(picked){
-        const migrated = normalizeState({
-          wallets: picked.wallets,
-          activeWalletId: picked.activeWalletId || "",
-          settings: picked.settings || { autoOn:true, autoMin:5, priceDecimals:4, manualDevve:"", manualFias:"" },
-          cache: picked.cache || { lastUpdateISO:"", prices:{ devveUsd:0, fiasUsd:0, eurusd:1 }, chg24:{ devve:0, fias:0 } },
-          lastBalances: picked.lastBalances || { devveBal:0, fiasBal:0 },
-          perWallet: picked.perWallet || {},
-          graphs: picked.graphs || { devve: [], fias: [], ts: 0 }
-        });
-        localStorage.setItem(LS_KEY, JSON.stringify(migrated));
-        setTimeout(() => toast("Wallets overgezet uit " + pickedKey + ", " + migrated.wallets.length), 350);
-        return migrated;
-      }
-
-      const fresh = normalizeState({
-        wallets: [],
-        activeWalletId: "",
-        settings: { autoOn:true, autoMin:5, priceDecimals:4, manualDevve:"", manualFias:"" },
-        cache: { lastUpdateISO:"", prices:{ devveUsd:0, fiasUsd:0, eurusd:1 }, chg24:{ devve:0, fias:0 } },
-        lastBalances: { devveBal:0, fiasBal:0 },
-        perWallet: {},
-        graphs: { devve: [], fias: [], ts: 0 }
-      });
-      localStorage.setItem(LS_KEY, JSON.stringify(fresh));
-      setTimeout(() => toast("Geen oude wallets gevonden"), 350);
-      return fresh;
     }
 
     function saveState(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
@@ -769,8 +752,8 @@
       ctx.clearRect(0,0,w,h);
 
       if(!Array.isArray(series) || series.length < 2){
-        ctx.fillStyle = "rgba(159,176,199,0.7)";
-        ctx.font = "16px -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial";
+        ctx.fillStyle = "rgba(96,112,134,0.8)";
+        ctx.font = "16px -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial";
         ctx.fillText("geen data", 20, 40);
         return;
       }
@@ -784,7 +767,7 @@
       const xStep = (w - padX*2) / (series.length - 1);
       const yScale = (h - padY*2) / (max - min);
 
-      ctx.strokeStyle = "rgba(34,48,67,1)";
+      ctx.strokeStyle = "rgba(217,226,238,1)";
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(padX, padY);
@@ -792,8 +775,11 @@
       ctx.lineTo(w - padX, h - padY);
       ctx.stroke();
 
-      ctx.strokeStyle = "rgba(102,167,255,0.95)";
-      ctx.lineWidth = 2;
+      const grad = ctx.createLinearGradient(0,0,w,0);
+      grad.addColorStop(0, "rgba(110,168,254,0.95)");
+      grad.addColorStop(1, "rgba(155,140,255,0.95)");
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 2.6;
       ctx.beginPath();
       for(let i=0;i<series.length;i++){
         const x = padX + i * xStep;
@@ -803,8 +789,8 @@
       }
       ctx.stroke();
 
-      ctx.fillStyle = "rgba(159,176,199,0.85)";
-      ctx.font = "14px -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial";
+      ctx.fillStyle = "rgba(96,112,134,0.9)";
+      ctx.font = "14px -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial";
       ctx.fillText("$" + series[series.length-1].toFixed(4), 20, 32);
     }
 
@@ -924,7 +910,7 @@
     renderAll();
     startAuto();
 
-    fetchPricesAndChanges().then(() => {
+    fetchPricesAndChangesFallback().then(() => {
       renderAllWalletTotals();
       renderDashboard();
     }).catch(()=>{});
@@ -933,6 +919,10 @@
     loadGraphs().then(() => { graphsLoaded = true; renderDashboard(); }).catch(()=>{});
 
     if(activeWallet()) refreshAll();
+
+    async function fetchPricesAndChangesFallback(){
+      return fetchPricesAndChanges();
+    }
   </script>
 </body>
 </html>
