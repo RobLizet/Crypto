@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#0b0f14" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <title>DevvE + FIAS Wallet</title>
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --card:#121924;
+      --card2:#0f1620;
+      --text:#e8eef7;
+      --muted:#9fb0c7;
+      --line:#223043;
+      --good:#28d17c;
+      --bad:#ff5b6b;
+      --accent:#66a7ff;
+      --chip:#1b2736;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      background:linear-gradient(180deg,var(--bg),#070a0e 65%);
+      color:var(--text);
+    }
+    .wrap{max-width:980px;margin:0 auto;padding:16px 14px 90px}
+    .top{
+      display:flex;gap:12px;align-items:center;justify-content:space-between;
+      padding:10px 0 14px;border-bottom:1px solid var(--line);margin-bottom:14px;
+    }
+    .title{display:flex;flex-direction:column;gap:2px}
+    .title h1{font-size:18px;margin:0}
+    .title .sub{font-size:12px;color:var(--muted)}
+    .btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    button{
+      border:1px solid var(--line);
+      background:var(--card2);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:12px;
+      font-size:13px;
+      cursor:pointer;
+      -webkit-tap-highlight-color:transparent;
+    }
+    button.primary{background:linear-gradient(180deg,#2a66ff,#1d4fd8);border-color:#2a66ff}
+    button:active{transform:translateY(1px)}
+    .grid{display:grid;grid-template-columns:1fr;gap:12px}
+    @media (min-width:860px){.grid{grid-template-columns:1.2fr .8fr}}
+    .card{
+      background:linear-gradient(180deg,var(--card),#0f1520);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:14px;
+    }
+    .row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .pill{
+      background:var(--chip);
+      border:1px solid var(--line);
+      color:var(--muted);
+      padding:6px 10px;border-radius:999px;font-size:12px
+    }
+    .muted{color:var(--muted)}
+    .big{
+      font-size:26px;
+      letter-spacing:-0.3px;
+      margin:8px 0 2px
+    }
+    .small{font-size:12px;color:var(--muted)}
+    .tokens{display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px}
+    @media (min-width:520px){.tokens{grid-template-columns:1fr 1fr}}
+    .token{
+      background:rgba(0,0,0,0.15);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px;
+    }
+    .token .sym{font-size:14px;margin:0 0 6px}
+    .token .bal{font-size:20px;margin:0}
+    .token .val{font-size:12px;color:var(--muted);margin-top:6px}
+    .sep{height:1px;background:var(--line);margin:12px 0}
+    label{display:block;font-size:12px;color:var(--muted);margin:0 0 6px}
+    input,select{
+      width:100%;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,0.20);
+      color:var(--text);
+      padding:12px 12px;
+      border-radius:12px;
+      font-size:14px;
+      outline:none;
+    }
+    .formRow{display:grid;grid-template-columns:1fr;gap:10px}
+    @media (min-width:520px){.formRow{grid-template-columns:1fr 1fr}}
+    .list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+    .item{
+      display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+      border:1px solid var(--line);border-radius:14px;padding:10px;background:rgba(0,0,0,0.12)
+    }
+    .addr{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;color:var(--muted)}
+    .nav{
+      position:fixed;left:0;right:0;bottom:0;
+      background:rgba(11,15,20,0.88);
+      backdrop-filter:blur(14px);
+      border-top:1px solid var(--line);
+      display:flex;gap:8px;justify-content:center;padding:10px 10px;
+    }
+    .tab{
+      flex:1;max-width:220px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px 12px;
+      text-align:center;
+      font-size:13px;
+      color:var(--muted);
+      background:rgba(0,0,0,0.18);
+    }
+    .tab.active{color:var(--text);border-color:#2a66ff}
+    .hide{display:none}
+    .toast{
+      position:fixed;left:50%;bottom:78px;transform:translateX(-50%);
+      background:rgba(0,0,0,0.72);border:1px solid var(--line);
+      color:var(--text);padding:10px 12px;border-radius:12px;font-size:13px;
+      max-width:92vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      opacity:0;pointer-events:none;transition:opacity .18s ease;
+    }
+    .toast.show{opacity:1}
+    .foot{
+      margin-top:10px;
+      font-size:12px;
+      color:var(--muted);
+      display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="title">
+        <h1>DevvE + FIAS Wallet</h1>
+        <div class="sub" id="statusLine">Niet ververst</div>
+      </div>
+      <div class="btns">
+        <button id="refreshBtn" class="primary">Ververs</button>
+        <button id="autoBtn">Auto, aan</button>
+      </div>
+    </div>
+
+    <div id="viewDashboard" class="view">
+      <div class="grid">
+        <div class="card">
+          <div class="row">
+            <div class="pill" id="activeWalletPill">Geen wallet</div>
+            <div class="pill" id="netPill">Ethereum, ERC20</div>
+          </div>
+
+          <div class="big" id="totalUsd">$0,00</div>
+          <div class="small" id="totalEur">€0,00</div>
+
+          <div class="tokens">
+            <div class="token">
+              <p class="sym">DEVVE</p>
+              <p class="bal" id="devveBal">0</p>
+              <div class="val" id="devveVal">$0,00. €0,00</div>
+            </div>
+            <div class="token">
+              <p class="sym">FIAS</p>
+              <p class="bal" id="fiasBal">0</p>
+              <div class="val" id="fiasVal">$0,00. €0,00</div>
+            </div>
+          </div>
+
+          <div class="sep"></div>
+          <div class="row">
+            <div class="small">Prijs DEVVE, <span id="devvePrice">$0,0000</span></div>
+            <div class="small">Prijs FIAS, <span id="fiasPrice">$0,0000</span></div>
+          </div>
+          <div class="row" style="margin-top:6px">
+            <div class="small">EURUSD, <span id="eurusd">1,0000</span></div>
+            <div class="small">Laatste update, <span id="lastUpdate">-</span></div>
+          </div>
+
+          <div class="foot">
+            <div>made by Rob Borghouts 2026</div>
+            <div id="sourceLine">Bronnen, Ethplorer, CoinGecko</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="row">
+            <div>
+              <div style="font-size:14px">Snelle acties</div>
+              <div class="small">Wallets beheren, instellingen, export</div>
+            </div>
+          </div>
+
+          <div class="sep"></div>
+
+          <button id="goWallets" style="width:100%">Wallets</button>
+          <div style="height:8px"></div>
+          <button id="goSettings" style="width:100%">Instellingen</button>
+          <div style="height:8px"></div>
+          <button id="exportBtn" style="width:100%">Exporteer data</button>
+          <div style="height:8px"></div>
+          <button id="resetBtn" style="width:100%">Reset app data</button>
+
+          <div class="sep"></div>
+
+          <div class="small">
+            Tip, iPhone, Safari, Deel, Zet op beginscherm.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="viewWallets" class="view hide">
+      <div class="card">
+        <div class="row">
+          <div>
+            <div style="font-size:14px">Wallets</div>
+            <div class="small">Voeg adressen toe. Kies jouw actieve wallet.</div>
+          </div>
+        </div>
+
+        <div class="sep"></div>
+
+        <div class="formRow">
+          <div>
+            <label>Naam</label>
+            <input id="wName" placeholder="Bijv. Ledger, MetaMask" />
+          </div>
+          <div>
+            <label>Adres</label>
+            <input id="wAddr" placeholder="0x..." autocapitalize="none" autocomplete="off" />
+          </div>
+        </div>
+
+        <div style="height:10px"></div>
+        <button id="addWalletBtn" class="primary" style="width:100%">Wallet toevoegen</button>
+
+        <div class="sep"></div>
+
+        <label>Actieve wallet</label>
+        <select id="activeSelect"></select>
+
+        <div class="list" id="walletList"></div>
+      </div>
+    </div>
+
+    <div id="viewSettings" class="view hide">
+      <div class="card">
+        <div class="row">
+          <div>
+            <div style="font-size:14px">Instellingen</div>
+            <div class="small">Alles wordt lokaal opgeslagen op jouw toestel.</div>
+          </div>
+        </div>
+
+        <div class="sep"></div>
+
+        <div class="formRow">
+          <div>
+            <label>Auto verversen, minuten</label>
+            <input id="autoMin" type="number" min="1" max="120" step="1" />
+          </div>
+          <div>
+            <label>Koers decimalen</label>
+            <input id="priceDecimals" type="number" min="2" max="8" step="1" />
+          </div>
+        </div>
+
+        <div style="height:10px"></div>
+
+        <div class="formRow">
+          <div>
+            <label>Handmatige DEVVE balans, optioneel</label>
+            <input id="manualDevve" type="number" step="0.00000001" />
+          </div>
+          <div>
+            <label>Handmatige FIAS balans, optioneel</label>
+            <input id="manualFias" type="number" step="0.00000001" />
+          </div>
+        </div>
+
+        <div class="sep"></div>
+
+        <button id="saveSettingsBtn" class="primary" style="width:100%">Opslaan</button>
+
+        <div class="sep"></div>
+
+        <div class="small">
+          Als Ethplorer even hapert, zet handmatige balans aan. Laat hem leeg om on-chain te gebruiken.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <div class="tab active" data-tab="dashboard">Dashboard</div>
+    <div class="tab" data-tab="wallets">Wallets</div>
+    <div class="tab" data-tab="settings">Instellingen</div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const DEVVE_CONTRACT = "0x8248270620aa532e4d64316017be5e873e37cc09";
+    const FIAS_CONTRACT  = "0x8e4f1ce473b292d56934c36976356e3e22c35585";
+
+    const LS_KEY = "rb_devve_fias_wallet_v1";
+
+    const $ = (id) => document.getElementById(id);
+
+    const state = loadState();
+
+    let autoTimer = null;
+
+    function loadState(){
+      const raw = localStorage.getItem(LS_KEY);
+      if(raw){
+        try{ return JSON.parse(raw); }catch(e){}
+      }
+      return {
+        wallets: [],
+        activeWalletId: "",
+        settings: {
+          autoOn: true,
+          autoMin: 5,
+          priceDecimals: 4,
+          manualDevve: "",
+          manualFias: ""
+        },
+        cache: {
+          lastUpdateISO: "",
+          prices: { devveUsd: 0, fiasUsd: 0, eurusd: 1 }
+        }
+      };
+    }
+
+    function saveState(){
+      localStorage.setItem(LS_KEY, JSON.stringify(state));
+    }
+
+    function toast(msg){
+      const t = $("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 1700);
+    }
+
+    function fmtNumber(n, digits=2){
+      if(!isFinite(n)) n = 0;
+      return n.toLocaleString("nl-NL",{maximumFractionDigits:digits, minimumFractionDigits:0});
+    }
+    function fmtMoneyUSD(n){
+      if(!isFinite(n)) n = 0;
+      return n.toLocaleString("en-US",{style:"currency",currency:"USD",maximumFractionDigits:2});
+    }
+    function fmtMoneyEUR(n){
+      if(!isFinite(n)) n = 0;
+      return n.toLocaleString("nl-NL",{style:"currency",currency:"EUR",maximumFractionDigits:2});
+    }
+
+    function setView(which){
+      const views = {
+        dashboard: $("viewDashboard"),
+        wallets: $("viewWallets"),
+        settings: $("viewSettings")
+      };
+      Object.keys(views).forEach(k => views[k].classList.toggle("hide", k !== which));
+      document.querySelectorAll(".tab").forEach(el => el.classList.toggle("active", el.dataset.tab === which));
+    }
+
+    function validAddr(a){
+      return /^0x[a-fA-F0-9]{40}$/.test((a||"").trim());
+    }
+
+    function activeWallet(){
+      return state.wallets.find(w => w.id === state.activeWalletId) || null;
+    }
+
+    function renderWallets(){
+      const sel = $("activeSelect");
+      sel.innerHTML = "";
+      const opt0 = document.createElement("option");
+      opt0.value = "";
+      opt0.textContent = "Geen";
+      sel.appendChild(opt0);
+
+      state.wallets.forEach(w => {
+        const opt = document.createElement("option");
+        opt.value = w.id;
+        opt.textContent = (w.name || "Wallet") + " , " + w.addr.slice(0,6) + "…" + w.addr.slice(-4);
+        sel.appendChild(opt);
+      });
+
+      sel.value = state.activeWalletId || "";
+
+      const list = $("walletList");
+      list.innerHTML = "";
+
+      state.wallets.forEach(w => {
+        const div = document.createElement("div");
+        div.className = "item";
+        const left = document.createElement("div");
+        const nm = document.createElement("div");
+        nm.textContent = w.name || "Wallet";
+        const ad = document.createElement("div");
+        ad.className = "addr";
+        ad.textContent = w.addr;
+        left.appendChild(nm);
+        left.appendChild(ad);
+
+        const right = document.createElement("div");
+        right.style.display = "flex";
+        right.style.gap = "8px";
+
+        const useBtn = document.createElement("button");
+        useBtn.textContent = "Gebruik";
+        useBtn.onclick = () => {
+          state.activeWalletId = w.id;
+          saveState();
+          renderAll();
+          toast("Actief gezet");
+        };
+
+        const delBtn = document.createElement("button");
+        delBtn.textContent = "Verwijder";
+        delBtn.onclick = () => {
+          state.wallets = state.wallets.filter(x => x.id !== w.id);
+          if(state.activeWalletId === w.id) state.activeWalletId = "";
+          saveState();
+          renderAll();
+          toast("Verwijderd");
+        };
+
+        right.appendChild(useBtn);
+        right.appendChild(delBtn);
+
+        div.appendChild(left);
+        div.appendChild(right);
+        list.appendChild(div);
+      });
+    }
+
+    function renderDashboard(snapshot){
+      const w = activeWallet();
+      $("activeWalletPill").textContent = w ? (w.name || "Wallet") + " , " + w.addr.slice(0,6) + "…" + w.addr.slice(-4) : "Geen wallet";
+
+      const prices = state.cache.prices || { devveUsd:0, fiasUsd:0, eurusd:1 };
+      const dec = Math.max(2, Math.min(8, Number(state.settings.priceDecimals || 4)));
+
+      $("devvePrice").textContent = "$" + (prices.devveUsd || 0).toFixed(dec);
+      $("fiasPrice").textContent = "$" + (prices.fiasUsd || 0).toFixed(dec);
+      $("eurusd").textContent = (prices.eurusd || 1).toFixed(4);
+
+      const devveBal = snapshot?.devveBal ?? 0;
+      const fiasBal  = snapshot?.fiasBal ?? 0;
+
+      $("devveBal").textContent = fmtNumber(devveBal, 8);
+      $("fiasBal").textContent  = fmtNumber(fiasBal, 8);
+
+      const devveUsd = devveBal * (prices.devveUsd || 0);
+      const fiasUsd  = fiasBal  * (prices.fiasUsd  || 0);
+      const totalUsd = devveUsd + fiasUsd;
+
+      const eurusd = prices.eurusd || 1;
+      const totalEur = eurusd ? (totalUsd / eurusd) : 0;
+
+      $("devveVal").textContent = fmtMoneyUSD(devveUsd) + ". " + fmtMoneyEUR(eurusd ? devveUsd / eurusd : 0);
+      $("fiasVal").textContent  = fmtMoneyUSD(fiasUsd)  + ". " + fmtMoneyEUR(eurusd ? fiasUsd  / eurusd : 0);
+
+      $("totalUsd").textContent = fmtMoneyUSD(totalUsd);
+      $("totalEur").textContent = fmtMoneyEUR(totalEur);
+
+      const lu = state.cache.lastUpdateISO ? new Date(state.cache.lastUpdateISO) : null;
+      $("lastUpdate").textContent = lu ? lu.toLocaleString("nl-NL") : "-";
+    }
+
+    function renderSettings(){
+      $("autoMin").value = state.settings.autoMin;
+      $("priceDecimals").value = state.settings.priceDecimals;
+      $("manualDevve").value = state.settings.manualDevve;
+      $("manualFias").value = state.settings.manualFias;
+
+      $("autoBtn").textContent = state.settings.autoOn ? "Auto, aan" : "Auto, uit";
+    }
+
+    function renderStatus(text){
+      $("statusLine").textContent = text;
+    }
+
+    async function fetchPrices(){
+      const url = "https://api.coingecko.com/api/v3/simple/price?ids=devve,fias&vs_currencies=usd,eur";
+      const r = await fetch(url,{cache:"no-store"});
+      if(!r.ok) throw new Error("CoinGecko fout");
+      const j = await r.json();
+
+      const devveUsd = Number(j?.devve?.usd || 0);
+      const fiasUsd  = Number(j?.fias?.usd || 0);
+      const devveEur = Number(j?.devve?.eur || 0);
+
+      const eurusd = devveEur > 0 ? (devveUsd / devveEur) : (state.cache.prices.eurusd || 1);
+
+      state.cache.prices = { devveUsd, fiasUsd, eurusd };
+      saveState();
+    }
+
+    async function fetchBalancesEthplorer(addr){
+      const url = "https://api.ethplorer.io/getAddressInfo/" + addr + "?apiKey=freekey";
+      const r = await fetch(url,{cache:"no-store"});
+      if(!r.ok) throw new Error("Ethplorer fout");
+      const j = await r.json();
+
+      const tokens = Array.isArray(j?.tokens) ? j.tokens : [];
+      let devveBal = 0;
+      let fiasBal = 0;
+
+      for(const t of tokens){
+        const ca = (t?.tokenInfo?.address || "").toLowerCase();
+        const dec = Number(t?.tokenInfo?.decimals || 0);
+        const rawBal = Number(t?.balance || 0);
+        const bal = dec ? (rawBal / Math.pow(10, dec)) : rawBal;
+
+        if(ca === DEVVE_CONTRACT.toLowerCase()) devveBal = bal;
+        if(ca === FIAS_CONTRACT.toLowerCase())  fiasBal  = bal;
+      }
+      return { devveBal, fiasBal };
+    }
+
+    async function refreshAll(){
+      const w = activeWallet();
+      if(!w){
+        renderStatus("Geen wallet gekozen");
+        renderDashboard({devveBal:0,fiasBal:0});
+        return;
+      }
+
+      renderStatus("Bezig met verversen");
+      try{
+        await fetchPrices();
+
+        let devveBal = 0;
+        let fiasBal = 0;
+
+        const mDev = String(state.settings.manualDevve || "").trim();
+        const mFia = String(state.settings.manualFias || "").trim();
+
+        if(mDev !== "" || mFia !== ""){
+          devveBal = Number(mDev || 0);
+          fiasBal  = Number(mFia || 0);
+        }else{
+          const b = await fetchBalancesEthplorer(w.addr);
+          devveBal = b.devveBal;
+          fiasBal  = b.fiasBal;
+        }
+
+        state.cache.lastUpdateISO = new Date().toISOString();
+        saveState();
+
+        renderDashboard({devveBal,fiasBal});
+        renderStatus("Laatste update, " + new Date(state.cache.lastUpdateISO).toLocaleTimeString("nl-NL"));
+      }catch(e){
+        renderStatus("Fout bij verversen");
+        toast(String(e.message || e));
+        renderDashboard({devveBal:0,fiasBal:0});
+      }
+    }
+
+    function startAuto(){
+      stopAuto();
+      if(!state.settings.autoOn) return;
+      const min = Math.max(1, Math.min(120, Number(state.settings.autoMin || 5)));
+      autoTimer = setInterval(refreshAll, min * 60 * 1000);
+    }
+    function stopAuto(){
+      if(autoTimer){ clearInterval(autoTimer); autoTimer = null; }
+    }
+
+    function exportData(){
+      const data = {
+        exportedAt: new Date().toISOString(),
+        wallets: state.wallets,
+        activeWalletId: state.activeWalletId,
+        settings: state.settings,
+        cache: state.cache
+      };
+      const blob = new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "devve-fias-wallet-export.json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    }
+
+    function resetAll(){
+      localStorage.removeItem(LS_KEY);
+      location.reload();
+    }
+
+    function renderAll(){
+      renderWallets();
+      renderSettings();
+      renderDashboard({devveBal:0,fiasBal:0});
+      const w = activeWallet();
+      if(w){
+        renderStatus("Klaar om te verversen");
+      }else{
+        renderStatus("Kies eerst een wallet");
+      }
+    }
+
+    document.querySelectorAll(".tab").forEach(el => {
+      el.addEventListener("click", () => setView(el.dataset.tab));
+    });
+
+    $("refreshBtn").addEventListener("click", refreshAll);
+
+    $("autoBtn").addEventListener("click", () => {
+      state.settings.autoOn = !state.settings.autoOn;
+      saveState();
+      renderSettings();
+      startAuto();
+      toast(state.settings.autoOn ? "Auto aan" : "Auto uit");
+    });
+
+    $("addWalletBtn").addEventListener("click", () => {
+      const name = $("wName").value.trim() || "Wallet";
+      const addr = $("wAddr").value.trim();
+      if(!validAddr(addr)){ toast("Adres klopt niet"); return; }
+
+      const id = "w_" + Math.random().toString(16).slice(2) + Date.now().toString(16);
+      state.wallets.unshift({ id, name, addr });
+      if(!state.activeWalletId) state.activeWalletId = id;
+
+      $("wName").value = "";
+      $("wAddr").value = "";
+      saveState();
+      renderAll();
+      toast("Wallet toegevoegd");
+    });
+
+    $("activeSelect").addEventListener("change", (e) => {
+      state.activeWalletId = e.target.value;
+      saveState();
+      renderAll();
+    });
+
+    $("saveSettingsBtn").addEventListener("click", () => {
+      state.settings.autoMin = Number($("autoMin").value || 5);
+      state.settings.priceDecimals = Number($("priceDecimals").value || 4);
+      state.settings.manualDevve = $("manualDevve").value;
+      state.settings.manualFias = $("manualFias").value;
+      saveState();
+      renderSettings();
+      startAuto();
+      toast("Opgeslagen");
+    });
+
+    $("exportBtn").addEventListener("click", exportData);
+    $("resetBtn").addEventListener("click", () => {
+      const ok = confirm("Alles wissen");
+      if(ok) resetAll();
+    });
+
+    $("goWallets").addEventListener("click", () => setView("wallets"));
+    $("goSettings").addEventListener("click", () => setView("settings"));
+
+    if("serviceWorker" in navigator){
+      window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+    }
+
+    renderAll();
+    startAuto();
+
+    if(activeWallet()){
+      refreshAll();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "DevvE + FIAS Wallet",
+  "short_name": "DevvE Wallet",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0b0f14",
+  "theme_color": "#0b0f14",
+  "icons": [
+    {
+      "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABhElEQVR4nO2aMU7DQBBFv6pQwQpQGgqkIYkQhZQGJbQGJdQGJbQGJZQGJbQGJcQGJYQGJbQGJdQGJbQGJZQGJcQGJbQGJZQGJf0m1kW4gqfKp7u3JvZ3Zz5hB8q9gKq7oC4y8Qm8b2gGmGmQHn2mK1mYQ8g5mYkqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQeQ0mYlqgQfQG1u8c0c5vVvAAAAAElFTkSuQmCC",
+      "sizes": "64x64",
+      "type": "image/png"
+    }
+  ]
+}
