@@ -59,6 +59,7 @@
       box-shadow:0 10px 24px rgba(183,139,91,0.24);
     }
     button:active{transform:translateY(1px)}
+    button:disabled{opacity:0.65;cursor:default}
     .grid{display:grid;grid-template-columns:1fr;gap:12px}
     @media (min-width:860px){.grid{grid-template-columns:1.2fr .8fr}}
     .card{
@@ -101,7 +102,7 @@
     .kpi .h{font-size:12px;color:var(--muted)}
     .kpi .v{font-size:18px;margin-top:6px}
     label{display:block;font-size:12px;color:var(--muted);margin:0 0 6px}
-    input,select{
+    input{
       width:100%;
       border:1px solid var(--line);
       background:rgba(255,250,242,0.95);
@@ -114,13 +115,6 @@
     }
     .formRow{display:grid;grid-template-columns:1fr;gap:10px}
     @media (min-width:520px){.formRow{grid-template-columns:1fr 1fr}}
-    .list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
-    .item{
-      display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;
-      border:1px solid var(--line);border-radius:16px;padding:10px;background:rgba(255,250,242,0.88);
-      box-shadow:var(--shadow2);
-    }
-    .addr{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;color:var(--muted)}
     .nav{
       position:fixed;left:0;right:0;bottom:0;
       background:rgba(251,246,238,0.92);
@@ -138,6 +132,8 @@
       color:var(--muted);
       background:rgba(255,250,242,0.92);
       box-shadow:var(--shadow2);
+      cursor:pointer;
+      user-select:none;
     }
     .tab.active{
       color:#241e18;
@@ -187,7 +183,7 @@
       <div class="grid">
         <div class="card">
           <div class="row">
-            <div class="pill" id="activeWalletPill">Geen actieve wallet</div>
+            <div class="pill">Portfolio, handmatig</div>
             <div class="pill" id="storagePill">Opslag</div>
           </div>
 
@@ -215,6 +211,7 @@
               <div class="val">Aankoop, <span id="devveBuy">$0.0000</span></div>
               <div class="val">P L, <span id="devvePL">$0.00</span></div>
               <div class="val">24h, <span id="devveChg" class="chg">0.00%</span></div>
+              <div class="val">7 dagen, <span id="devveChg7" class="chg">0.00%</span></div>
             </div>
             <div class="token">
               <p class="sym">FIAS</p>
@@ -223,6 +220,7 @@
               <div class="val">Aankoop, <span id="fiasBuy">$0.0000</span></div>
               <div class="val">P L, <span id="fiasPL">$0.00</span></div>
               <div class="val">24h, <span id="fiasChg" class="chg">0.00%</span></div>
+              <div class="val">7 dagen, <span id="fiasChg7" class="chg">0.00%</span></div>
             </div>
           </div>
 
@@ -261,10 +259,8 @@
 
         <div class="card">
           <div style="font-size:14px">Snelle acties</div>
-          <div class="small">Wallets, instellingen, export, import</div>
+          <div class="small">Instellingen, export, import, reset</div>
           <div class="sep"></div>
-          <button id="goWallets" style="width:100%">Wallets</button>
-          <div style="height:8px"></div>
           <button id="goSettings" style="width:100%">Instellingen</button>
           <div class="sep"></div>
           <button id="exportBtn" style="width:100%">Exporteer data</button>
@@ -273,47 +269,9 @@
           <input id="importFile" type="file" accept="application/json" style="display:none" />
           <div style="height:8px"></div>
           <button id="resetBtn" style="width:100%">Reset app data</button>
-        </div>
-
-        <div class="card">
-          <div style="font-size:14px">Status</div>
-          <div class="small" id="walletInfo">Wallets, 0. Actief, geen.</div>
           <div class="sep"></div>
           <div class="small" id="netInfo">Bron prijzen, -. Bron grafiek, -.</div>
         </div>
-      </div>
-    </div>
-
-    <div id="viewWallets" class="view hide">
-      <div class="card">
-        <div style="font-size:14px">Wallets</div>
-        <div class="small">Actieve wallet wordt bovenaan op dashboard getoond.</div>
-
-        <div class="sep"></div>
-
-        <div class="formRow">
-          <div>
-            <label>Naam</label>
-            <input id="wName" placeholder="Bijv. Nano, Stax, MetaMask" />
-          </div>
-          <div>
-            <label>Adres</label>
-            <input id="wAddr" placeholder="0x..." autocapitalize="none" autocomplete="off" />
-          </div>
-        </div>
-
-        <div style="height:10px"></div>
-        <button id="addWalletBtn" class="primary" style="width:100%">Wallet toevoegen</button>
-
-        <div class="sep"></div>
-
-        <label>Actieve wallet</label>
-        <select id="activeSelect"></select>
-
-        <div class="list" id="walletList"></div>
-
-        <div class="sep"></div>
-        <div class="small">Tip. Open altijd via beginscherm icoon.</div>
       </div>
     </div>
 
@@ -372,9 +330,8 @@
   </div>
 
   <div class="nav">
-    <div class="tab active" data-tab="dashboard">Dashboard</div>
-    <div class="tab" data-tab="wallets">Wallets</div>
-    <div class="tab" data-tab="settings">Instellingen</div>
+    <div class="tab active" data-tab="dashboard" id="tabDash">Dashboard</div>
+    <div class="tab" data-tab="settings" id="tabSet">Instellingen</div>
   </div>
 
   <div class="toast" id="toast"></div>
@@ -382,7 +339,7 @@
   <script>
     const DEVVE_CONTRACT = "0x8248270620aa532e4d64316017be5e873e37cc09";
     const FIAS_CONTRACT  = "0x8e4f1ce473b292d56934c36976356e3e22c35585";
-    const LS_KEY = "rb_devve_fias_wallet_cream_final_v2";
+    const LS_KEY = "rb_devve_fias_cream_nowallets_v1";
 
     const $ = (id) => document.getElementById(id);
 
@@ -402,7 +359,6 @@
 
     function normalizeState(s){
       if(!s || typeof s !== "object") s = {};
-      if(!Array.isArray(s.wallets)) s.wallets = [];
       if(!s.settings) s.settings = {};
       if(!s.cache) s.cache = {};
       if(!s.cache.prices) s.cache.prices = { devveUsd:0, fiasUsd:0, eurusd:1 };
@@ -421,13 +377,6 @@
       if(!s.settings.positions.devve) s.settings.positions.devve = { qty: 35000, avg: 0.30 };
       if(!s.settings.positions.fias)  s.settings.positions.fias  = { qty: 50384, avg: 0.01129 };
 
-      s.wallets = s.wallets.map(w => ({
-        id: w.id || ("w_" + Math.random().toString(16).slice(2) + Date.now().toString(16)),
-        name: w.name || "Wallet",
-        addr: String(w.addr || "").trim(),
-      }));
-
-      if(typeof s.activeWalletId !== "string") s.activeWalletId = "";
       return s;
     }
 
@@ -448,8 +397,6 @@
         }
       }catch(e){}
       const fresh = normalizeState({
-        wallets: [],
-        activeWalletId: "",
         settings: {
           autoOn:true,
           autoMin:5,
@@ -485,17 +432,12 @@
     }
 
     function setView(which){
-      const views = { dashboard:$("viewDashboard"), wallets:$("viewWallets"), settings:$("viewSettings") };
-      Object.keys(views).forEach(k => views[k].classList.toggle("hide", k !== which));
-      document.querySelectorAll(".tab").forEach(el => el.classList.toggle("active", el.dataset.tab === which));
-    }
-
-    function validAddr(a){
-      const s = String(a || "").trim();
-      if(!s.startsWith("0x")) return { ok:false, reason:"Adres moet met 0x beginnen" };
-      if(s.length !== 42) return { ok:false, reason:"Adres moet 42 tekens zijn" };
-      if(!/^0x[a-fA-F0-9]{40}$/.test(s)) return { ok:false, reason:"Alleen 0 tot 9 en a tot f" };
-      return { ok:true, reason:"" };
+      const dash = $("viewDashboard");
+      const set = $("viewSettings");
+      dash.classList.toggle("hide", which !== "dashboard");
+      set.classList.toggle("hide", which !== "settings");
+      $("tabDash").classList.toggle("active", which === "dashboard");
+      $("tabSet").classList.toggle("active", which === "settings");
     }
 
     function fmtNumber(n, digits=2){
@@ -520,19 +462,12 @@
       if(n < 0) el.classList.add("dn");
     }
 
-    function activeWallet(){
-      return state.wallets.find(w => w.id === state.activeWalletId) || null;
-    }
-
-    function updateWalletInfo(){
-      const w = activeWallet();
-      const activeTxt = w ? (w.name || "Wallet") : "geen";
-      $("walletInfo").textContent = "Wallets, " + state.wallets.length + ". Actief, " + activeTxt + ".";
-      if(w){
-        $("activeWalletPill").textContent = "Actieve wallet, " + activeTxt + ".";
-      }else{
-        $("activeWalletPill").textContent = "Geen actieve wallet";
-      }
+    function calc7dChange(series){
+      if(!Array.isArray(series) || series.length < 2) return 0;
+      const first = Number(series[0]);
+      const last = Number(series[series.length - 1]);
+      if(!isFinite(first) || !isFinite(last) || first <= 0) return 0;
+      return ((last - first) / first) * 100;
     }
 
     function updateNetInfo(){
@@ -675,7 +610,7 @@
       return { ok:true, series:out, via:"cg " + res.via };
     }
 
-    async function fetchChartSeriesDexScreenerApprox(tokenAddr){
+    async function fetchChartSeriesDexApprox(tokenAddr){
       const url = "https://api.dexscreener.com/latest/dex/tokens/" + tokenAddr;
       const res = await fetchJsonSmart(url);
       if(!res.ok) return { ok:false, series:[], via:"dex " + res.via };
@@ -753,10 +688,6 @@
         else ctx.lineTo(x,y);
       }
       ctx.stroke();
-
-      ctx.fillStyle = "rgba(111,98,87,0.95)";
-      ctx.font = "14px -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial";
-      ctx.fillText("$" + Number(series[series.length-1]).toFixed(4), 20, 32);
     }
 
     async function loadCharts(){
@@ -768,8 +699,8 @@
       let dev = devA;
       let fia = fiaA;
 
-      if(!dev.ok) dev = await fetchChartSeriesDexScreenerApprox(DEVVE_CONTRACT);
-      if(!fia.ok) fia = await fetchChartSeriesDexScreenerApprox(FIAS_CONTRACT);
+      if(!dev.ok) dev = await fetchChartSeriesDexApprox(DEVVE_CONTRACT);
+      if(!fia.ok) fia = await fetchChartSeriesDexApprox(FIAS_CONTRACT);
 
       if(dev.ok) state.graphs.devve = dev.series;
       if(fia.ok) state.graphs.fias = fia.series;
@@ -781,83 +712,15 @@
 
       lastChartSource = "dev " + dev.via + ", fias " + fia.via;
 
-      if(dev.ok && fia.ok) $("graphStatus").textContent = "ok";
-      else $("graphStatus").textContent = "fout, " + lastChartSource;
+      const ok = dev.ok && fia.ok;
+      $("graphStatus").textContent = ok ? "ok" : "fout, " + lastChartSource;
+
+      const d7 = calc7dChange(state.graphs.devve);
+      const f7 = calc7dChange(state.graphs.fias);
+      setChange("devveChg7", d7);
+      setChange("fiasChg7", f7);
 
       updateNetInfo();
-    }
-
-    function renderWallets(){
-      const sel = $("activeSelect");
-      sel.innerHTML = "";
-
-      const opt0 = document.createElement("option");
-      opt0.value = "";
-      opt0.textContent = "Geen";
-      sel.appendChild(opt0);
-
-      for(const w of state.wallets){
-        const opt = document.createElement("option");
-        opt.value = w.id;
-        opt.textContent = (w.name || "Wallet") + ", " + (w.addr ? (w.addr.slice(0,6) + "…" + w.addr.slice(-4)) : "");
-        sel.appendChild(opt);
-      }
-
-      const exists = state.wallets.some(w => w.id === state.activeWalletId);
-      if(!exists) state.activeWalletId = "";
-      sel.value = state.activeWalletId || "";
-
-      const list = $("walletList");
-      list.innerHTML = "";
-
-      for(const w of state.wallets){
-        const div = document.createElement("div");
-        div.className = "item";
-
-        const left = document.createElement("div");
-        const nm = document.createElement("div");
-        nm.textContent = w.name || "Wallet";
-        const ad = document.createElement("div");
-        ad.className = "addr";
-        ad.textContent = w.addr || "";
-        left.appendChild(nm);
-        left.appendChild(ad);
-
-        const right = document.createElement("div");
-        right.style.display = "flex";
-        right.style.gap = "8px";
-
-        const useBtn = document.createElement("button");
-        useBtn.textContent = "Actief";
-        useBtn.onclick = () => {
-          state.activeWalletId = w.id;
-          saveState();
-          renderWallets();
-          renderDashboard();
-          toast("Actieve wallet gezet");
-          setView("dashboard");
-        };
-
-        const delBtn = document.createElement("button");
-        delBtn.textContent = "Verwijder";
-        delBtn.onclick = () => {
-          state.wallets = state.wallets.filter(x => x.id !== w.id);
-          if(state.activeWalletId === w.id) state.activeWalletId = "";
-          saveState();
-          renderWallets();
-          renderDashboard();
-          toast("Wallet verwijderd");
-        };
-
-        right.appendChild(useBtn);
-        right.appendChild(delBtn);
-
-        div.appendChild(left);
-        div.appendChild(right);
-        list.appendChild(div);
-      }
-
-      updateWalletInfo();
     }
 
     function renderSettings(){
@@ -875,7 +738,6 @@
 
     function renderDashboard(){
       updateStoragePill();
-      updateWalletInfo();
       updateNetInfo();
 
       const prices = state.cache.prices || { devveUsd:0, fiasUsd:0, eurusd:1 };
@@ -943,6 +805,11 @@
 
       const lu = state.cache.lastUpdateISO ? new Date(state.cache.lastUpdateISO) : null;
       $("lastUpdate").textContent = lu ? lu.toLocaleString("nl-NL") : "-";
+
+      const d7 = calc7dChange(state.graphs.devve);
+      const f7 = calc7dChange(state.graphs.fias);
+      setChange("devveChg7", d7);
+      setChange("fiasChg7", f7);
     }
 
     function exportData(){
@@ -957,14 +824,23 @@
       setTimeout(() => URL.revokeObjectURL(a.href), 1000);
     }
 
+    function hardReloadAfterImport(){
+      stopAuto();
+      isRefreshing = false;
+      $("statusLine").textContent = "Import klaar, herstart";
+      setTimeout(() => location.reload(), 350);
+    }
+
     function importDataFromObject(obj){
       const incoming = obj?.state ? obj.state : obj;
       const n = normalizeState(incoming);
+
       Object.keys(state).forEach(k => delete state[k]);
       Object.assign(state, n);
+
       saveState();
-      renderAll();
       toast("Import klaar");
+      hardReloadAfterImport();
     }
 
     function resetAll(){
@@ -986,7 +862,9 @@
       if(isRefreshing) return;
       isRefreshing = true;
 
+      $("refreshBtn").disabled = true;
       $("statusLine").textContent = "Verversen";
+
       try{
         const p = await updatePrices();
         renderDashboard();
@@ -1005,11 +883,11 @@
         toast("Verversen fout");
       }finally{
         isRefreshing = false;
+        $("refreshBtn").disabled = false;
       }
     }
 
     function renderAll(){
-      renderWallets();
       renderSettings();
       renderDashboard();
       drawLineChart("chartDevve", state.graphs.devve);
@@ -1018,9 +896,8 @@
       $("statusLine").textContent = "Klaar";
     }
 
-    document.querySelectorAll(".tab").forEach(el => {
-      el.addEventListener("click", () => setView(el.dataset.tab));
-    });
+    $("tabDash").addEventListener("click", () => setView("dashboard"));
+    $("tabSet").addEventListener("click", () => setView("settings"));
 
     $("refreshBtn").addEventListener("click", () => refreshAll());
 
@@ -1032,36 +909,7 @@
       toast(state.settings.autoOn ? "Auto aan" : "Auto uit");
     });
 
-    $("addWalletBtn").addEventListener("click", () => {
-      const name = $("wName").value.trim() || "Wallet";
-      const addr = $("wAddr").value.trim();
-      const v = validAddr(addr);
-      if(!v.ok){ toast(v.reason); return; }
-
-      const id = "w_" + Math.random().toString(16).slice(2) + Date.now().toString(16);
-      state.wallets.unshift({ id, name, addr });
-
-      if(!state.activeWalletId) state.activeWalletId = id;
-
-      $("wName").value = "";
-      $("wAddr").value = "";
-
-      saveState();
-      renderWallets();
-      renderDashboard();
-      toast("Wallet toegevoegd");
-    });
-
-    $("activeSelect").addEventListener("change", (e) => {
-      const id = String(e.target.value || "");
-      const exists = state.wallets.some(w => w.id === id);
-      state.activeWalletId = exists ? id : "";
-      saveState();
-      renderWallets();
-      renderDashboard();
-      toast("Actieve wallet gezet");
-      setView("dashboard");
-    });
+    $("goSettings").addEventListener("click", () => setView("settings"));
 
     $("saveSettingsBtn").addEventListener("click", () => {
       state.settings.autoMin = Number($("autoMin").value || 5);
@@ -1087,29 +935,34 @@
       renderDashboard();
       startAuto();
       toast("Opgeslagen");
+      setView("dashboard");
     });
 
     $("exportBtn").addEventListener("click", () => exportData());
-    $("importBtn").addEventListener("click", () => $("importFile").click());
+
+    $("importBtn").addEventListener("click", () => {
+      stopAuto();
+      $("importFile").click();
+    });
 
     $("importFile").addEventListener("change", async (e) => {
       const f = e.target.files && e.target.files[0];
       if(!f) return;
       try{
+        $("statusLine").textContent = "Importeren";
         const txt = await f.text();
         const obj = JSON.parse(txt);
         importDataFromObject(obj);
       }catch(err){
+        $("statusLine").textContent = "Import fout";
         toast("Import fout");
+        startAuto();
       }finally{
         e.target.value = "";
       }
     });
 
     $("resetBtn").addEventListener("click", () => { if(confirm("Alles wissen")) resetAll(); });
-
-    $("goWallets").addEventListener("click", () => setView("wallets"));
-    $("goSettings").addEventListener("click", () => setView("settings"));
 
     renderAll();
     startAuto();
