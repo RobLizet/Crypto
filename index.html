@@ -12,7 +12,6 @@
       --bg1:#f6f7fb;
       --bg2:#eef1f7;
       --card:#ffffff;
-      --card2:#fbfcff;
       --text:#1f2a37;
       --muted:#607086;
       --line:#d9e2ee;
@@ -41,7 +40,7 @@
     .btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
     button{
       border:1px solid var(--line);
-      background:linear-gradient(180deg,var(--card2),#f3f6ff);
+      background:linear-gradient(180deg,#fbfcff,#f3f6ff);
       color:var(--text);
       padding:10px 12px;
       border-radius:14px;
@@ -155,6 +154,17 @@
       background:linear-gradient(180deg, rgba(110,168,254,0.08), rgba(155,140,255,0.06));
       box-shadow:var(--shadow2);
     }
+    .kpiRow{display:grid;grid-template-columns:1fr;gap:8px;margin-top:10px}
+    @media (min-width:520px){.kpiRow{grid-template-columns:1fr 1fr}}
+    .kpi{
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px;
+      background:rgba(255,255,255,0.85);
+      box-shadow:var(--shadow2);
+    }
+    .kpi .h{font-size:12px;color:var(--muted)}
+    .kpi .v{font-size:18px;margin-top:6px}
   </style>
 </head>
 <body>
@@ -174,25 +184,41 @@
       <div class="grid">
         <div class="card">
           <div class="row">
-            <div class="pill" id="activeWalletPill">Geen wallet</div>
+            <div class="pill" id="activeWalletPill">Handmatig portfolio</div>
             <div class="pill" id="storagePill">Opslag</div>
           </div>
 
           <div class="big" id="totalUsd">$0.00</div>
           <div class="small" id="totalEur">€0.00</div>
 
+          <div class="kpiRow">
+            <div class="kpi">
+              <div class="h">Inleg</div>
+              <div class="v" id="investUsd">$0.00</div>
+              <div class="small" id="investEur">€0.00</div>
+            </div>
+            <div class="kpi">
+              <div class="h">Winst of verlies</div>
+              <div class="v" id="plUsd">$0.00</div>
+              <div class="small" id="plPct">0.00%</div>
+            </div>
+          </div>
+
           <div class="tokens">
             <div class="token">
               <p class="sym">DEVVE</p>
               <p class="bal" id="devveBal">0</p>
               <div class="val" id="devveVal">$0.00. €0.00</div>
-              <div class="val" id="devveStakedLine">Staked, 0</div>
+              <div class="val">Aankoop, <span id="devveBuy">$0.0000</span></div>
+              <div class="val">P L, <span id="devvePL">$0.00</span></div>
               <div class="val">24h, <span id="devveChg" class="chg">0.00%</span></div>
             </div>
             <div class="token">
               <p class="sym">FIAS</p>
               <p class="bal" id="fiasBal">0</p>
               <div class="val" id="fiasVal">$0.00. €0.00</div>
+              <div class="val">Aankoop, <span id="fiasBuy">$0.0000</span></div>
+              <div class="val">P L, <span id="fiasPL">$0.00</span></div>
               <div class="val">24h, <span id="fiasChg" class="chg">0.00%</span></div>
             </div>
           </div>
@@ -229,24 +255,24 @@
         </div>
 
         <div class="card">
-          <div style="font-size:14px">Totaal alle wallets</div>
-          <div class="small">DEVVE on chain plus staked. FIAS on chain.</div>
+          <div style="font-size:14px">Wallets, optioneel</div>
+          <div class="small">Je kan adressen toevoegen, maar jouw portfolio werkt ook zonder wallets.</div>
           <div class="sep"></div>
-          <div class="big" id="allUsd">$0.00</div>
-          <div class="small" id="allEur">€0.00</div>
+          <button id="goWallets" style="width:100%">Wallets</button>
+          <div style="height:8px"></div>
+          <button id="goSettings" style="width:100%">Instellingen</button>
           <div class="sep"></div>
           <div class="small" id="allLine">Wallets, 0</div>
         </div>
 
         <div class="card">
           <div style="font-size:14px">Snelle acties</div>
-          <div class="small">Wallets beheren, instellingen, export</div>
+          <div class="small">Export, import, reset</div>
           <div class="sep"></div>
-          <button id="goWallets" style="width:100%">Wallets</button>
-          <div style="height:8px"></div>
-          <button id="goSettings" style="width:100%">Instellingen</button>
-          <div style="height:8px"></div>
           <button id="exportBtn" style="width:100%">Exporteer data</button>
+          <div style="height:8px"></div>
+          <button id="importBtn" class="primary" style="width:100%">Importeer data</button>
+          <input id="importFile" type="file" accept="application/json" style="display:none" />
           <div style="height:8px"></div>
           <button id="resetBtn" style="width:100%">Reset app data</button>
         </div>
@@ -286,7 +312,7 @@
     <div id="viewSettings" class="view hide">
       <div class="card">
         <div style="font-size:14px">Instellingen</div>
-        <div class="small">Laat handmatig leeg om on chain te gebruiken.</div>
+        <div class="small">Je holdings en aankoopprijzen staan hier.</div>
 
         <div class="sep"></div>
 
@@ -301,16 +327,29 @@
           </div>
         </div>
 
+        <div class="sep"></div>
+
+        <div class="formRow">
+          <div>
+            <label>DEVVE aantal</label>
+            <input id="devveQty" type="number" step="0.00000001" />
+          </div>
+          <div>
+            <label>DEVVE aankoopprijs, USD</label>
+            <input id="devveAvg" type="number" step="0.00000001" />
+          </div>
+        </div>
+
         <div style="height:10px"></div>
 
         <div class="formRow">
           <div>
-            <label>Handmatige DEVVE balans, optioneel</label>
-            <input id="manualDevve" type="number" step="0.00000001" />
+            <label>FIAS aantal</label>
+            <input id="fiasQty" type="number" step="0.00000001" />
           </div>
           <div>
-            <label>Handmatige FIAS balans, optioneel</label>
-            <input id="manualFias" type="number" step="0.00000001" />
+            <label>FIAS aankoopprijs, USD</label>
+            <input id="fiasAvg" type="number" step="0.00000001" />
           </div>
         </div>
 
@@ -335,8 +374,7 @@
   <script>
     const DEVVE_CONTRACT = "0x8248270620aa532e4d64316017be5e873e37cc09";
     const FIAS_CONTRACT  = "0x8e4f1ce473b292d56934c36976356e3e22c35585";
-
-    const LS_KEY = "rb_devve_fias_wallet_main";
+    const LS_KEY = "rb_devve_fias_wallet_home_v2";
 
     const $ = (id) => document.getElementById(id);
 
@@ -356,13 +394,25 @@
     function normalizeState(s){
       if(!s || typeof s !== "object") s = {};
       if(!Array.isArray(s.wallets)) s.wallets = [];
-      if(!s.settings) s.settings = { autoOn:true, autoMin:5, priceDecimals:4, manualDevve:"", manualFias:"" };
-      if(!s.cache) s.cache = { lastUpdateISO:"", prices:{ devveUsd:0, fiasUsd:0, eurusd:1 }, chg24:{ devve:0, fias:0 } };
+      if(!s.settings) s.settings = {};
+      if(!s.cache) s.cache = {};
       if(!s.cache.prices) s.cache.prices = { devveUsd:0, fiasUsd:0, eurusd:1 };
       if(!s.cache.chg24) s.cache.chg24 = { devve:0, fias:0 };
+      if(!s.cache.lastUpdateISO) s.cache.lastUpdateISO = "";
       if(!s.lastBalances) s.lastBalances = { devveBal:0, fiasBal:0 };
       if(!s.perWallet || typeof s.perWallet !== "object") s.perWallet = {};
       if(!s.graphs) s.graphs = { devve: [], fias: [], ts: 0 };
+
+      if(typeof s.settings.autoOn !== "boolean") s.settings.autoOn = true;
+      if(!isFinite(Number(s.settings.autoMin))) s.settings.autoMin = 5;
+      if(!isFinite(Number(s.settings.priceDecimals))) s.settings.priceDecimals = 4;
+
+      if(!s.settings.positions) s.settings.positions = {
+        devve: { qty: 35000, avg: 0.30 },
+        fias:  { qty: 50384, avg: 0.01129 }
+      };
+      if(!s.settings.positions.devve) s.settings.positions.devve = { qty: 35000, avg: 0.30 };
+      if(!s.settings.positions.fias)  s.settings.positions.fias  = { qty: 50384, avg: 0.01129 };
 
       s.wallets = s.wallets.map(w => ({
         id: w.id || ("w_" + Math.random().toString(16).slice(2) + Date.now().toString(16)),
@@ -370,7 +420,17 @@
         addr: String(w.addr || "").trim(),
         stakedDevve: Number(w.stakedDevve || 0)
       }));
+
       return s;
+    }
+
+    function safeSave(obj){
+      try{
+        localStorage.setItem(LS_KEY, JSON.stringify(obj));
+        return true;
+      }catch(e){
+        return false;
+      }
     }
 
     function loadState(){
@@ -383,7 +443,15 @@
       const fresh = normalizeState({
         wallets: [],
         activeWalletId: "",
-        settings: { autoOn:true, autoMin:5, priceDecimals:4, manualDevve:"", manualFias:"" },
+        settings: {
+          autoOn:true,
+          autoMin:5,
+          priceDecimals:4,
+          positions:{
+            devve:{ qty:35000, avg:0.30 },
+            fias:{ qty:50384, avg:0.01129 }
+          }
+        },
         cache: { lastUpdateISO:"", prices:{ devveUsd:0, fiasUsd:0, eurusd:1 }, chg24:{ devve:0, fias:0 } },
         lastBalances: { devveBal:0, fiasBal:0 },
         perWallet: {},
@@ -393,21 +461,22 @@
       return fresh;
     }
 
-    function safeSave(obj){
-      try{
-        localStorage.setItem(LS_KEY, JSON.stringify(obj));
-        return true;
-      }catch(e){
-        return false;
-      }
-    }
-
     function saveState(){
       const ok = safeSave(state);
-      if(!ok){
-        toast("Opslag werkt niet, open in Safari, geen privé modus");
-      }
+      if(!ok) toast("Opslag werkt niet, open via beginscherm");
       updateStoragePill();
+    }
+
+    function updateStoragePill(){
+      let ok = true;
+      try{
+        const k = "__t";
+        localStorage.setItem(k, "1");
+        localStorage.removeItem(k);
+      }catch(e){
+        ok = false;
+      }
+      $("storagePill").textContent = ok ? "Opslag, ok" : "Opslag, uit";
     }
 
     function fmtNumber(n, digits=2){
@@ -437,10 +506,6 @@
       return { ok:true, reason:"" };
     }
 
-    function activeWallet(){
-      return state.wallets.find(w => w.id === state.activeWalletId) || null;
-    }
-
     function setChange(elId, val){
       const el = $(elId);
       const n = Number(val || 0);
@@ -450,25 +515,36 @@
       if(n < 0) el.classList.add("dn");
     }
 
-    async function fetchWithFallback(url){
-      try{
-        const r = await fetch(url, { cache:"no-store" });
-        if(r.ok) return await r.json();
-        if(r.status === 403 || r.status === 429){
-          throw new Error("blocked");
+    async function fetchJsonSmart(url){
+      const tries = [
+        { name:"direct", u:url },
+        { name:"allorigins", u:"https://api.allorigins.win/raw?url=" + encodeURIComponent(url) },
+        { name:"corsproxy", u:"https://corsproxy.io/?" + encodeURIComponent(url) }
+      ];
+
+      let lastErr = "fout";
+      for(const t of tries){
+        try{
+          const r = await fetch(t.u, { cache:"no-store" });
+          if(!r.ok){
+            lastErr = t.name + " " + r.status;
+            continue;
+          }
+          const j = await r.json();
+          return { ok:true, json:j, via:t.name };
+        }catch(e){
+          lastErr = t.name + " err";
         }
-        throw new Error("http");
-      }catch(e){
-        const proxy = "https://api.allorigins.win/raw?url=" + encodeURIComponent(url);
-        const r2 = await fetch(proxy, { cache:"no-store" });
-        if(!r2.ok) throw new Error("proxy");
-        return await r2.json();
       }
+      return { ok:false, json:null, via:lastErr };
     }
 
     async function fetchPricesAndChanges(){
       const url = "https://api.coingecko.com/api/v3/simple/price?ids=devve,fias&vs_currencies=usd,eur&include_24hr_change=true";
-      const j = await fetchWithFallback(url);
+      const res = await fetchJsonSmart(url);
+      if(!res.ok) throw new Error("prijs " + res.via);
+
+      const j = res.json;
 
       const devveUsd = Number(j?.devve?.usd || 0);
       const fiasUsd  = Number(j?.fias?.usd || 0);
@@ -481,12 +557,16 @@
 
       state.cache.prices = { devveUsd, fiasUsd, eurusd };
       state.cache.chg24 = { devve: devveChg, fias: fiasChg };
+      state.cache.lastUpdateISO = new Date().toISOString();
       saveState();
     }
 
     async function fetchBalancesEthplorer(addr){
       const url = "https://api.ethplorer.io/getAddressInfo/" + addr + "?apiKey=freekey";
-      const j = await fetchWithFallback(url);
+      const res = await fetchJsonSmart(url);
+      if(!res.ok) throw new Error("wallet " + res.via);
+
+      const j = res.json;
 
       const tokens = Array.isArray(j?.tokens) ? j.tokens : [];
       let devveBal = 0;
@@ -506,16 +586,20 @@
 
     async function fetchChartSeries(coinId){
       const url = "https://api.coingecko.com/api/v3/coins/" + coinId + "/market_chart?vs_currency=usd&days=7&interval=hourly";
-      const j = await fetchWithFallback(url);
+      const res = await fetchJsonSmart(url);
+      if(!res.ok) return { ok:false, series:[], via:res.via };
+
+      const j = res.json;
       const prices = Array.isArray(j?.prices) ? j.prices : [];
       const series = prices.map(p => Number(p[1])).filter(x => isFinite(x));
 
       const target = 120;
-      if(series.length <= target) return series;
+      if(series.length <= target) return { ok:true, series, via:res.via };
+
       const step = Math.max(1, Math.floor(series.length / target));
       const out = [];
       for(let i=0;i<series.length;i+=step) out.push(series[i]);
-      return out;
+      return { ok:true, series:out, via:res.via };
     }
 
     function drawLineChart(canvasId, series){
@@ -572,54 +656,27 @@
       $("graphStatus").textContent = "laden";
       graphsLoaded = false;
 
-      try{
-        const now = Date.now();
-        const age = now - Number(state.graphs.ts || 0);
-        const canUseCache = age < (30 * 60 * 1000) && Array.isArray(state.graphs.devve) && state.graphs.devve.length > 10;
+      const dev = await fetchChartSeries("devve");
+      const fia = await fetchChartSeries("fias");
 
-        if(canUseCache){
-          drawLineChart("chartDevve", state.graphs.devve);
-          drawLineChart("chartFias", state.graphs.fias);
-          graphsLoaded = true;
-          $("graphStatus").textContent = "ok";
-          return;
-        }
+      if(dev.ok){
+        state.graphs.devve = dev.series;
+      }
+      if(fia.ok){
+        state.graphs.fias = fia.series;
+      }
+      state.graphs.ts = Date.now();
+      saveState();
 
-        const dev = await fetchChartSeries("devve");
-        const fia = await fetchChartSeries("fias");
+      drawLineChart("chartDevve", state.graphs.devve);
+      drawLineChart("chartFias", state.graphs.fias);
 
-        state.graphs = { devve: dev, fias: fia, ts: now };
-        saveState();
-
-        drawLineChart("chartDevve", dev);
-        drawLineChart("chartFias", fia);
-
-        graphsLoaded = true;
+      graphsLoaded = dev.ok && fia.ok;
+      if(graphsLoaded){
         $("graphStatus").textContent = "ok";
-      }catch(e){
-        $("graphStatus").textContent = "fout";
+      }else{
+        $("graphStatus").textContent = "fout, " + (dev.ok ? "dev ok" : "dev " + dev.via) + ", " + (fia.ok ? "fias ok" : "fias " + fia.via);
       }
-    }
-
-    async function requestPersistentStorage(){
-      try{
-        if(!navigator.storage || !navigator.storage.persist) return;
-        const already = await navigator.storage.persisted();
-        if(already) return;
-        await navigator.storage.persist();
-      }catch(e){}
-    }
-
-    function updateStoragePill(){
-      let ok = true;
-      try{
-        const k = "__t";
-        localStorage.setItem(k, "1");
-        localStorage.removeItem(k);
-      }catch(e){
-        ok = false;
-      }
-      $("storagePill").textContent = ok ? "Opslag, ok" : "Opslag, uit";
     }
 
     function renderWallets(){
@@ -669,7 +726,6 @@
           if(!isFinite(n) || n < 0){ toast("Geen geldig getal"); return; }
           w.stakedDevve = n;
           saveState();
-          renderDashboard();
           toast("Staked gezet");
         };
 
@@ -678,7 +734,6 @@
         useBtn.onclick = async () => {
           state.activeWalletId = w.id;
           saveState();
-          renderAll();
           setView("dashboard");
           await refreshAll();
         };
@@ -690,7 +745,7 @@
           if(state.activeWalletId === w.id) state.activeWalletId = "";
           delete state.perWallet[w.id];
           saveState();
-          renderAll();
+          renderWallets();
         };
 
         right.appendChild(stakeBtn);
@@ -701,44 +756,25 @@
         div.appendChild(right);
         list.appendChild(div);
       });
+
+      $("allLine").textContent = "Wallets, " + state.wallets.length;
     }
 
     function renderSettings(){
       $("autoMin").value = state.settings.autoMin;
       $("priceDecimals").value = state.settings.priceDecimals;
-      $("manualDevve").value = state.settings.manualDevve;
-      $("manualFias").value = state.settings.manualFias;
+
+      $("devveQty").value = Number(state.settings.positions.devve.qty || 0);
+      $("devveAvg").value = Number(state.settings.positions.devve.avg || 0);
+      $("fiasQty").value = Number(state.settings.positions.fias.qty || 0);
+      $("fiasAvg").value = Number(state.settings.positions.fias.avg || 0);
+
       $("autoBtn").textContent = state.settings.autoOn ? "Auto, aan" : "Auto, uit";
-      $("originLine").textContent = "Open deze app altijd via dezelfde plek. Domein: " + location.origin;
-    }
-
-    function renderAllWalletTotals(){
-      const prices = state.cache.prices || { devveUsd:0, fiasUsd:0, eurusd:1 };
-      const eurusd = prices.eurusd || 1;
-
-      let sumDevve = 0;
-      let sumFias = 0;
-
-      for(const w of state.wallets){
-        const pw = state.perWallet[w.id] || { devve:0, fias:0 };
-        const st = Number(w.stakedDevve || 0);
-        sumDevve += Number(pw.devve || 0) + st;
-        sumFias  += Number(pw.fias  || 0);
-      }
-
-      const allUsd = (sumDevve * (prices.devveUsd || 0)) + (sumFias * (prices.fiasUsd || 0));
-      const allEur = eurusd ? (allUsd / eurusd) : 0;
-
-      $("allUsd").textContent = fmtMoneyUSD(allUsd);
-      $("allEur").textContent = fmtMoneyEUR(allEur);
-      $("allLine").textContent = "Wallets, " + state.wallets.length + ". DEVVE, " + fmtNumber(sumDevve, 4) + ". FIAS, " + fmtNumber(sumFias, 4);
+      $("originLine").textContent = "Open via beginscherm icoon. Domein, " + location.origin;
     }
 
     function renderDashboard(){
       updateStoragePill();
-
-      const w = activeWallet();
-      $("activeWalletPill").textContent = w ? (w.name || "Wallet") + ", " + w.addr.slice(0,6) + "…" + w.addr.slice(-4) : "Geen wallet";
 
       const prices = state.cache.prices || { devveUsd:0, fiasUsd:0, eurusd:1 };
       const dec = Math.max(2, Math.min(8, Number(state.settings.priceDecimals || 4)));
@@ -750,94 +786,71 @@
       setChange("devveChg", state.cache.chg24?.devve || 0);
       setChange("fiasChg", state.cache.chg24?.fias || 0);
 
-      const devveBal = Number(state.lastBalances.devveBal || 0);
-      const fiasBal  = Number(state.lastBalances.fiasBal || 0);
-
-      const devveStaked = Number(w?.stakedDevve || 0);
-      const devveTotal = devveBal + devveStaked;
-
-      $("devveBal").textContent = fmtNumber(devveTotal, 8);
-      $("fiasBal").textContent  = fmtNumber(fiasBal, 8);
-      $("devveStakedLine").textContent = "Staked, " + fmtNumber(devveStaked, 8);
-
-      const devveUsd = devveTotal * (prices.devveUsd || 0);
-      const fiasUsd  = fiasBal  * (prices.fiasUsd  || 0);
-      const totalUsd = devveUsd + fiasUsd;
-
       const eurusd = prices.eurusd || 1;
-      const totalEur = eurusd ? (totalUsd / eurusd) : 0;
 
-      $("devveVal").textContent = fmtMoneyUSD(devveUsd) + ". " + fmtMoneyEUR(eurusd ? devveUsd / eurusd : 0);
-      $("fiasVal").textContent  = fmtMoneyUSD(fiasUsd)  + ". " + fmtMoneyEUR(eurusd ? fiasUsd  / eurusd : 0);
+      const devQty = Number(state.settings.positions.devve.qty || 0);
+      const devAvg = Number(state.settings.positions.devve.avg || 0);
+      const fiaQty = Number(state.settings.positions.fias.qty || 0);
+      const fiaAvg = Number(state.settings.positions.fias.avg || 0);
+
+      $("devveBal").textContent = fmtNumber(devQty, 8);
+      $("fiasBal").textContent  = fmtNumber(fiaQty, 8);
+
+      $("devveBuy").textContent = "$" + devAvg.toFixed(dec);
+      $("fiasBuy").textContent  = "$" + fiaAvg.toFixed(dec);
+
+      const devUsd = devQty * (prices.devveUsd || 0);
+      const fiaUsd = fiaQty * (prices.fiasUsd || 0);
+      const totalUsd = devUsd + fiaUsd;
+
+      const devInv = devQty * devAvg;
+      const fiaInv = fiaQty * fiaAvg;
+      const investUsd = devInv + fiaInv;
+
+      const plUsd = totalUsd - investUsd;
+      const plPct = investUsd > 0 ? (plUsd / investUsd) * 100 : 0;
+
+      $("devveVal").textContent = fmtMoneyUSD(devUsd) + ". " + fmtMoneyEUR(eurusd ? devUsd / eurusd : 0);
+      $("fiasVal").textContent  = fmtMoneyUSD(fiaUsd) + ". " + fmtMoneyEUR(eurusd ? fiaUsd / eurusd : 0);
 
       $("totalUsd").textContent = fmtMoneyUSD(totalUsd);
-      $("totalEur").textContent = fmtMoneyEUR(totalEur);
+      $("totalEur").textContent = fmtMoneyEUR(eurususd ? (totalUsd / eurusd) : 0);
+
+      $("investUsd").textContent = fmtMoneyUSD(investUsd);
+      $("investEur").textContent = fmtMoneyEUR(eurusd ? (investUsd / eurusd) : 0);
+
+      const plEl = $("plUsd");
+      plEl.textContent = fmtMoneyUSD(plUsd);
+      plEl.className = "v " + (plUsd >= 0 ? "up" : "dn");
+
+      const plPctEl = $("plPct");
+      plPctEl.textContent = (isFinite(plPct) ? plPct.toFixed(2) : "0.00") + "%";
+      plPctEl.className = "small " + (plUsd >= 0 ? "up" : "dn");
+
+      const devPLEl = $("devvePL");
+      const devPL = devUsd - devInv;
+      devPLEl.textContent = fmtMoneyUSD(devPL);
+      devPLEl.className = (devPL >= 0 ? "up" : "dn");
+
+      const fiaPLEl = $("fiasPL");
+      const fiaPL = fiaUsd - fiaInv;
+      fiaPLEl.textContent = fmtMoneyUSD(fiaPL);
+      fiaPLEl.className = (fiaPL >= 0 ? "up" : "dn");
 
       const lu = state.cache.lastUpdateISO ? new Date(state.cache.lastUpdateISO) : null;
       $("lastUpdate").textContent = lu ? lu.toLocaleString("nl-NL") : "-";
-
-      renderAllWalletTotals();
-      $("graphStatus").textContent = graphsLoaded ? "ok" : $("graphStatus").textContent;
-    }
-
-    async function refreshAllWalletBalances(){
-      if(state.wallets.length === 0){
-        state.perWallet = {};
-        saveState();
-        renderAllWalletTotals();
-        return;
-      }
-      for(const w of state.wallets){
-        try{
-          const b = await fetchBalancesEthplorer(w.addr);
-          state.perWallet[w.id] = { devve: b.devveBal, fias: b.fiasBal };
-        }catch(e){
-          if(!state.perWallet[w.id]) state.perWallet[w.id] = { devve:0, fias:0 };
-        }
-      }
-      saveState();
-      renderAllWalletTotals();
     }
 
     async function refreshAll(){
-      const w = activeWallet();
-
       renderStatus("Verversen");
       try{
         await fetchPricesAndChanges();
-
-        if(w){
-          let devveBal = 0;
-          let fiasBal = 0;
-
-          const mDev = String(state.settings.manualDevve || "").trim();
-          const mFia = String(state.settings.manualFias || "").trim();
-
-          if(mDev !== "" || mFia !== ""){
-            devveBal = Number(mDev || 0);
-            fiasBal  = Number(mFia || 0);
-          }else{
-            const b = await fetchBalancesEthplorer(w.addr);
-            devveBal = b.devveBal;
-            fiasBal  = b.fiasBal;
-          }
-
-          state.cache.lastUpdateISO = new Date().toISOString();
-          state.lastBalances = { devveBal, fiasBal };
-          state.perWallet[w.id] = { devve: devveBal, fias: fiasBal };
-          saveState();
-        }
-
         renderDashboard();
-        renderStatus("Klaar");
-
-        refreshAllWalletBalances();
         await loadGraphs();
-        graphsLoaded = true;
-        renderDashboard();
+        renderStatus("Klaar");
       }catch(e){
-        renderStatus("Fout bij verversen");
-        toast("Ververs fout, probeer later");
+        renderStatus("Fout");
+        toast("Verversen fout, probeer later");
       }
     }
 
@@ -863,6 +876,19 @@
       setTimeout(() => URL.revokeObjectURL(a.href), 1000);
     }
 
+    function importDataFromObject(obj){
+      const incoming = obj?.state ? obj.state : obj;
+      if(!incoming || typeof incoming !== "object") throw new Error("geen data");
+
+      const n = normalizeState(incoming);
+      Object.keys(state).forEach(k => delete state[k]);
+      Object.assign(state, n);
+
+      saveState();
+      renderAll();
+      toast("Import klaar");
+    }
+
     function resetAll(){
       localStorage.removeItem(LS_KEY);
       location.reload();
@@ -872,6 +898,7 @@
       renderWallets();
       renderSettings();
       renderDashboard();
+      $("graphStatus").textContent = graphsLoaded ? "ok" : "-";
     }
 
     document.querySelectorAll(".tab").forEach(el => {
@@ -896,37 +923,65 @@
 
       const id = "w_" + Math.random().toString(16).slice(2) + Date.now().toString(16);
       state.wallets.unshift({ id, name, addr, stakedDevve: 0 });
-      if(!state.activeWalletId) state.activeWalletId = id;
 
       $("wName").value = "";
       $("wAddr").value = "";
 
       saveState();
-      renderAll();
+      renderWallets();
       toast("Wallet toegevoegd");
-      refreshAllWalletBalances();
     });
 
-    $("activeSelect").addEventListener("change", async (e) => {
+    $("activeSelect").addEventListener("change", (e) => {
       state.activeWalletId = e.target.value;
       saveState();
-      renderAll();
-      setView("dashboard");
-      await refreshAll();
+      toast("Actieve wallet gezet");
     });
 
     $("saveSettingsBtn").addEventListener("click", () => {
       state.settings.autoMin = Number($("autoMin").value || 5);
       state.settings.priceDecimals = Number($("priceDecimals").value || 4);
-      state.settings.manualDevve = $("manualDevve").value;
-      state.settings.manualFias = $("manualFias").value;
+
+      const devQty = Number(String($("devveQty").value || "0").replace(",", "."));
+      const devAvg = Number(String($("devveAvg").value || "0").replace(",", "."));
+      const fiaQty = Number(String($("fiasQty").value || "0").replace(",", "."));
+      const fiaAvg = Number(String($("fiasAvg").value || "0").replace(",", "."));
+
+      if(!isFinite(devQty) || devQty < 0) return toast("DEVVE aantal fout");
+      if(!isFinite(devAvg) || devAvg < 0) return toast("DEVVE aankoop fout");
+      if(!isFinite(fiaQty) || fiaQty < 0) return toast("FIAS aantal fout");
+      if(!isFinite(fiaAvg) || fiaAvg < 0) return toast("FIAS aankoop fout");
+
+      state.settings.positions.devve.qty = devQty;
+      state.settings.positions.devve.avg = devAvg;
+      state.settings.positions.fias.qty = fiaQty;
+      state.settings.positions.fias.avg = fiaAvg;
+
       saveState();
       renderSettings();
+      renderDashboard();
       startAuto();
       toast("Opgeslagen");
     });
 
     $("exportBtn").addEventListener("click", exportData);
+
+    $("importBtn").addEventListener("click", () => $("importFile").click());
+
+    $("importFile").addEventListener("change", async (e) => {
+      const f = e.target.files && e.target.files[0];
+      if(!f) return;
+      try{
+        const txt = await f.text();
+        const obj = JSON.parse(txt);
+        importDataFromObject(obj);
+      }catch(err){
+        toast("Import fout");
+      }finally{
+        e.target.value = "";
+      }
+    });
+
     $("resetBtn").addEventListener("click", () => { if(confirm("Alles wissen")) resetAll(); });
 
     $("goWallets").addEventListener("click", () => setView("wallets"));
@@ -934,20 +989,8 @@
 
     (async () => {
       renderAll();
-      await requestPersistentStorage();
-      updateStoragePill();
       startAuto();
-
-      try{
-        await fetchPricesAndChanges();
-      }catch(e){}
-      renderDashboard();
-
-      try{
-        await loadGraphs();
-        graphsLoaded = true;
-      }catch(e){}
-      renderDashboard();
+      await refreshAll();
     })();
   </script>
 </body>
