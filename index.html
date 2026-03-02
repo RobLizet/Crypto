@@ -1,54 +1,48 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="theme-color" content="#fbf3e8" />
+  <meta name="theme-color" content="#fbf6ee" />
   <title>DevvE + FIAS Wallet</title>
   <style>
     :root{
-      --bg1:#fbf3e8;
-      --bg2:#e7d3bb;
-      --card:#fffdf8;
-      --card2:#f4e2cc;
+      --bg1:#fbf6ee;
+      --bg2:#efe2cf;
+      --card:#fffaf2;
+      --card2:#f8eddc;
       --text:#241f19;
-      --muted:#6b5f55;
-      --line:#d9c3a7;
-      --chip:#efdcc4;
-      --accent:#b07a3f;
-      --accent2:#8e5a24;
-      --good:#0f7a4c;
-      --bad:#c13b43;
-      --shadow:0 12px 34px rgba(36,31,25,0.12);
-      --shadow2:0 8px 18px rgba(36,31,25,0.10);
+      --muted:#6b5f54;
+      --line:#e2d1bb;
+      --chip:#f3e6d2;
+      --accent:#caa574;
+      --accent2:#b78b5b;
+      --good:#1b8a5a;
+      --bad:#c7474d;
+      --shadow:0 10px 30px rgba(36,31,25,0.10);
+      --shadow2:0 6px 16px rgba(36,31,25,0.08);
       --radius:18px;
     }
-
     *{ box-sizing:border-box; }
-    html,body{ height:100%; }
     body{
       margin:0;
       font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
       background:radial-gradient(1100px 700px at 18% 8%, #ffffff 0%, var(--bg1) 42%, var(--bg2) 100%);
       color:var(--text);
-      -webkit-tap-highlight-color:transparent;
     }
-
-    .wrap{ max-width:980px; margin:0 auto; padding:16px 14px 98px; }
-
+    .wrap{ max-width:980px; margin:0 auto; padding:16px 14px 92px; }
     .top{
       display:flex; gap:12px; align-items:center; justify-content:space-between;
       padding:10px 0 14px;
-      border-bottom:1px solid rgba(217,195,167,0.98);
+      border-bottom:1px solid rgba(226,209,187,0.95);
       margin-bottom:14px;
     }
     .title{ display:flex; flex-direction:column; gap:2px; }
     .title h1{ font-size:18px; margin:0; }
-    .title .sub{ font-size:12px; color:var(--muted); line-height:1.25; }
+    .sub{ font-size:12px; color:var(--muted); line-height:1.25; }
     .btns{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
-
     button{
       border:1px solid var(--line);
       background:linear-gradient(180deg,var(--card),var(--card2));
@@ -58,72 +52,72 @@
       font-size:13px;
       cursor:pointer;
       box-shadow:var(--shadow2);
-      touch-action:manipulation;
+      -webkit-tap-highlight-color:transparent;
     }
     button.primary{
-      border-color:rgba(142,90,36,0.55);
-      background:linear-gradient(180deg, rgba(176,122,63,0.98), rgba(142,90,36,0.95));
-      color:#1f1811;
-      box-shadow:0 12px 26px rgba(142,90,36,0.26);
+      background:linear-gradient(180deg, rgba(202,165,116,0.98), rgba(183,139,91,0.98));
+      border-color:rgba(183,139,91,0.75);
+      color:#241e18;
+      box-shadow:0 10px 24px rgba(183,139,91,0.24);
     }
     button:active{ transform:translateY(1px); }
-    button:disabled{ opacity:0.65; cursor:default; transform:none; }
+    button:disabled{ opacity:0.65; cursor:default; }
 
     .grid{ display:grid; grid-template-columns:1fr; gap:12px; }
-    @media (min-width:860px){ .grid{ grid-template-columns:1.2fr .8fr; } }
+    @media (min-width:860px){ .grid{ grid-template-columns:1.25fr .75fr; } }
 
     .card{
-      background:linear-gradient(180deg,var(--card), #fffaf2);
+      background:linear-gradient(180deg,var(--card), #fffdf8);
       border:1px solid var(--line);
       border-radius:var(--radius);
       padding:14px;
       box-shadow:var(--shadow);
     }
-
     .row{ display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
     .pill{
-      background:linear-gradient(180deg, var(--chip), #fff5e6);
+      background:linear-gradient(180deg,var(--chip), #fff7ea);
       border:1px solid var(--line);
       color:var(--muted);
       padding:6px 10px;
       border-radius:999px;
       font-size:12px;
     }
+    .sep{ height:1px; background:rgba(226,209,187,0.95); margin:12px 0; }
     .big{ font-size:26px; letter-spacing:-0.3px; margin:8px 0 2px; }
     .small{ font-size:12px; color:var(--muted); }
-    .sep{ height:1px; background:rgba(217,195,167,0.98); margin:12px 0; }
 
     .tokens{ display:grid; grid-template-columns:1fr; gap:10px; margin-top:10px; }
     @media (min-width:520px){ .tokens{ grid-template-columns:1fr 1fr; } }
-
     .token{
-      background:linear-gradient(180deg, rgba(176,122,63,0.16), rgba(239,220,196,0.80));
-      border:1px solid rgba(217,195,167,0.98);
+      background:linear-gradient(180deg, rgba(202,165,116,0.14), rgba(247,236,217,0.72));
+      border:1px solid rgba(226,209,187,0.98);
       border-radius:16px;
       padding:12px;
     }
-    .token .sym{ font-size:14px; margin:0 0 6px; }
-    .token .bal{ font-size:20px; margin:0; }
-    .token .val{ font-size:12px; color:var(--muted); margin-top:6px; }
+    .sym{ font-size:14px; margin:0 0 6px; }
+    .bal{ font-size:20px; margin:0; }
+    .val{ font-size:12px; color:var(--muted); margin-top:6px; }
+    .chg{ font-weight:700; }
+    .up{ color:var(--good); }
+    .dn{ color:var(--bad); }
 
     .kpiRow{ display:grid; grid-template-columns:1fr; gap:8px; margin-top:10px; }
     @media (min-width:520px){ .kpiRow{ grid-template-columns:1fr 1fr; } }
-
     .kpi{
       border:1px solid var(--line);
       border-radius:16px;
       padding:12px;
-      background:rgba(255,253,248,0.94);
+      background:rgba(255,250,242,0.92);
       box-shadow:var(--shadow2);
     }
     .kpi .h{ font-size:12px; color:var(--muted); }
     .kpi .v{ font-size:18px; margin-top:6px; }
 
     label{ display:block; font-size:12px; color:var(--muted); margin:0 0 6px; }
-    input{
+    input, select{
       width:100%;
       border:1px solid var(--line);
-      background:rgba(255,253,248,0.97);
+      background:rgba(255,250,242,0.95);
       color:var(--text);
       padding:12px 12px;
       border-radius:14px;
@@ -134,16 +128,24 @@
     .formRow{ display:grid; grid-template-columns:1fr; gap:10px; }
     @media (min-width:520px){ .formRow{ grid-template-columns:1fr 1fr; } }
 
-    .nav{
-      position:fixed; left:0; right:0; bottom:0;
-      background:rgba(251,243,232,0.92);
-      backdrop-filter:blur(14px);
-      border-top:1px solid rgba(217,195,167,0.98);
-      display:flex; gap:8px; justify-content:center;
-      padding:10px 10px;
-      z-index:50;
+    canvas{
+      width:100%;
+      height:120px;
+      display:block;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:linear-gradient(180deg, rgba(202,165,116,0.12), rgba(247,236,217,0.58));
+      box-shadow:var(--shadow2);
     }
 
+    .nav{
+      position:fixed; left:0; right:0; bottom:0;
+      background:rgba(251,246,238,0.92);
+      backdrop-filter:blur(14px);
+      border-top:1px solid rgba(226,209,187,0.95);
+      display:flex; gap:8px; justify-content:center;
+      padding:10px 10px;
+    }
     .tab{
       flex:1; max-width:220px;
       border:1px solid var(--line);
@@ -152,22 +154,20 @@
       text-align:center;
       font-size:13px;
       color:var(--muted);
-      background:rgba(255,253,248,0.92);
+      background:rgba(255,250,242,0.92);
       box-shadow:var(--shadow2);
       cursor:pointer;
       user-select:none;
-      touch-action:manipulation;
     }
     .tab.active{
-      color:#1f1811;
-      border-color:rgba(142,90,36,0.60);
-      background:linear-gradient(180deg, rgba(176,122,63,0.26), rgba(239,220,196,0.70));
+      color:#241e18;
+      border-color:rgba(183,139,91,0.75);
+      background:linear-gradient(180deg, rgba(202,165,116,0.26), rgba(247,236,217,0.62));
     }
-
     .hide{ display:none; }
 
     .toast{
-      position:fixed; left:50%; bottom:82px; transform:translateX(-50%);
+      position:fixed; left:50%; bottom:78px; transform:translateX(-50%);
       background:rgba(36,31,25,0.92);
       border:1px solid rgba(255,255,255,0.22);
       color:#ffffff;
@@ -181,24 +181,9 @@
       opacity:0;
       pointer-events:none;
       transition:opacity .18s ease;
-      box-shadow:0 18px 40px rgba(36,31,25,0.24);
-      z-index:60;
+      box-shadow:0 18px 40px rgba(36,31,25,0.22);
     }
     .toast.show{ opacity:1; }
-
-    .chg{ font-weight:700; }
-    .up{ color:var(--good); }
-    .dn{ color:var(--bad); }
-
-    canvas{
-      width:100%;
-      height:120px;
-      display:block;
-      border:1px solid var(--line);
-      border-radius:14px;
-      background:linear-gradient(180deg, rgba(176,122,63,0.18), rgba(239,220,196,0.70));
-      box-shadow:var(--shadow2);
-    }
   </style>
 </head>
 <body>
@@ -209,17 +194,20 @@
         <div class="sub" id="statusLine">Klaar</div>
       </div>
       <div class="btns">
-        <button id="refreshBtn" class="primary" type="button">Ververs</button>
-        <button id="autoBtn" type="button">Auto, aan</button>
+        <button id="refreshBtn" class="primary">Ververs</button>
+        <button id="autoBtn">Auto, aan</button>
       </div>
     </div>
-   <div id="viewDashboard" class="view">
+
+    <div id="viewDashboard" class="view">
       <div class="grid">
         <div class="card">
           <div class="row">
             <div class="pill">Portfolio, handmatig, staking inbegrepen</div>
             <div class="pill" id="storagePill">Opslag</div>
           </div>
+
+          <div id="widgetHost"></div>
 
           <div class="big" id="totalUsd">$0.00</div>
           <div class="small" id="totalEur">€0.00</div>
@@ -246,7 +234,7 @@
               <div class="val">Aankoop, <span id="devveBuy">$0.0000</span></div>
               <div class="val">P L, <span id="devvePL">$0.00</span></div>
               <div class="val">24h, <span id="devveChg" class="chg">0.00%</span></div>
-              <div class="val">7 dagen, <span id="devveChg7" class="chg">0.00%</span></div>
+              <div class="val">Periode, <span id="devveChgP" class="chg">0.00%</span></div>
               <div class="val">Doel, <span id="devveTarget">$0.00</span>. Nog, <span id="devveToTarget" class="chg">0.00%</span></div>
               <div class="val">Alarm boven, <span id="devveAboveShow">$0.00</span>. Alarm onder, <span id="devveBelowShow">$0.00</span></div>
             </div>
@@ -259,7 +247,7 @@
               <div class="val">Aankoop, <span id="fiasBuy">$0.0000</span></div>
               <div class="val">P L, <span id="fiasPL">$0.00</span></div>
               <div class="val">24h, <span id="fiasChg" class="chg">0.00%</span></div>
-              <div class="val">7 dagen, <span id="fiasChg7" class="chg">0.00%</span></div>
+              <div class="val">Periode, <span id="fiasChgP" class="chg">0.00%</span></div>
               <div class="val">Doel, <span id="fiasTarget">$0.00</span>. Nog, <span id="fiasToTarget" class="chg">0.00%</span></div>
               <div class="val">Alarm boven, <span id="fiasAboveShow">$0.00</span>. Alarm onder, <span id="fiasBelowShow">$0.00</span></div>
             </div>
@@ -280,16 +268,19 @@
           <div class="sep"></div>
 
           <div class="row">
-            <div class="pill">Grafiek, 7 dagen, USD</div>
+            <div class="pill" id="graphPill">Grafiek, 7 dagen, USD</div>
             <div class="pill" id="graphStatus">-</div>
           </div>
 
           <div style="height:10px"></div>
+          <div id="rangeHost"></div>
+
+          <div style="height:12px"></div>
           <div class="small">DevvE</div>
           <div style="height:6px"></div>
           <canvas id="chartDevve" width="900" height="240"></canvas>
 
-          <div style="height:10px"></div>
+          <div style="height:12px"></div>
           <div class="small">FIAS</div>
           <div style="height:6px"></div>
           <canvas id="chartFias" width="900" height="240"></canvas>
@@ -303,25 +294,23 @@
           <div class="small">Instellingen, meldingen, export, import, reset</div>
           <div class="sep"></div>
 
-          <button id="goSettings" type="button" style="width:100%">Instellingen</button>
+          <button id="goSettings" style="width:100%">Instellingen</button>
           <div style="height:8px"></div>
 
-          <button id="notifBtn" class="primary" type="button" style="width:100%">Meldingen toestaan</button>
-
+          <button id="notifBtn" class="primary" style="width:100%">Meldingen toestaan</button>
           <div class="sep"></div>
 
-          <button id="exportBtn" type="button" style="width:100%">Exporteer data</button>
+          <button id="exportBtn" style="width:100%">Exporteer data</button>
           <div style="height:8px"></div>
 
-          <button id="importBtn" class="primary" type="button" style="width:100%">Importeer data</button>
+          <button id="importBtn" class="primary" style="width:100%">Importeer data</button>
           <input id="importFile" type="file" accept="application/json" style="display:none" />
-
           <div style="height:8px"></div>
-          <button id="clearCacheBtn" type="button" style="width:100%">Reset koers cache</button>
 
+          <button id="clearCacheBtn" style="width:100%">Reset koers en grafiek cache</button>
           <div style="height:8px"></div>
-          <button id="resetBtn" type="button" style="width:100%">Reset app data</button>
 
+          <button id="resetBtn" style="width:100%">Reset app data</button>
           <div class="sep"></div>
 
           <div class="small" id="netInfo">Bron prijzen, -. Bron grafiek, -.</div>
@@ -333,7 +322,7 @@
     <div id="viewSettings" class="view hide">
       <div class="card">
         <div style="font-size:14px">Instellingen</div>
-        <div class="small">Aantallen, staking, doelen, alarmen.</div>
+        <div class="small">Aantallen, staking, doelen, alarmen, grafiek.</div>
 
         <div class="sep"></div>
 
@@ -348,9 +337,25 @@
           </div>
         </div>
 
-        <div class="sep"></div>
+        <div style="height:10px"></div>
 
         <div class="formRow">
+          <div>
+            <label>Grafiek periode</label>
+            <select id="chartDays">
+              <option value="1">24 uur</option>
+              <option value="7">7 dagen</option>
+              <option value="30">30 dagen</option>
+            </select>
+          </div>
+          <div>
+            <label>Herlaad grafieken</label>
+            <button id="reloadChartsBtn" class="primary" style="width:100%">Herlaad</button>
+          </div>
+        </div>
+
+        <div class="sep"></div>
+       <div class="formRow">
           <div>
             <label>DEVVE wallet aantal</label>
             <input id="devveQty" type="number" step="0.00000001" />
@@ -373,7 +378,8 @@
             <input id="devveTargetIn" type="number" step="0.00000001" />
           </div>
         </div>
-       <div style="height:10px"></div>
+
+        <div style="height:10px"></div>
 
         <div class="formRow">
           <div>
@@ -427,7 +433,7 @@
 
         <div class="sep"></div>
 
-        <button id="saveSettingsBtn" class="primary" type="button" style="width:100%">Opslaan</button>
+        <button id="saveSettingsBtn" class="primary" style="width:100%">Opslaan</button>
 
         <div class="sep"></div>
         <div class="small" id="originLine">-</div>
@@ -435,9 +441,9 @@
     </div>
   </div>
 
-  <div class="nav" role="navigation" aria-label="Navigatie">
-    <button class="tab active" id="tabDash" type="button" role="tab" aria-selected="true">Dashboard</button>
-    <button class="tab" id="tabSet" type="button" role="tab" aria-selected="false">Instellingen</button>
+  <div class="nav">
+    <div class="tab active" id="tabDash">Dashboard</div>
+    <div class="tab" id="tabSet">Instellingen</div>
   </div>
 
   <div class="toast" id="toast"></div>
@@ -445,16 +451,9 @@
   <script>
     const DEVVE_CONTRACT = "0x8248270620aa532e4d64316017be5e873e37cc09";
     const FIAS_CONTRACT  = "0x8e4f1ce473b292d56934c36976356e3e22c35585";
-    const LS_KEY = "rb_devve_fias_allin_v2_timeoutfix";
+    const LS_KEY = "rb_devve_fias_single_v4";
 
     const $ = (id) => document.getElementById(id);
-
-    function bindTap(el, fn){
-      if(!el) return;
-      el.addEventListener("click", (e) => { e.preventDefault(); fn(e); }, { passive:false });
-      el.addEventListener("touchend", (e) => { e.preventDefault(); fn(e); }, { passive:false });
-      el.addEventListener("pointerup", (e) => { fn(e); });
-    }
 
     const state = loadState();
     let autoTimer = null;
@@ -473,7 +472,8 @@
     function withTimeout(promise, ms, label){
       return new Promise((resolve, reject) => {
         const t = setTimeout(() => reject(new Error(label || "timeout")), ms);
-        promise.then(v => { clearTimeout(t); resolve(v); }).catch(e => { clearTimeout(t); reject(e); });
+        promise.then(v => { clearTimeout(t); resolve(v); })
+               .catch(e => { clearTimeout(t); reject(e); });
       });
     }
 
@@ -484,33 +484,36 @@
       if(!s.cache.prices) s.cache.prices = { devveUsd:0, fiasUsd:0, eurusd:1 };
       if(!s.cache.chg24) s.cache.chg24 = { devve:0, fias:0 };
       if(!s.cache.lastUpdateISO) s.cache.lastUpdateISO = "";
-      if(!s.graphs) s.graphs = { devve:[], fias:[], ts:0 };
+      if(!s.graphs) s.graphs = { devve:{}, fias:{}, ts:0 };
       if(!s.alerts) s.alerts = { devve:{ above:0, below:0 }, fias:{ above:0, below:0 } };
-      if(!s.alertState) s.alertState = { devve:{ above:false, below:false }, fias:{ above:false, below:false } };
+      if(!s.alertState) s.alertState = {
+        devve:{ above:false, below:false },
+        fias:{ above:false, below:false }
+      };
 
       if(typeof s.settings.autoOn !== "boolean") s.settings.autoOn = true;
       if(!isFinite(Number(s.settings.autoMin))) s.settings.autoMin = 5;
       if(!isFinite(Number(s.settings.priceDecimals))) s.settings.priceDecimals = 4;
+      if(!isFinite(Number(s.settings.chartDays))) s.settings.chartDays = 7;
 
       if(!s.settings.positions) s.settings.positions = {
         devve:{ qty:35000, avg:0.30, stake:0, target:0.30 },
-        fias: { qty:50384, avg:0.01129, stake:0, target:0.01129 }
+        fias:{  qty:50384, avg:0.01129, stake:0, target:0.01129 }
       };
       if(!s.settings.positions.devve) s.settings.positions.devve = { qty:35000, avg:0.30, stake:0, target:0.30 };
       if(!s.settings.positions.fias)  s.settings.positions.fias  = { qty:50384, avg:0.01129, stake:0, target:0.01129 };
 
-      if(!isFinite(Number(s.settings.positions.devve.stake))) s.settings.positions.devve.stake = 0;
-      if(!isFinite(Number(s.settings.positions.fias.stake)))  s.settings.positions.fias.stake = 0;
-
-      if(!isFinite(Number(s.settings.positions.devve.target))) s.settings.positions.devve.target = 0;
-      if(!isFinite(Number(s.settings.positions.fias.target)))  s.settings.positions.fias.target = 0;
-
-      if(!isFinite(Number(s.alerts.devve.above))) s.alerts.devve.above = 0;
-      if(!isFinite(Number(s.alerts.devve.below))) s.alerts.devve.below = 0;
-      if(!isFinite(Number(s.alerts.fias.above))) s.alerts.fias.above = 0;
-      if(!isFinite(Number(s.alerts.fias.below))) s.alerts.fias.below = 0;
+      s.settings.autoMin = clampNum(s.settings.autoMin, 1, 120, 5);
+      s.settings.priceDecimals = clampNum(s.settings.priceDecimals, 2, 8, 4);
+      s.settings.chartDays = clampNum(s.settings.chartDays, 1, 30, 7);
 
       return s;
+    }
+
+    function clampNum(v, min, max, fallback){
+      const n = Number(v);
+      if(!isFinite(n)) return fallback;
+      return Math.max(min, Math.min(max, n));
     }
 
     function safeSave(obj){
@@ -529,21 +532,7 @@
           try{ return normalizeState(JSON.parse(raw)); }catch(e){}
         }
       }catch(e){}
-      const fresh = normalizeState({
-        settings:{
-          autoOn:true,
-          autoMin:5,
-          priceDecimals:4,
-          positions:{
-            devve:{ qty:35000, avg:0.30, stake:0, target:0.30 },
-            fias:{ qty:50384, avg:0.01129, stake:0, target:0.01129 }
-          }
-        },
-        alerts:{ devve:{ above:0, below:0 }, fias:{ above:0, below:0 } },
-        alertState:{ devve:{ above:false, below:false }, fias:{ above:false, below:false } },
-        cache:{ lastUpdateISO:"", prices:{ devveUsd:0, fiasUsd:0, eurusd:1 }, chg24:{ devve:0, fias:0 } },
-        graphs:{ devve:[], fias:[], ts:0 }
-      });
+      const fresh = normalizeState({});
       safeSave(fresh);
       return fresh;
     }
@@ -553,27 +542,24 @@
       if(!ok) toast("Opslag werkt niet");
       updateStoragePill();
     }
-   function updateStoragePill(){
+
+    function updateStoragePill(){
       let ok = true;
       try{
-        const k = "__t";
-        localStorage.setItem(k, "1");
+        const k="__t";
+        localStorage.setItem(k,"1");
         localStorage.removeItem(k);
-      }catch(e){
-        ok = false;
-      }
+      }catch(e){ ok = false; }
       $("storagePill").textContent = ok ? "Opslag, ok" : "Opslag, uit";
     }
 
     function setView(which){
       const dash = $("viewDashboard");
-      const set = $("viewSettings");
+      const set  = $("viewSettings");
       dash.classList.toggle("hide", which !== "dashboard");
       set.classList.toggle("hide", which !== "settings");
       $("tabDash").classList.toggle("active", which === "dashboard");
       $("tabSet").classList.toggle("active", which === "settings");
-      $("tabDash").setAttribute("aria-selected", which === "dashboard" ? "true" : "false");
-      $("tabSet").setAttribute("aria-selected", which === "settings" ? "true" : "false");
     }
 
     function fmtNumber(n, digits=2){
@@ -582,11 +568,11 @@
     }
     function fmtMoneyUSD(n){
       if(!isFinite(n)) n = 0;
-      return n.toLocaleString("en-US", { style:"currency", currency:"USD", maximumFractionDigits:2 });
+      return n.toLocaleString("en-US",{ style:"currency", currency:"USD", maximumFractionDigits:2 });
     }
     function fmtMoneyEUR(n){
       if(!isFinite(n)) n = 0;
-      return n.toLocaleString("nl-NL", { style:"currency", currency:"EUR", maximumFractionDigits:2 });
+      return n.toLocaleString("nl-NL",{ style:"currency", currency:"EUR", maximumFractionDigits:2 });
     }
 
     function setChange(elId, val){
@@ -598,15 +584,12 @@
       if(n < 0) el.classList.add("dn");
     }
 
-    function calc7dChange(series){
-      if(!Array.isArray(series) || series.length < 2) return 0;
-      const first = Number(series[0]);
-      const last = Number(series[series.length - 1]);
-      if(!isFinite(first) || !isFinite(last) || first <= 0) return 0;
-      return ((last - first) / first) * 100;
+    function calcChangePct(first, last){
+      const a = Number(first), b = Number(last);
+      if(!isFinite(a) || !isFinite(b) || a <= 0) return 0;
+      return ((b - a) / a) * 100;
     }
-
-    function calcToTargetPct(current, target){
+   function calcToTargetPct(current, target){
       const c = Number(current || 0);
       const t = Number(target || 0);
       if(!isFinite(c) || c <= 0 || !isFinite(t) || t <= 0) return 0;
@@ -619,8 +602,8 @@
       const fA = Number(state.alerts.fias.above || 0);
       const fB = Number(state.alerts.fias.below || 0);
       const txt =
-        "Alarm, devve boven " + (dA > 0 ? ("$" + dA) : "uit") + ", onder " + (dB > 0 ? ("$" + dB) : "uit") +
-        ". fias boven " + (fA > 0 ? ("$" + fA) : "uit") + ", onder " + (fB > 0 ? ("$" + fB) : "uit") + ".";
+        "Alarm, devve boven " + (dA>0 ? ("$"+dA) : "uit") + ", onder " + (dB>0 ? ("$"+dB) : "uit") +
+        ". fias boven " + (fA>0 ? ("$"+fA) : "uit") + ", onder " + (fB>0 ? ("$"+fB) : "uit") + ".";
       $("alertInfo").textContent = txt;
     }
 
@@ -629,16 +612,115 @@
       updateAlertInfo();
     }
 
+    function buildWidget(){
+      const host = $("widgetHost");
+      const p = state.cache.prices || { devveUsd:0, fiasUsd:0, eurusd:1 };
+      const dec = clampNum(state.settings.priceDecimals, 2, 8, 4);
+
+      const dev = Number(p.devveUsd || 0);
+      const fia = Number(p.fiasUsd || 0);
+
+      const dQtyT = Number(state.settings.positions.devve.qty || 0) + Number(state.settings.positions.devve.stake || 0);
+      const fQtyT = Number(state.settings.positions.fias.qty || 0) + Number(state.settings.positions.fias.stake || 0);
+
+      const totalUsd = dQtyT*dev + fQtyT*fia;
+
+      const wrap = document.createElement("div");
+      wrap.style.marginTop = "12px";
+      wrap.style.marginBottom = "12px";
+      wrap.style.display = "grid";
+      wrap.style.gridTemplateColumns = "1fr 1fr 1fr";
+      wrap.style.gap = "10px";
+
+      const mk = (title, value, sub) => {
+        const b = document.createElement("div");
+        b.style.border = "1px solid var(--line)";
+        b.style.borderRadius = "16px";
+        b.style.padding = "12px";
+        b.style.background = "linear-gradient(180deg, rgba(255,250,242,0.95), rgba(248,237,220,0.95))";
+        b.style.boxShadow = "var(--shadow2)";
+
+        const t = document.createElement("div");
+        t.style.fontSize = "12px";
+        t.style.color = "var(--muted)";
+        t.textContent = title;
+
+        const v = document.createElement("div");
+        v.style.fontSize = "18px";
+        v.style.marginTop = "6px";
+        v.textContent = value;
+
+        const s = document.createElement("div");
+        s.style.fontSize = "12px";
+        s.style.color = "var(--muted)";
+        s.style.marginTop = "4px";
+        s.textContent = sub;
+
+        b.appendChild(t);
+        b.appendChild(v);
+        b.appendChild(s);
+        return b;
+      };
+
+      wrap.appendChild(mk("Totale waarde", fmtMoneyUSD(totalUsd), "Snelle view"));
+      wrap.appendChild(mk("DEVVE prijs", "$" + dev.toFixed(dec), "24h " + (Number(state.cache.chg24.devve||0).toFixed(2)) + "%"));
+      wrap.appendChild(mk("FIAS prijs", "$" + fia.toFixed(dec), "24h " + (Number(state.cache.chg24.fias||0).toFixed(2)) + "%"));
+
+      host.innerHTML = "";
+      host.appendChild(wrap);
+    }
+
+    function buildRangeButtons(){
+      const host = $("rangeHost");
+      host.innerHTML = "";
+
+      const wrap = document.createElement("div");
+      wrap.className = "row";
+      wrap.style.gap = "8px";
+
+      const mk = (days, label) => {
+        const b = document.createElement("button");
+        b.textContent = label;
+        b.style.padding = "8px 10px";
+        b.style.borderRadius = "999px";
+        b.style.fontSize = "12px";
+        b.style.boxShadow = "none";
+        b.style.background = "rgba(255,250,242,0.92)";
+        b.style.border = "1px solid var(--line)";
+        if(Number(state.settings.chartDays) === days){
+          b.style.background = "linear-gradient(180deg, rgba(202,165,116,0.26), rgba(247,236,217,0.62))";
+          b.style.borderColor = "rgba(183,139,91,0.75)";
+          b.style.color = "#241e18";
+        }
+        b.addEventListener("click", async () => {
+          state.settings.chartDays = days;
+          saveState();
+          $("chartDays").value = String(days);
+          buildRangeButtons();
+          await refreshChartsOnly();
+        });
+        return b;
+      };
+
+      wrap.appendChild(mk(1,"24u"));
+      wrap.appendChild(mk(7,"7d"));
+      wrap.appendChild(mk(30,"30d"));
+
+      host.appendChild(wrap);
+
+      $("graphPill").textContent = "Grafiek, " + (state.settings.chartDays===1 ? "24 uur" : (state.settings.chartDays===7 ? "7 dagen" : "30 dagen")) + ", USD";
+    }
+
     async function fetchJsonTimeout(url, ms){
       const ctrl = new AbortController();
       const t = setTimeout(() => ctrl.abort(), ms);
       try{
         const r = await fetch(url, { cache:"no-store", signal:ctrl.signal });
-        if(!r.ok) return { ok:false, json:null, via:"http " + r.status };
+        if(!r.ok) return { ok:false, json:null, via:"http "+r.status };
         const j = await r.json();
         return { ok:true, json:j, via:"direct" };
       }catch(e){
-        return { ok:false, json:null, via:(e && e.name === "AbortError") ? "timeout" : "err" };
+        return { ok:false, json:null, via:(e && e.name==="AbortError") ? "timeout" : "err" };
       }finally{
         clearTimeout(t);
       }
@@ -674,7 +756,7 @@
       const pick = (j) => {
         const pairs = Array.isArray(j && j.pairs) ? j.pairs : [];
         if(pairs.length === 0) return null;
-        pairs.sort((x,y) => (Number((y && y.liquidity && y.liquidity.usd) || 0) - Number((x && x.liquidity && x.liquidity.usd) || 0)));
+        pairs.sort((x,y) => Number((y?.liquidity?.usd)||0) - Number((x?.liquidity?.usd)||0));
         return pairs[0];
       };
 
@@ -682,14 +764,14 @@
       const pFia = pick(b.json);
       if(!pDev || !pFia) return { ok:false, via:"dex no pairs" };
 
-      const devUsd = Number(pDev && pDev.priceUsd || 0);
-      const fiaUsd = Number(pFia && pFia.priceUsd || 0);
-      const devChg = Number(pDev && pDev.priceChange && pDev.priceChange.h24 || 0);
-      const fiaChg = Number(pFia && pFia.priceChange && pFia.priceChange.h24 || 0);
+      const devUsd = Number(pDev.priceUsd || 0);
+      const fiaUsd = Number(pFia.priceUsd || 0);
+      const devChg = Number(pDev?.priceChange?.h24 || 0);
+      const fiaChg = Number(pFia?.priceChange?.h24 || 0);
 
-      if(!isFinite(devUsd) || devUsd <= 0 || !isFinite(fiaUsd) || fiaUsd <= 0) return { ok:false, via:"dex bad price" };
+      if(!isFinite(devUsd) || devUsd<=0 || !isFinite(fiaUsd) || fiaUsd<=0) return { ok:false, via:"dex bad price" };
 
-      return { ok:true, devUsd, fiaUsd, devChg, fiaChg, via:"dexscreener" };
+      return { ok:true, devUsd, fiaUsd, devChg, fiaChg, via:"dexscreener " + a.via };
     }
 
     async function fetchPricesCoinGecko(){
@@ -698,13 +780,13 @@
       if(!res.ok) return { ok:false, via:"cg " + res.via };
 
       const j = res.json || {};
-      const devUsd = Number(j.devve && j.devve.usd || 0);
-      const fiaUsd = Number(j.fias && j.fias.usd || 0);
-      const devEur = Number(j.devve && j.devve.eur || 0);
-      const devChg = Number(j.devve && j.devve.usd_24h_change || 0);
-      const fiaChg = Number(j.fias && j.fias.usd_24h_change || 0);
+      const devUsd = Number(j.devve?.usd || 0);
+      const fiaUsd = Number(j.fias?.usd || 0);
+      const devEur = Number(j.devve?.eur || 0);
+      const devChg = Number(j.devve?.usd_24h_change || 0);
+      const fiaChg = Number(j.fias?.usd_24h_change || 0);
 
-      if(!isFinite(devUsd) || devUsd <= 0 || !isFinite(fiaUsd) || fiaUsd <= 0) return { ok:false, via:"cg bad" };
+      if(!isFinite(devUsd) || devUsd<=0 || !isFinite(fiaUsd) || fiaUsd<=0) return { ok:false, via:"cg bad" };
 
       const eurusd = devEur > 0 ? (devUsd / devEur) : 1;
       return { ok:true, devUsd, fiaUsd, devChg, fiaChg, eurusd, via:"coingecko " + res.via };
@@ -714,9 +796,9 @@
       const url = "https://open.er-api.com/v6/latest/EUR";
       const res = await fetchJsonSmart(url);
       if(!res.ok) return { ok:false, via:"fx " + res.via };
-      const usd = Number(res.json && res.json.rates && res.json.rates.USD || 0);
-      if(!isFinite(usd) || usd <= 0) return { ok:false, via:"fx bad" };
-      return { ok:true, eurusd:usd, via:"fx" };
+      const usd = Number(res.json?.rates?.USD || 0);
+      if(!isFinite(usd) || usd<=0) return { ok:false, via:"fx bad" };
+      return { ok:true, eurusd:usd, via:"fx " + res.via };
     }
 
     async function updatePrices(){
@@ -761,16 +843,16 @@
       return { ok:false };
     }
 
-    async function fetchChartSeriesCoinGecko(coinId){
-      const url = "https://api.coingecko.com/api/v3/coins/" + coinId + "/market_chart?vs_currency=usd&days=7&interval=hourly";
+    async function fetchChartSeriesCoinGecko(coinId, days){
+      const url = "https://api.coingecko.com/api/v3/coins/" + coinId + "/market_chart?vs_currency=usd&days=" + days + "&interval=hourly";
       const res = await fetchJsonSmart(url);
       if(!res.ok) return { ok:false, series:[], via:"cg " + res.via };
 
-      const prices = Array.isArray(res.json && res.json.prices) ? res.json.prices : [];
+      const prices = Array.isArray(res.json?.prices) ? res.json.prices : [];
       const series = prices.map(p => Number(p[1])).filter(x => isFinite(x));
       if(series.length < 2) return { ok:false, series:[], via:"cg no data" };
 
-      const target = 120;
+      const target = 140;
       if(series.length <= target) return { ok:true, series, via:"cg " + res.via };
 
       const step = Math.max(1, Math.floor(series.length / target));
@@ -784,44 +866,36 @@
       const res = await fetchJsonSmart(url);
       if(!res.ok) return { ok:false, series:[], via:"dex " + res.via };
 
-      const pairs = Array.isArray(res.json && res.json.pairs) ? res.json.pairs : [];
+      const pairs = Array.isArray(res.json?.pairs) ? res.json.pairs : [];
       if(pairs.length === 0) return { ok:false, series:[], via:"dex no pairs" };
 
-      pairs.sort((x,y) => (Number((y && y.liquidity && y.liquidity.usd) || 0) - Number((x && x.liquidity && x.liquidity.usd) || 0)));
+      pairs.sort((x,y) => Number((y?.liquidity?.usd)||0) - Number((x?.liquidity?.usd)||0));
       const p = pairs[0];
 
-      const h6 = Number(p && p.priceChange && p.priceChange.h6);
-      const h1 = Number(p && p.priceChange && p.priceChange.h1);
-      const h24 = Number(p && p.priceChange && p.priceChange.h24);
-      const now = Number(p && p.priceUsd || 0);
-
-      if(!isFinite(now) || now <= 0) return { ok:false, series:[], via:"dex bad" };
+      const h24 = Number(p?.priceChange?.h24);
+      const now = Number(p?.priceUsd || 0);
+      if(!isFinite(now) || now<=0) return { ok:false, series:[], via:"dex bad" };
 
       const mk = (pct) => now / (1 + (pct/100));
       const p24 = isFinite(h24) ? mk(h24) : now;
-      const p6  = isFinite(h6)  ? mk(h6)  : now;
-      const p1  = isFinite(h1)  ? mk(h1)  : now;
 
       const series = [];
-      for(let i=0;i<120;i++){
-        const t = i / 119;
-        let v = p24 + (p6 - p24) * Math.min(1, t*0.55);
-        v = v + (p1 - p6) * Math.max(0, (t-0.55)/0.30);
-        v = v + (now - p1) * Math.max(0, (t-0.85)/0.15);
+      for(let i=0;i<140;i++){
+        const t = i / 139;
+        const v = p24 + (now - p24) * t;
         series.push(Number(v));
       }
       return { ok:true, series, via:"dex approx" };
     }
 
-    function drawLineChart(canvasId, series){
+    function drawLineChart(canvasId, series, markers){
       const c = $(canvasId);
       const ctx = c.getContext("2d");
-      const w = c.width;
-      const h = c.height;
+      const w = c.width, h = c.height;
       ctx.clearRect(0,0,w,h);
 
       if(!Array.isArray(series) || series.length < 2){
-        ctx.fillStyle = "rgba(107,95,85,0.95)";
+        ctx.fillStyle = "rgba(107,95,84,0.9)";
         ctx.font = "16px -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial";
         ctx.fillText("geen data", 20, 40);
         return;
@@ -831,12 +905,13 @@
       for(const v of series){ if(v < min) min = v; if(v > max) max = v; }
       if(!isFinite(min) || !isFinite(max) || min === max){ min = min - 1; max = max + 1; }
 
-      const padX = 18;
-      const padY = 18;
+      const padX = 18, padY = 18;
       const xStep = (w - padX*2) / (series.length - 1);
       const yScale = (h - padY*2) / (max - min);
 
-      ctx.strokeStyle = "rgba(217,195,167,1)";
+      const yOf = (val) => (h - padY) - ((val - min) * yScale);
+
+      ctx.strokeStyle = "rgba(226,209,187,1)";
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(padX, padY);
@@ -845,55 +920,115 @@
       ctx.stroke();
 
       const grad = ctx.createLinearGradient(0,0,w,0);
-      grad.addColorStop(0, "rgba(176,122,63,0.98)");
-      grad.addColorStop(1, "rgba(142,90,36,0.98)");
+      grad.addColorStop(0, "rgba(202,165,116,0.95)");
+      grad.addColorStop(1, "rgba(183,139,91,0.95)");
       ctx.strokeStyle = grad;
       ctx.lineWidth = 2.6;
       ctx.beginPath();
       for(let i=0;i<series.length;i++){
         const x = padX + i * xStep;
-        const y = (h - padY) - ((series[i] - min) * yScale);
+        const y = yOf(series[i]);
         if(i === 0) ctx.moveTo(x,y);
         else ctx.lineTo(x,y);
       }
       ctx.stroke();
+
+      if(Array.isArray(markers) && markers.length){
+        ctx.lineWidth = 1.5;
+        for(const m of markers){
+          const y = yOf(m.value);
+          ctx.setLineDash([6,6]);
+          ctx.strokeStyle = m.color;
+          ctx.beginPath();
+          ctx.moveTo(padX, y);
+          ctx.lineTo(w - padX, y);
+          ctx.stroke();
+          ctx.setLineDash([]);
+
+          ctx.fillStyle = m.color;
+          ctx.font = "12px -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial";
+          ctx.fillText(m.label, padX + 6, Math.max(14, y - 6));
+        }
+      }
+    }
+
+    function buildMarkers(symbol, price){
+      const dec = clampNum(state.settings.priceDecimals, 2, 8, 4);
+      const pos = state.settings.positions[symbol];
+      const al = state.alerts[symbol];
+
+      const out = [];
+      const add = (label, v, color) => {
+        const n = Number(v||0);
+        if(isFinite(n) && n > 0) out.push({ label: label + " $" + n.toFixed(dec), value:n, color });
+      };
+
+      add("aankoop", pos.avg, "rgba(107,95,84,0.95)");
+      add("doel", pos.target, "rgba(36,31,25,0.95)");
+      add("alarm boven", al.above, "rgba(27,138,90,0.95)");
+      add("alarm onder", al.below, "rgba(199,71,77,0.95)");
+
+      return out;
     }
 
     async function loadCharts(){
       $("graphStatus").textContent = "laden";
+      const days = clampNum(state.settings.chartDays, 1, 30, 7);
 
-      const devA = await fetchChartSeriesCoinGecko("devve");
-      const fiaA = await fetchChartSeriesCoinGecko("fias");
+      const devA = await fetchChartSeriesCoinGecko("devve", days);
+      const fiaA = await fetchChartSeriesCoinGecko("fias", days);
 
-      let dev = devA;
-      let fia = fiaA;
-
+      let dev = devA, fia = fiaA;
       if(!dev.ok) dev = await fetchChartSeriesDexApprox(DEVVE_CONTRACT);
       if(!fia.ok) fia = await fetchChartSeriesDexApprox(FIAS_CONTRACT);
 
-      if(dev.ok) state.graphs.devve = dev.series;
-      if(fia.ok) state.graphs.fias = fia.series;
+      if(dev.ok) state.graphs.devve = { days, series:dev.series };
+      if(fia.ok) state.graphs.fias  = { days, series:fia.series };
       state.graphs.ts = Date.now();
       saveState();
 
-      drawLineChart("chartDevve", state.graphs.devve);
-      drawLineChart("chartFias", state.graphs.fias);
+      const devSeries = state.graphs.devve?.series || [];
+      const fiaSeries = state.graphs.fias?.series || [];
+
+      const devPrice = Number(state.cache.prices.devveUsd || 0);
+      const fiaPrice = Number(state.cache.prices.fiasUsd || 0);
+
+      drawLineChart("chartDevve", devSeries, buildMarkers("devve", devPrice));
+      drawLineChart("chartFias",  fiaSeries, buildMarkers("fias",  fiaPrice));
 
       lastChartSource = "dev " + dev.via + ", fias " + fia.via;
 
       const ok = dev.ok && fia.ok;
-      $("graphStatus").textContent = ok ? "ok" : "fout, " + lastChartSource;
-
-      setChange("devveChg7", calc7dChange(state.graphs.devve));
-      setChange("fiasChg7", calc7dChange(state.graphs.fias));
-
+      $("graphStatus").textContent = ok ? "ok" : "fout";
       updateNetInfo();
+
+      const devP = devSeries.length ? calcChangePct(devSeries[0], devSeries[devSeries.length-1]) : 0;
+      const fiaP = fiaSeries.length ? calcChangePct(fiaSeries[0], fiaSeries[fiaSeries.length-1]) : 0;
+
+      setChange("devveChgP", devP);
+      setChange("fiasChgP", fiaP);
+
       return ok;
+    }
+
+    async function refreshChartsOnly(){
+      try{
+        $("statusLine").textContent = "Grafiek laden";
+        await withTimeout(loadCharts(), 20000, "grafiek timeout");
+        $("statusLine").textContent = "Klaar";
+      }catch(e){
+        $("graphStatus").textContent = "fout";
+        lastChartSource = "timeout of fout";
+        updateNetInfo();
+        $("statusLine").textContent = "Klaar";
+        toast("Grafiek halen lukt niet");
+      }
     }
 
     function renderSettings(){
       $("autoMin").value = state.settings.autoMin;
       $("priceDecimals").value = state.settings.priceDecimals;
+      $("chartDays").value = String(state.settings.chartDays);
 
       $("devveQty").value = Number(state.settings.positions.devve.qty || 0);
       $("devveStakeQty").value = Number(state.settings.positions.devve.stake || 0);
@@ -918,10 +1053,9 @@
 
     function renderDashboard(){
       updateStoragePill();
-      updateNetInfo();
 
       const prices = state.cache.prices || { devveUsd:0, fiasUsd:0, eurusd:1 };
-      const dec = Math.max(2, Math.min(8, Number(state.settings.priceDecimals || 4)));
+      const dec = clampNum(state.settings.priceDecimals, 2, 8, 4);
       const eurusd = Number(prices.eurusd || 1);
 
       const devPrice = Number(prices.devveUsd || 0);
@@ -931,24 +1065,24 @@
       $("fiasPrice").textContent  = "$" + fiaPrice.toFixed(dec);
       $("eurusd").textContent     = Number(eurusd || 1).toFixed(4);
 
-      setChange("devveChg", state.cache.chg24 && state.cache.chg24.devve || 0);
-      setChange("fiasChg", state.cache.chg24 && state.cache.chg24.fias || 0);
+      setChange("devveChg", state.cache.chg24?.devve || 0);
+      setChange("fiasChg",  state.cache.chg24?.fias || 0);
 
-      const devQtyW = Number(state.settings.positions.devve.qty || 0);
+      const devQtyW  = Number(state.settings.positions.devve.qty || 0);
       const devStake = Number(state.settings.positions.devve.stake || 0);
-      const devQtyT = devQtyW + devStake;
-      const devAvg = Number(state.settings.positions.devve.avg || 0);
+      const devQtyT  = devQtyW + devStake;
+      const devAvg   = Number(state.settings.positions.devve.avg || 0);
 
-      const fiaQtyW = Number(state.settings.positions.fias.qty || 0);
+      const fiaQtyW  = Number(state.settings.positions.fias.qty || 0);
       const fiaStake = Number(state.settings.positions.fias.stake || 0);
-      const fiaQtyT = fiaQtyW + fiaStake;
-      const fiaAvg = Number(state.settings.positions.fias.avg || 0);
+      const fiaQtyT  = fiaQtyW + fiaStake;
+      const fiaAvg   = Number(state.settings.positions.fias.avg || 0);
 
       $("devveBalTotal").textContent = fmtNumber(devQtyT, 8);
       $("fiasBalTotal").textContent  = fmtNumber(fiaQtyT, 8);
 
-      $("devveSplit").textContent = "Wallet, " + fmtNumber(devQtyW, 8) + ". Staking, " + fmtNumber(devStake, 8) + ".";
-      $("fiasSplit").textContent  = "Wallet, " + fmtNumber(fiaQtyW, 8) + ". Staking, " + fmtNumber(fiaStake, 8) + ".";
+      $("devveSplit").textContent = "Wallet, " + fmtNumber(devQtyW,8) + ". Staking, " + fmtNumber(devStake,8) + ".";
+      $("fiasSplit").textContent  = "Wallet, " + fmtNumber(fiaQtyW,8) + ". Staking, " + fmtNumber(fiaStake,8) + ".";
 
       $("devveBuy").textContent = "$" + devAvg.toFixed(dec);
       $("fiasBuy").textContent  = "$" + fiaAvg.toFixed(dec);
@@ -1005,7 +1139,7 @@
       $("fiasTarget").textContent  = "$" + Number(fiaTarget || 0).toFixed(dec);
 
       setChange("devveToTarget", calcToTargetPct(devPrice, devTarget));
-      setChange("fiasToTarget", calcToTargetPct(fiaPrice, fiaTarget));
+      setChange("fiasToTarget",  calcToTargetPct(fiaPrice, fiaTarget));
 
       const dA = Number(state.alerts.devve.above || 0);
       const dB = Number(state.alerts.devve.below || 0);
@@ -1016,11 +1150,14 @@
       $("devveBelowShow").textContent = dB > 0 ? ("$" + dB) : "uit";
       $("fiasAboveShow").textContent = fA > 0 ? ("$" + fA) : "uit";
       $("fiasBelowShow").textContent = fB > 0 ? ("$" + fB) : "uit";
-    }
 
-    function exportData(){
+      buildWidget();
+      buildRangeButtons();
+      updateNetInfo();
+    }
+   function exportData(){
       const data = { exportedAt:new Date().toISOString(), state };
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type:"application/json" });
+      const blob = new Blob([JSON.stringify(data,null,2)], { type:"application/json" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
       a.download = "devve-fias-wallet-export.json";
@@ -1037,12 +1174,12 @@
     function startAuto(){
       stopAuto();
       if(!state.settings.autoOn) return;
-      const min = Math.max(1, Math.min(120, Number(state.settings.autoMin || 5)));
+      const min = clampNum(state.settings.autoMin, 1, 120, 5);
       autoTimer = setInterval(() => { refreshAll(); }, min * 60 * 1000);
     }
 
     function importDataFromObject(obj){
-      const incoming = obj && obj.state ? obj.state : obj;
+      const incoming = (obj && obj.state) ? obj.state : obj;
       const n = normalizeState(incoming);
       Object.keys(state).forEach(k => delete state[k]);
       Object.assign(state, n);
@@ -1060,13 +1197,13 @@
       state.cache.prices = { devveUsd:0, fiasUsd:0, eurusd:1 };
       state.cache.chg24 = { devve:0, fias:0 };
       state.cache.lastUpdateISO = "";
-      state.graphs.devve = [];
-      state.graphs.fias = [];
+      state.graphs.devve = { days: state.settings.chartDays, series: [] };
+      state.graphs.fias  = { days: state.settings.chartDays, series: [] };
       state.graphs.ts = 0;
       saveState();
       renderDashboard();
-      drawLineChart("chartDevve", []);
-      drawLineChart("chartFias", []);
+      drawLineChart("chartDevve", [], []);
+      drawLineChart("chartFias", [], []);
       $("graphStatus").textContent = "-";
       toast("Cache gereset");
     }
@@ -1099,7 +1236,7 @@
     function sendNotify(title, body){
       if(!canNotify()) return;
       if(Notification.permission !== "granted") return;
-      try{ new Notification(title, { body:body }); }catch(e){}
+      try{ new Notification(title, { body }); }catch(e){}
     }
 
     function checkAlerts(){
@@ -1180,135 +1317,157 @@
       }
     }
 
+    function wireUp(){
+      $("tabDash").addEventListener("click", () => setView("dashboard"));
+      $("tabSet").addEventListener("click", () => setView("settings"));
+
+      $("refreshBtn").addEventListener("click", () => refreshAll());
+
+      $("autoBtn").addEventListener("click", () => {
+        state.settings.autoOn = !state.settings.autoOn;
+        saveState();
+        renderSettings();
+        startAuto();
+        toast(state.settings.autoOn ? "Auto aan" : "Auto uit");
+      });
+
+      $("goSettings").addEventListener("click", () => setView("settings"));
+
+      $("notifBtn").addEventListener("click", async () => {
+        if(!canNotify()) return;
+        try{
+          const p = await Notification.requestPermission();
+          updateNotifButton();
+          if(p === "granted"){
+            toast("Meldingen aan");
+            sendNotify("Meldingen aan", "Alarmen zijn actief.");
+          }else{
+            toast("Meldingen niet toegestaan");
+          }
+        }catch(e){
+          toast("Meldingen fout");
+        }
+      });
+
+      $("saveSettingsBtn").addEventListener("click", () => {
+        state.settings.autoMin = Number($("autoMin").value || 5);
+        state.settings.priceDecimals = Number($("priceDecimals").value || 4);
+        state.settings.chartDays = clampNum(Number($("chartDays").value || 7), 1, 30, 7);
+
+        const devQty = Number(String($("devveQty").value || "0").replace(",", "."));
+        const devStake = Number(String($("devveStakeQty").value || "0").replace(",", "."));
+        const devAvg = Number(String($("devveAvg").value || "0").replace(",", "."));
+        const devTarget = Number(String($("devveTargetIn").value || "0").replace(",", "."));
+        const devAbove = Number(String($("devveAboveIn").value || "0").replace(",", "."));
+        const devBelow = Number(String($("devveBelowIn").value || "0").replace(",", "."));
+
+        const fiaQty = Number(String($("fiasQty").value || "0").replace(",", "."));
+        const fiaStake = Number(String($("fiasStakeQty").value || "0").replace(",", "."));
+        const fiaAvg = Number(String($("fiasAvg").value || "0").replace(",", "."));
+        const fiaTarget = Number(String($("fiasTargetIn").value || "0").replace(",", "."));
+        const fiaAbove = Number(String($("fiasAboveIn").value || "0").replace(",", "."));
+        const fiaBelow = Number(String($("fiasBelowIn").value || "0").replace(",", "."));
+
+        if(!isFinite(devQty) || devQty < 0) return toast("DEVVE wallet fout");
+        if(!isFinite(devStake) || devStake < 0) return toast("DEVVE staking fout");
+        if(!isFinite(devAvg) || devAvg < 0) return toast("DEVVE aankoop fout");
+        if(!isFinite(devTarget) || devTarget < 0) return toast("DEVVE doel fout");
+        if(!isFinite(devAbove) || devAbove < 0) return toast("DEVVE alarm boven fout");
+        if(!isFinite(devBelow) || devBelow < 0) return toast("DEVVE alarm onder fout");
+
+        if(!isFinite(fiaQty) || fiaQty < 0) return toast("FIAS wallet fout");
+        if(!isFinite(fiaStake) || fiaStake < 0) return toast("FIAS staking fout");
+        if(!isFinite(fiaAvg) || fiaAvg < 0) return toast("FIAS aankoop fout");
+        if(!isFinite(fiaTarget) || fiaTarget < 0) return toast("FIAS doel fout");
+        if(!isFinite(fiaAbove) || fiaAbove < 0) return toast("FIAS alarm boven fout");
+        if(!isFinite(fiaBelow) || fiaBelow < 0) return toast("FIAS alarm onder fout");
+
+        state.settings.positions.devve.qty = devQty;
+        state.settings.positions.devve.stake = devStake;
+        state.settings.positions.devve.avg = devAvg;
+        state.settings.positions.devve.target = devTarget;
+
+        state.settings.positions.fias.qty = fiaQty;
+        state.settings.positions.fias.stake = fiaStake;
+        state.settings.positions.fias.avg = fiaAvg;
+        state.settings.positions.fias.target = fiaTarget;
+
+        state.alerts.devve.above = devAbove;
+        state.alerts.devve.below = devBelow;
+        state.alerts.fias.above = fiaAbove;
+        state.alerts.fias.below = fiaBelow;
+
+        state.alertState.devve.above = false;
+        state.alertState.devve.below = false;
+        state.alertState.fias.above = false;
+        state.alertState.fias.below = false;
+
+        saveState();
+        renderSettings();
+        renderDashboard();
+        startAuto();
+        toast("Opgeslagen");
+        setView("dashboard");
+        checkAlerts();
+        refreshChartsOnly();
+      });
+
+      $("exportBtn").addEventListener("click", () => exportData());
+
+      $("importBtn").addEventListener("click", () => {
+        stopAuto();
+        $("importFile").click();
+      });
+
+      $("importFile").addEventListener("change", async (e) => {
+        const f = e.target.files && e.target.files[0];
+        if(!f) return;
+        try{
+          $("statusLine").textContent = "Importeren";
+          const txt = await f.text();
+          const obj = JSON.parse(txt);
+          importDataFromObject(obj);
+        }catch(err){
+          $("statusLine").textContent = "Import fout";
+          toast("Import fout");
+          startAuto();
+        }finally{
+          e.target.value = "";
+        }
+      });
+
+      $("clearCacheBtn").addEventListener("click", () => clearCourseCache());
+
+      $("resetBtn").addEventListener("click", () => {
+        if(confirm("Alles wissen")) resetAll();
+      });
+
+      $("chartDays").addEventListener("change", async () => {
+        state.settings.chartDays = clampNum(Number($("chartDays").value || 7), 1, 30, 7);
+        saveState();
+        buildRangeButtons();
+        await refreshChartsOnly();
+      });
+    }
+
     function renderAll(){
       renderSettings();
       renderDashboard();
-      drawLineChart("chartDevve", state.graphs.devve);
-      drawLineChart("chartFias", state.graphs.fias);
+
+      const devSeries = state.graphs.devve?.series || [];
+      const fiaSeries = state.graphs.fias?.series || [];
+
+      drawLineChart("chartDevve", devSeries, buildMarkers("devve", Number(state.cache.prices.devveUsd || 0)));
+      drawLineChart("chartFias",  fiaSeries, buildMarkers("fias",  Number(state.cache.prices.fiasUsd || 0)));
+
       $("graphStatus").textContent = "-";
       $("statusLine").textContent = "Klaar";
+      buildRangeButtons();
+      buildWidget();
+      updateNetInfo();
     }
 
-    bindTap($("tabDash"), () => setView("dashboard"));
-    bindTap($("tabSet"),  () => setView("settings"));
-
-    bindTap($("refreshBtn"), () => refreshAll());
-
-    bindTap($("autoBtn"), () => {
-      state.settings.autoOn = !state.settings.autoOn;
-      saveState();
-      renderSettings();
-      startAuto();
-      toast(state.settings.autoOn ? "Auto aan" : "Auto uit");
-    });
-
-    bindTap($("goSettings"), () => setView("settings"));
-
-    bindTap($("notifBtn"), async () => {
-      if(!canNotify()) return;
-      try{
-        const p = await Notification.requestPermission();
-        updateNotifButton();
-        if(p === "granted"){
-          toast("Meldingen aan");
-          sendNotify("Meldingen aan", "Alarmen zijn actief.");
-        }else{
-          toast("Meldingen niet toegestaan");
-        }
-      }catch(e){
-        toast("Meldingen fout");
-      }
-    });
-
-    bindTap($("saveSettingsBtn"), () => {
-      state.settings.autoMin = Number($("autoMin").value || 5);
-      state.settings.priceDecimals = Number($("priceDecimals").value || 4);
-
-      const devQty = Number(String($("devveQty").value || "0").replace(",", "."));
-      const devStake = Number(String($("devveStakeQty").value || "0").replace(",", "."));
-      const devAvg = Number(String($("devveAvg").value || "0").replace(",", "."));
-      const devTarget = Number(String($("devveTargetIn").value || "0").replace(",", "."));
-      const devAbove = Number(String($("devveAboveIn").value || "0").replace(",", "."));
-      const devBelow = Number(String($("devveBelowIn").value || "0").replace(",", "."));
-
-      const fiaQty = Number(String($("fiasQty").value || "0").replace(",", "."));
-      const fiaStake = Number(String($("fiasStakeQty").value || "0").replace(",", "."));
-      const fiaAvg = Number(String($("fiasAvg").value || "0").replace(",", "."));
-      const fiaTarget = Number(String($("fiasTargetIn").value || "0").replace(",", "."));
-      const fiaAbove = Number(String($("fiasAboveIn").value || "0").replace(",", "."));
-      const fiaBelow = Number(String($("fiasBelowIn").value || "0").replace(",", "."));
-
-      if(!isFinite(devQty) || devQty < 0) return toast("DEVVE wallet fout");
-      if(!isFinite(devStake) || devStake < 0) return toast("DEVVE staking fout");
-      if(!isFinite(devAvg) || devAvg < 0) return toast("DEVVE aankoop fout");
-      if(!isFinite(devTarget) || devTarget < 0) return toast("DEVVE doel fout");
-      if(!isFinite(devAbove) || devAbove < 0) return toast("DEVVE alarm boven fout");
-      if(!isFinite(devBelow) || devBelow < 0) return toast("DEVVE alarm onder fout");
-
-      if(!isFinite(fiaQty) || fiaQty < 0) return toast("FIAS wallet fout");
-      if(!isFinite(fiaStake) || fiaStake < 0) return toast("FIAS staking fout");
-      if(!isFinite(fiaAvg) || fiaAvg < 0) return toast("FIAS aankoop fout");
-      if(!isFinite(fiaTarget) || fiaTarget < 0) return toast("FIAS doel fout");
-      if(!isFinite(fiaAbove) || fiaAbove < 0) return toast("FIAS alarm boven fout");
-      if(!isFinite(fiaBelow) || fiaBelow < 0) return toast("FIAS alarm onder fout");
-
-      state.settings.positions.devve.qty = devQty;
-      state.settings.positions.devve.stake = devStake;
-      state.settings.positions.devve.avg = devAvg;
-      state.settings.positions.devve.target = devTarget;
-
-      state.settings.positions.fias.qty = fiaQty;
-      state.settings.positions.fias.stake = fiaStake;
-      state.settings.positions.fias.avg = fiaAvg;
-      state.settings.positions.fias.target = fiaTarget;
-
-      state.alerts.devve.above = devAbove;
-      state.alerts.devve.below = devBelow;
-      state.alerts.fias.above = fiaAbove;
-      state.alerts.fias.below = fiaBelow;
-
-      state.alertState.devve.above = false;
-      state.alertState.devve.below = false;
-      state.alertState.fias.above = false;
-      state.alertState.fias.below = false;
-
-      saveState();
-      renderSettings();
-      renderDashboard();
-      startAuto();
-      toast("Opgeslagen");
-      setView("dashboard");
-      checkAlerts();
-    });
-
-    bindTap($("exportBtn"), () => exportData());
-
-    bindTap($("importBtn"), () => {
-      stopAuto();
-      $("importFile").click();
-    });
-
-    $("importFile").addEventListener("change", async (e) => {
-      const f = e.target.files && e.target.files[0];
-      if(!f) return;
-      try{
-        $("statusLine").textContent = "Importeren";
-        const txt = await f.text();
-        const obj = JSON.parse(txt);
-        importDataFromObject(obj);
-      }catch(err){
-        $("statusLine").textContent = "Import fout";
-        toast("Import fout");
-        startAuto();
-      }finally{
-        e.target.value = "";
-      }
-    });
-
-    bindTap($("clearCacheBtn"), () => clearCourseCache());
-
-    bindTap($("resetBtn"), () => { if(confirm("Alles wissen")) resetAll(); });
-
+    wireUp();
     renderAll();
     startAuto();
     refreshAll();
